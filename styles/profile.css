@@ -1,0 +1,142 @@
+* {
+  box-sizing: border-box;
+}
+.profile {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.profile_body {
+  display: flex;
+}
+.profile_option {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+/*preview Name*/
+.name_img {
+  display: flex;
+  padding: 0 5px 30px 5px;
+}
+.profile_img {
+  width: 60px;
+  height: 60px;
+  padding: 5px;
+  overflow: hidden;
+}
+.profile_img img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.profile_name {
+  padding: 10px;
+}
+.profile_name_ti {
+  font-weight: 600;
+}
+.preview_pro i {
+  font-size: 15px;
+  padding: 0 5px 0 0;
+}
+.preview_pro span {
+  display: inline-block;
+  opacity: 0.7;
+}
+
+/*tai khoan===================*/
+.info_detail {
+  padding: 15px;
+}
+.pro_account {
+  margin-bottom: 15px;
+  position: relative;
+}
+.pro_account i {
+  font-size: 18px;
+  color: lightskyblue;
+  padding-right: 10px;
+}
+.change_pass {
+  
+  position: relative;
+
+  height: 0;
+  list-style: none;
+  
+  overflow: hidden;
+  transition: 0.4s;
+
+  }
+.pro_account:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.change_pass li:hover{
+    color: aqua;
+}
+.default_color{
+    color: aqua;
+}
+
+/*bill history===============*/
+.info_bill i {
+  font-size: 18px;
+  color: lightseagreen;
+  padding-right: 10px;
+}
+.info_bill:hover {
+  color: red;
+  cursor: pointer;
+}
+
+/*right====================*/
+.profile_content {
+  padding: 0 10px;
+  background-color: white;
+}
+.info_title {
+  padding: 0 0 20px 10px;
+  border-bottom: 1px solid black;
+}
+.info_title p {
+  font-size: 22px;
+}
+.info_title span {
+  display: inline-block;
+  font-size: 14px;
+}
+.info_detail_pro {
+  width: 700px;
+  padding: 20px;
+}
+.wk {
+  padding: 10px 0;
+}
+.wk label {
+  margin-right: 20px;
+  width: 150px;
+  opacity: 0.7;
+  text-align: right;
+}
+
+.address_account_detail,.name_account_detail{
+    display: flex;
+}
+.name_account_detail div{
+    padding: 0 20px;
+}
+.name_account_detail div input{
+    margin-right: 10px;
+}
+.detail_info_content{
+    width: 50%;
+}
+
+/*active===================*/
+.active_drop{
+    height: 50px;
+}

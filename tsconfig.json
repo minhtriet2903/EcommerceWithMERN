@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "public/js/calculator.js", "pages/cart/cartitem.js", "pages/reducers/productPre.js", "pages/reducers/index.js", "pages/reducers/cartPre.js", "pages/reducers/cartPre.js", "pages/constant/messages.js", "pages/cart/index.js", "pages/products/detail/detail.js", "pages/header.tsx", "pages/products/options.js", "pages/container/[catogrory]/[productContainer].js", "pages/products/section.js", "pages/index.tsx", "pages/_app.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

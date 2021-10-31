@@ -1,0 +1,170 @@
+/*================Modal=========*/
+
+*{
+ 
+  box-sizing: border-box;
+}
+
+.total {
+  position: fixed;
+  min-height: 100%;
+  min-width: 100%;
+  transition: 0.2s ease-in;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  }
+  .mask_modal_login{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    min-height: 100%;
+    min-width: 100%;
+  }
+  
+  .modal_content_body{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .container_modal {
+    z-index: 2;
+    background-color: #fff;
+    width: 700px;
+    height: 400px;
+    padding: 10px 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: 0.2s ease-in;
+  }
+  
+  .header_modal {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #c0c2d0;
+  }
+  
+  .header_name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header_name_modal {
+    font-weight: 700;
+    font-size: large;
+  }
+  
+  .header_info_function_add {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .icon_add,
+  .modal_icon_exit {
+    font-size: 1.6rem;
+  }
+  .modal_icon_exit:hover {
+    cursor: pointer;
+    background: #d5ebeb;
+  }
+  .icon_add:hover {
+    cursor: pointer;
+    background: #d5ebeb;
+  }
+  
+  /*==============Content modal===============*/
+  
+  .first_modal_content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+  }
+  
+  .first_name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #e8eeed;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid #c0c2d0;
+    margin: 15px;
+  }
+  
+  .first_content_name_detail {
+    display: grid;
+    grid-template-rows: max-content;
+    left: 0;
+  }
+  .tittle {
+    opacity: 0.7;
+    text-align: left;
+    font-size: small;
+  }
+  
+  .first_icon_content {
+    font-size: 1.5rem;
+    padding: 10px 10px;
+  }
+  
+  .name_input {
+    outline: none;
+    border: none;
+    background: #F6F6F6 ;
+    border-top-left-radius:8px ;
+  }
+  .first_name:hover {
+    border-bottom: 2px solid cornflowerblue;
+    transition: 0.3s ease-in;
+  }
+.btn_login button{
+  border: none;
+  text-decoration: none;
+  padding: 15px;
+  background-color: lightskyblue;
+  color: black;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}  
+.btn_login button:hover{
+  box-shadow: 0px 0px 5px 2px #9a9a9a;
+}
+.bottom_modal{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 15px;
+
+}
+.bottom_modal a{
+  text-decoration: none;
+}
+.bottom_modal span{
+  display: inline-block;
+  color: #3498DB ;
+  cursor: pointer;
+}
+
+
+  /*active*/
+  .show_modal {
+    opacity: 1;
+    visibility: visible;
+  
+    pointer-events: auto;
+  }
+  
+
+  .catch_erro{
+    color: red;
+  }

@@ -1,0 +1,14 @@
+.new_product{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.new_product_index{
+  
+    margin: auto;
+}
