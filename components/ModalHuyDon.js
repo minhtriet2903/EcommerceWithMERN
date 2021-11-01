@@ -25,7 +25,18 @@ const Modal = ({ show, onClose, children, title, item }) => {
     e.preventDefault();
     onClose();
   };
-
+  const cancelBillMessage=(biu)=>{
+    var re="Đơn hàng ngày: ";
+    for(let i=0; i<biu.BillDate.length; i++){
+      if(biu.BillDate[i]>='A'&&biu.BillDate[i]<='Z'){
+        break;
+      }
+      re+=biu.BillDate[i];
+    }
+    re+='\n';
+    re+="Lý do hủy: "+reason;
+    return re;
+  };
   const cancelAndSend = () => {
     axios
       .put("http://localhost:5035/bills/" + item._id, {
@@ -33,6 +44,26 @@ const Modal = ({ show, onClose, children, title, item }) => {
       })
       .then((res) => {
         console.log(res.data);
+        axios
+          .get("http://localhost:5035/users/"+item.userId)
+          .then((res) => {
+            console.log(res);
+            axios
+              .put("http://localhost:5035/users",{
+                email: res.data.email,
+                subject: "Thông báo hủy đơn hàng",
+                htmlContent: cancelBillMessage(item)
+              })
+              .then((res) => {
+                  
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
