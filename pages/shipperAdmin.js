@@ -7,11 +7,26 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import cookieCutter from "cookie-cutter";
+import {useRouter} from "next/router"
+import cookies from "next-cookies";
+
+function filtByShipperID(data,id){
+  var re=[];
+  for(let i=0;i<data.length; i++){
+    if(data[i].idShipper==id){
+      re.push(data[i]);
+    }
+  }
+  return re;
+}
 
 Home.getInitialProps = async (ctx) => {
   const res = await fetch("http://localhost:5035/bills/");
   const json = await res.json();
-  return { data: json };
+  const {Acc} =cookies(ctx);
+  const res31 = await fetch("http://localhost:5035/users/"+Acc);
+  var json31 = await res31.json();
+  return { data: filtByShipperID(json,Acc) };
 };
 
 const Content = styled.div`

@@ -67,7 +67,9 @@ const MyApp = ({ Component, pageProps }) => {
       </Head>
   
       <Provider store={store}>
-     { user ? user.role !=='Manager' && user.role !=='Shipper' ?<Headerr />:<SideBar />:<Headerr />   }
+     { user && user.role ==='Manager'&& <SideBar />   }
+     { user && user.role ==='Shipper' && <Headerr />   }
+     { user && user.role ==='Customer' && <Headerr />   }
         <Component {...pageProps} />
       </Provider>
     </>
