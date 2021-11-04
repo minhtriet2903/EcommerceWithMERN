@@ -71,7 +71,9 @@ const MyApp = ({ Component, pageProps }) => {
   
       <Provider store={store}>
       {  
+
        user ? user.role !=='Manager' ?<Headerr />:<Sidebar />: <Headerr />   
+
     }
         <Component {...pageProps} />
       </Provider>
