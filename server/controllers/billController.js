@@ -1,6 +1,12 @@
 const Bill = require("../models/BillModel");
 exports.createBill = (req, res) => {
     console.log(req.body);
+    if(!req.body.userId){
+        req.body.userId="NoLogin";
+    }
+    if(!req.body.userName){
+        req.body.userName="NoLogin";
+    }
     const bill = new Bill({
         userId: req.body.userId,
         userName: req.body.userName,
@@ -10,6 +16,7 @@ exports.createBill = (req, res) => {
         Address: req.body.address,
         Area: req.body.area,
         idShipper: req.body.idShipper,
+        userEmail:req.body.userEmail,
     });
     return bill
         .save()
