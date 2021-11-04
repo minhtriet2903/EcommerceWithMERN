@@ -5,6 +5,8 @@ import styled from "styled-components";
 import Link from "next/link";
 import cookieCutter from 'cookie-cutter'
 import Router from 'next/router'
+import { VerifyCode } from "./verifyCode";
+
 const Frame = styled.div`
   width:100%;
   height:100%;
@@ -89,6 +91,8 @@ export const Register = ({ show, setShow, reshow }) => {
   const [rePassword, setRePassword] = useState("");
   const [role, setRole] = useState("Customer");
   const [validatemessage, setvalidatemessage] = useState("");
+  const [ShowVerify,setShowVerify]=useState(false);
+  const [code,setcode]=useState(0);
   const hide = () => {
     setShow(false);
     setPassword("");
@@ -136,17 +140,8 @@ export const Register = ({ show, setShow, reshow }) => {
     }
     return false;
   }
-  const handleSubmit = async () => {
-    if (name === '' || email === '' || password === '' || rePassword === '') {
-      setvalidatemessage("Chưa nhập đủ thông tin");
-    } else if (!staticcheck()) {
-      return;
-    }
-    else if (password !== rePassword) {
-      setvalidatemessage("Mật khẩu không trùng nhau");
-    }
-    else {
-      const response = await fetch('http://localhost:5035/users/register', {
+  const Register = async () =>{
+    const response = await fetch('http://localhost:5035/users/register', {
         method: 'POST',
         body: JSON.stringify({
           name, email, password, role
@@ -164,10 +159,42 @@ export const Register = ({ show, setShow, reshow }) => {
         hide();
         reshow(true);
       }
-
-      console.log(data.exist);
-
-
+ //     console.log(data.exist);
+  }
+  function randomNumber(len) {
+    var re = 0;
+    for (let i = 0; i < len; i++) {
+      re *= 10;
+      re += Math.floor(Math.random() * 10) % 10;
+    }
+    return re;
+  }
+  const handleSubmit = async () => {
+    if (name === '' || email === '' || password === '' || rePassword === '') {
+      setvalidatemessage("Chưa nhập đủ thông tin");
+    } else if (!staticcheck()) {
+      return;
+    }
+    else if (password !== rePassword) {
+      setvalidatemessage("Mật khẩu không trùng nhau");
+    }
+    else {
+      var verifycode = randomNumber(6);
+        const response = await fetch("http://localhost:5035/users", {
+          method: "PUT",
+          body: JSON.stringify({
+            email: email,
+            subject: "Xác nhận Gmail",
+            htmlContent: "Mã xác nhận của bạn là: " + verifycode,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+//        hide();
+        /*  setLoginstate[0](setLoginstate[6](data.user.name, setLoginstate[1], setLoginstate[2], setLoginstate[3], setLoginstate[4], setLoginstate[5]));  */
+        setcode(verifycode);
+        setShowVerify(true);
     }
   }
   /* cookieCutter.set('Acc', response.data.user._id);
@@ -245,34 +272,12 @@ export const Register = ({ show, setShow, reshow }) => {
             </div>
           </div>
         </div>
-        {/* <Frame>
-        <Loginform>
-          <Headconten>Đăng ký<Cancel onClick={()=>hide()}>X</Cancel></Headconten>
-          <Div><TextBox  type="text"
-              id="role"
-              placeholder="Nhập email"
-              required
-              name="email"
-              onChange={handleChange()}
-              /></Div>
-          <Div><TextBox  type="text"
-              id="role"
-              placeholder="Nhập tên đăng nhập"
-              required
-              name="name"
-              onChange={handleChange()}
-              /></Div>
-          <Div><TextBox  type="text"
-              id="role"
-              placeholder="Mật khẩu"
-              required
-              name="password"
-              onChange={handleChange()}
-              /></Div>
-          <H6>{validatemessage}</H6>
-          <Div><LoginButton onClick={handleSubmit} >Đăng ký</LoginButton></Div>
-        </Loginform>
-      </Frame> */}
+        <VerifyCode
+          show={ShowVerify}
+          setShow={setShowVerify}
+          code={code}
+          setSussessState={Register}
+      />
       </>
     ) : null}
   </>
