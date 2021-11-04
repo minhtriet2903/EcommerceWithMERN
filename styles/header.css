@@ -19,8 +19,7 @@ a {
   transition: all .2s ease;
 }
 .Active_header {
-  opacity: 0;
-  visibility: hidden;
+  top: -72px;
 }
 
 .out_line {

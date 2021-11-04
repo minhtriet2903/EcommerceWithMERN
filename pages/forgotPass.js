@@ -6,6 +6,7 @@ import cookieCutter from "cookie-cutter";
 import { useRouter } from "next/router";
 import { Register } from "./Register";
 import { VerifyCode } from "./verifyCode";
+import { UpdatePassword } from "./updatePassword";
 
 export const SetPassword = ({ show, setShow, getName }) => {
   const router = useRouter();
@@ -21,6 +22,7 @@ export const SetPassword = ({ show, setShow, getName }) => {
   const [userId, setuserId] = useState("");
   const [code, setcode] = useState("");
   const [Passnoity, setPassnoity] = useState("");
+  const [showUpdate, setshowUpdate] = useState("");
   useEffect(() => {
     if (show) document.getElementById("thu").focus();
   }, [show]);
@@ -176,8 +178,9 @@ export const SetPassword = ({ show, setShow, getName }) => {
         show={ShowVerify}
         setShow={setShowVerify}
         code={code}
-        id={userId}
+        setSussessState={setshowUpdate}
       />
+      <UpdatePassword show={showUpdate} id={userId} setShow={setshowUpdate} />
     </>
   );
 };

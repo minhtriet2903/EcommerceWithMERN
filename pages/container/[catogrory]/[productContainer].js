@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,lazy } from 'react';
 import Productcontent from '../../products/section';
 import { connect } from 'react-redux';
 import { useRouter } from 'next/router';

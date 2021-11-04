@@ -1,86 +1,9 @@
-import React from "react";
-import axios from "axios";
-import { useState } from "react";
-import styled from "styled-components";
-import Link from "next/link";
-import cookieCutter from 'cookie-cutter'
-import Router from 'next/router'
-const Frame = styled.div`
-  width:100%;
-  height:100%;
-  display: flex;
-  position: fixed;
-  background-color: rgba(0,0,0,0.7);
-  justify-content:center;
-  font-family:times, "Times New Roman";
-`;
-const Loginform = styled.div`
-  height:50%;
-  width:30%;
-  background-color: white;
-  transform: translate(0px,30%);
-  border-radius:10px;
-`;
-const TextBox = styled.input`
-  height:40px;
-  width:300px;
-  border-radius: 6px;
-  font-size: 120%;
-  padding-left: 8px;
-  border: 1px solid black;
-`;
-const Headconten = styled.header`
-  font-size:200%;
-  text-align: center;
-  text-decoration: none;
-  width:100%;
-`;
-const Label = styled.a`
-  font-size:100%;
-  text-align: center;
-  text-decoration: none;
-  color:blue;
-  cursor:pointer;
-`;
-const Div = styled.div`
-  text-align: center;
-  margin-bottom: 20px;
-`;
-const LoginButton = styled.a`
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  background-color: skyblue;
-  border: 0px;
-  text-decoration: none;
+import React,{useState,useEffect} from "react";
 
-  transition: all 0.2s ease-in-out;
-  &:hover { 
-    background-color: #2690d1;
-  }
-`;
-const Cancel = styled.span`
-  font-size:100%;
-  float:right;
-  width:50px;
-  height:50px;
-  position:absolute;
-  background-color: black;
-  border-radius:50px;
-  color:white;
-  transform:translate(150px,-70px);
-  font-family: Andale Mono, monospace;
-  cursor:pointer;
-  &:hover{
-    color: lightskyblue;
-  }
-`;
-const DIV = styled.div`
-  background-color: red;
-`;
-const H6 = styled.h6`
-    color:red;
-    padding: 0.25rem 0;
-`;
+import Router from 'next/router'
+import { VerifyCode } from "./verifyCode";
+
+
 export const Register = ({ show, setShow, reshow }) => {
 
   const [name, setName] = useState("");
@@ -89,6 +12,8 @@ export const Register = ({ show, setShow, reshow }) => {
   const [rePassword, setRePassword] = useState("");
   const [role, setRole] = useState("Customer");
   const [validatemessage, setvalidatemessage] = useState("");
+  const [ShowVerify,setShowVerify]=useState(false);
+  const [code,setcode]=useState(0);
   const hide = () => {
     setShow(false);
     setPassword("");
@@ -136,17 +61,8 @@ export const Register = ({ show, setShow, reshow }) => {
     }
     return false;
   }
-  const handleSubmit = async () => {
-    if (name === '' || email === '' || password === '' || rePassword === '') {
-      setvalidatemessage("Chưa nhập đủ thông tin");
-    } else if (!staticcheck()) {
-      return;
-    }
-    else if (password !== rePassword) {
-      setvalidatemessage("Mật khẩu không trùng nhau");
-    }
-    else {
-      const response = await fetch('http://localhost:5035/users/register', {
+  const Register = async () =>{
+    const response = await fetch('http://localhost:5035/users/register', {
         method: 'POST',
         body: JSON.stringify({
           name, email, password, role
@@ -164,10 +80,42 @@ export const Register = ({ show, setShow, reshow }) => {
         hide();
         reshow(true);
       }
-
-      console.log(data.exist);
-
-
+ //     console.log(data.exist);
+  }
+  function randomNumber(len) {
+    var re = 0;
+    for (let i = 0; i < len; i++) {
+      re *= 10;
+      re += Math.floor(Math.random() * 10) % 10;
+    }
+    return re;
+  }
+  const handleSubmit = async () => {
+    if (name === '' || email === '' || password === '' || rePassword === '') {
+      setvalidatemessage("Chưa nhập đủ thông tin");
+    } else if (!staticcheck()) {
+      return;
+    }
+    else if (password !== rePassword) {
+      setvalidatemessage("Mật khẩu không trùng nhau");
+    }
+    else {
+      var verifycode = randomNumber(6);
+        const response = await fetch("http://localhost:5035/users", {
+          method: "PUT",
+          body: JSON.stringify({
+            email: email,
+            subject: "Xác nhận Gmail",
+            htmlContent: "Mã xác nhận của bạn là: " + verifycode,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+//        hide();
+        /*  setLoginstate[0](setLoginstate[6](data.user.name, setLoginstate[1], setLoginstate[2], setLoginstate[3], setLoginstate[4], setLoginstate[5]));  */
+        setcode(verifycode);
+        setShowVerify(true);
     }
   }
   /* cookieCutter.set('Acc', response.data.user._id);
@@ -245,34 +193,12 @@ export const Register = ({ show, setShow, reshow }) => {
             </div>
           </div>
         </div>
-        {/* <Frame>
-        <Loginform>
-          <Headconten>Đăng ký<Cancel onClick={()=>hide()}>X</Cancel></Headconten>
-          <Div><TextBox  type="text"
-              id="role"
-              placeholder="Nhập email"
-              required
-              name="email"
-              onChange={handleChange()}
-              /></Div>
-          <Div><TextBox  type="text"
-              id="role"
-              placeholder="Nhập tên đăng nhập"
-              required
-              name="name"
-              onChange={handleChange()}
-              /></Div>
-          <Div><TextBox  type="text"
-              id="role"
-              placeholder="Mật khẩu"
-              required
-              name="password"
-              onChange={handleChange()}
-              /></Div>
-          <H6>{validatemessage}</H6>
-          <Div><LoginButton onClick={handleSubmit} >Đăng ký</LoginButton></Div>
-        </Loginform>
-      </Frame> */}
+        <VerifyCode
+          show={ShowVerify}
+          setShow={setShowVerify}
+          code={code}
+          setSussessState={Register}
+      />
       </>
     ) : null}
   </>

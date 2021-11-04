@@ -7,7 +7,7 @@ import NumberFormat from 'react-number-format';
 
 
 const Newproduct = ({ data }) => {
-
+    
     const router = useRouter();
     const path = `/container/${router.query.catogrory}`;
 
@@ -80,16 +80,14 @@ const Newproduct = ({ data }) => {
                         <div className="product-detail-link-hover">
 
                             <Link
-
-                                href={`${path}/${product._id}`}
+                            href={`${path}/details?id=${product._id}`}
                             ><a>VIEW</a></Link>
 
                         </div>
                     </div>
                 </div>
                 <div className="product-name_price-content">
-                    <Link
-                        href={`${path}/${product._id}`}><a><h5>{product.Name}</h5></a></Link>
+                <Link href={`${path}/details?id=${product._id}`}><a><h5>{product.Name}</h5></a></Link>
                     <div className="product_price">
                         <p className="text-dark">
                             <NumberFormat value={product.Price} displayType={'text'} thousandSeparator={true} suffix={'đ'} />
@@ -107,10 +105,10 @@ const Newproduct = ({ data }) => {
                             id="Color"
                             onClick={() => {
                                 router.push({
-                                    pathname: `${path}/[details]`,
+                                    pathname: `${path}/details`,
                                     query: {
-                                        details: product._id,
-                                        color: color
+                                        id: product._id,
+                                        color: product.colors
                                     },
 
                                 })
@@ -142,17 +140,15 @@ const Newproduct = ({ data }) => {
                                 <div className="product-detail-link">
                                     <div className="product-detail-link-hover">
             
-                                        <Link
-            
-                                            href={`${path}/${product._id}`}
-                                        ><a>VIEW</a></Link>
+                                    <Link
+                            href={`${path}/details?id=${product._id}`}
+                            ><a>VIEW</a></Link>
             
                                     </div>
                                 </div>
                             </div>
                             <div className="product-name_price-content">
-                                <Link
-                                    href={`${path}/${product._id}`}><a><h5>{product.Name}</h5></a></Link>
+                            <Link href={`${path}/details?id=${product._id}`}><a><h5>{product.Name}</h5></a></Link>
                                 <div className="product_price">
                                     <p className="text-dark">
                                         <NumberFormat value={product.Price} displayType={'text'} thousandSeparator={true} suffix={'đ'} />
@@ -170,10 +166,10 @@ const Newproduct = ({ data }) => {
                                         id="Color"
                                         onClick={() => {
                                             router.push({
-                                                pathname: `${path}/[details]`,
+                                                pathname: `${path}/details`,
                                                 query: {
-                                                    details: product._id,
-                                                    color: color
+                                                    id: product._id,
+                                                    color:product.colors
                                                 },
             
                                             })

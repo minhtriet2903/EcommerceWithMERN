@@ -1,0 +1,14 @@
+.detail_bill_body{
+    padding: 1rem 1rem;
+    overflow-y: auto;
+    max-height: 500px;
+    height: 400px;
+   
+}
+
+.bill_status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}

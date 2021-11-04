@@ -55,7 +55,7 @@ const Headerr = (props) => {
       "Áo khoác",
       "Áo len",
       "Suit",
-      "Quần jean",
+      "Quần tây",
       "Quần kaki",
       "Quần thể thao",
       "Đầm",
@@ -69,7 +69,7 @@ const Headerr = (props) => {
       "Áo khoác",
       "Áo len",
       "Suit",
-      "Quần jean",
+      "Quần tây",,
       "Quần kaki",
       "Quần thể thao",
       "Đầm",
@@ -83,7 +83,7 @@ const Headerr = (props) => {
       "Áo khoác",
       "Áo len",
       "Suit",
-      "Quần jean",
+      "Quần tây",,
       "Quần kaki",
       "Quần thể thao",
       "Đầm",
@@ -146,7 +146,8 @@ const Headerr = (props) => {
       const fetchUser = async () => {
         const res31 = await fetch("http://localhost:5035/users/" + Acc);
         const data = await res31.json();
-        setUser(data && data.name);
+        setUser(data);
+        console.log(data)
       };
       fetchUser();
     }
@@ -207,6 +208,7 @@ const Headerr = (props) => {
 
   return (
     <>
+    
       <header className="header" id="header">
         <div className="out_line">
           <div className="out_line_body">
@@ -241,7 +243,7 @@ const Headerr = (props) => {
                     <div>
                       {user ? (
                         <>
-                          <span className="name_user_header">{user}</span>
+                          <span className="name_user_header">{user.name}</span>
                           <ul className="option_user">
                             <li
                               onClick={() => {

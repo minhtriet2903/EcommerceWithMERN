@@ -5,9 +5,12 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  background-color: #F7F7F7 ;
+  
 }
 .profile_body {
   display: flex;
+  margin-top: 10px;
 }
 .profile_option {
   display: flex;
@@ -53,6 +56,7 @@
 .pro_account {
   margin-bottom: 15px;
   position: relative;
+  font-weight: 600;
 }
 .pro_account i {
   font-size: 18px;
@@ -71,7 +75,7 @@
 
   }
 .pro_account:hover {
-  color: red;
+ 
   cursor: pointer;
 }
 
@@ -83,20 +87,23 @@
 }
 
 /*bill history===============*/
+.info_bill{
+  font-weight: 600;
+}
 .info_bill i {
   font-size: 18px;
   color: lightseagreen;
   padding-right: 10px;
 }
 .info_bill:hover {
-  color: red;
+  
   cursor: pointer;
 }
 
 /*right====================*/
 .profile_content {
   padding: 0 10px;
-  background-color: white;
+  background-color: #FFFFFF ;
 }
 .info_title {
   padding: 0 0 20px 10px;
@@ -110,7 +117,8 @@
   font-size: 14px;
 }
 .info_detail_pro {
-  width: 700px;
+  max-width: 1000px;
+  width: 800px;
   padding: 20px;
 }
 .wk {
@@ -139,4 +147,20 @@
 /*active===================*/
 .active_drop{
     height: 50px;
+}
+
+
+/*save==========*/
+.btn_save_bt{
+  border: none;
+ padding: 5px 1rem;
+  background: lightskyblue;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+.btn_save_bt:hover{
+  color: white;
+  background: black;
 }

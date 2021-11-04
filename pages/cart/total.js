@@ -12,6 +12,7 @@ const Total = (props) => {
   const [email, setEmail] = useState("");
   const [province, setProvince] = useState("");
   const [address, setAddress] = useState("");
+  const city = ["Bình Phước","Bình Dương","Tây Ninh","Đồng Nai","Vũng Tàu","TP.Hồ Chí Minh","Long An"]
   useEffect(() => {
     setTotal(cart);
   });
@@ -103,9 +104,11 @@ const Total = (props) => {
                 <label>Tỉnh :</label>
                 <select onChange={handleCity}>
                   <option>--</option>
-                  <option>Bình Dương</option>
-                  <option>Đà Lạt</option>
-                  <option>Đà Lạt</option>
+                  {
+                    city.map((item,index) =>{
+                      return <option key={index}>{item}</option>
+                    })
+                  }
                 </select>
               </div>
             </div>

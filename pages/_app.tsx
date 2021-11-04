@@ -9,8 +9,10 @@ import "../styles/Home.module.css"
 import "../styles/login.css";
 import "../styles/register.css";
 import "../styles/profile.css";
+import "../styles/historyBill.css";
 import { createStore, compose } from "redux";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import { useEffect } from "react";
 import appReducers from "./reducers";
 import Headerr from "./header";
@@ -20,6 +22,7 @@ import SideBar from "../components/SideBar";
 import {useState} from "react";
 import { useRouter } from 'next/router';
 import cookieCutter from "cookie-cutter";
+import Sidebar from "../components/SideBar";
 
 declare global {
   interface Window {
@@ -67,9 +70,9 @@ const MyApp = ({ Component, pageProps }) => {
       </Head>
   
       <Provider store={store}>
-     { user && user.role ==='Manager'&& <SideBar />   }
-     { user && user.role ==='Shipper' && <Headerr />   }
-     { user && user.role ==='Customer' && <Headerr />   }
+      {  
+       user ? user.role !=='Manager' ?<Headerr />:<Sidebar />: <Headerr />   
+    }
         <Component {...pageProps} />
       </Provider>
     </>

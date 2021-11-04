@@ -5,9 +5,9 @@ import axios from "axios";
 import cookieCutter from "cookie-cutter";
 import { useRouter } from "next/router";
 import { Register } from "./Register";
-import { UpdatePassword } from "./updatePassword";
 
-export const VerifyCode = ({ show, setShow, code, id }) => {
+
+export const VerifyCode = ({ show, setShow, code, setSussessState}) => {
   const router = useRouter();
 
   const hide = () => {
@@ -16,7 +16,7 @@ export const VerifyCode = ({ show, setShow, code, id }) => {
   };
   const [ShowRegister, setShowRegister] = useState(false);
   const [vcode, setvcode] = useState("");
-  const [showUpdate, setshowUpdate] = useState("");
+  
   const [Passnoity, setPassnoity] = useState("");
   useEffect(() => {
     if (show) document.getElementById("thu").focus();
@@ -24,7 +24,7 @@ export const VerifyCode = ({ show, setShow, code, id }) => {
 
   const handleSubmit = async () => {
     if (code == vcode) {
-      setshowUpdate(true);
+      setSussessState(true);
       hide();
     } else {
       setPassnoity("Mã xác nhận không chính xác");
@@ -104,7 +104,7 @@ export const VerifyCode = ({ show, setShow, code, id }) => {
         </>
       ) : null}
       <Register show={ShowRegister} reshow={reshow} setShow={setShowRegister} />
-      <UpdatePassword show={showUpdate} id={id} setShow={setshowUpdate} />
+      
     </>
   );
 };

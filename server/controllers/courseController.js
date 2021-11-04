@@ -136,6 +136,8 @@ exports.getCourse = (req, res) => {
       .then((allCourse) => {
         let result = allCourse.filter(
           (item) =>
+          (req.query.content == null ||
+            item.tag === req.query.content) &&
             (req.query.color == null ||
               item.colors.includes(req.query.color)) &&
             (req.query.size == null || item.size.includes(req.query.size)) &&
@@ -161,6 +163,8 @@ exports.getCourse = (req, res) => {
       .then((allCourse) => {
         let result = allCourse.filter(
           (item) =>
+          (req.query.content == null ||
+            item.tag === req.query.content) &&
             (req.query.color == null ||
               item.colors.includes(req.query.color)) &&
             (req.query.size == null || item.size.includes(req.query.size)) &&

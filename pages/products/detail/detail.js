@@ -33,6 +33,10 @@ const Detail = (props) => {
   useEffect(() => {
     setColor(detail.colors);
     setSize(detail.size);
+    setImage([detail.Image,
+    detail.Image,
+    detail.Image,
+    detail.Image,])
   }, [detail]);
   useEffect(() => {
     setColor(chooseColor);
@@ -135,7 +139,9 @@ const Detail = (props) => {
               ></span>
           </label>
       }) : ''; */
+
   var ShowImage = image.map((item, index) => {
+
     return (
       <div key={index}>
         <img src={item} alt={item} />
@@ -217,7 +223,7 @@ const Detail = (props) => {
             </div>
             <div className="product-condition">
               <span className="product-dt-tittle-name">
-                Tình trạng : Còn hàng
+                Tình trạng : {detail.enteringQuantity > 0 ? 'Còn hàng' : 'Hết hàng'}
               </span>
             </div>
             <div className="amount-n-body">
@@ -256,23 +262,26 @@ const Detail = (props) => {
                 </div>
               </div>
             </div>
-            <div className="btn-action">
-              <button
-                type="submit"
-                className="btn-action-purchase"
-                onClick={Purchase}
-              >
-                MUA NGAY
-              </button>
-              <button
-                type="submit"
-                className="btn-action-addcart"
-                onClick={addcart}
-              >
-                <i className="fas fa-cart-plus icon-cart"></i>
-                THÊM VÀO GIỎ HÀNG
-              </button>
-            </div>
+            
+              <div className={detail.enteringQuantity > 0 ?'btn-action' : 'btn-action active_hide_btn'} >
+                <button
+                  type="submit"
+                  className="btn-action-purchase"
+                  onClick={Purchase}
+                >
+                  MUA NGAY
+                </button>
+                <button
+                  type="submit"
+                  className="btn-action-addcart"
+                  onClick={addcart}
+                >
+                  <i className="fas fa-cart-plus icon-cart"></i>
+                  THÊM VÀO GIỎ HÀNG
+                </button>
+              </div>
+            
+
             <div className="product_cm_detail">
               <div className="cm-tittle" onClick={handlecm}>
                 <h3>Chi Tiết Sản Phẩm</h3>

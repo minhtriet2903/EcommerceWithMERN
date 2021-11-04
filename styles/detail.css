@@ -58,7 +58,7 @@ a {
 }
 
 .img-product-dt img {
-  padding: 35px;
+  padding: 0 35px;
   width: 100%;
 }
 
@@ -160,13 +160,14 @@ a {
   line-height: 23px;
 }
 
-/*event*/
+
 
 /*BTN-ACTION*/
 .btn-action {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
 }
 .btn-action button {
   outline: none;
@@ -558,4 +559,9 @@ position: relative;
   z-index: 1;
   top: 50%;
   left: 40%;
+}
+
+.active_hide_btn{
+  opacity: 0.3;
+  pointer-events: none;
 }

@@ -44,8 +44,8 @@ export const Login = ({ show, setShow, getName }) => {
         cookieCutter.set("Acc", data.user._id);
 
         hide();
-        if (data.user.role === "Manager") router.replace("/course");
-        else if (data.user.role === "Shipper") router.replace("/shipperAdmin");
+        if (data.user.role === "Manager") router.push("/course");
+        else if (data.user.role === "Shipper") router.push("/shipperAdmin");
         else window.location.reload();
       } else {
         setPassnoity("Sai mật khẩu hoặc tài khoản");

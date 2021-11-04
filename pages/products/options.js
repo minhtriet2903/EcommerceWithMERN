@@ -11,10 +11,10 @@ const Option = (props) => {
   const router = useRouter();
   const { AmountColor } = props;
   const { AmountSize } = props;
-  const path =router.asPath.split("?").filter(x => x);
-  
-  const newPath = path.slice(0,1).toString();
- 
+  const path = router.asPath.split("?").filter(x => x);
+
+  const newPath = path.slice(0, 1).toString();
+
   const clickColor = useRef([])
   const [pricerange, setPriceRange] = useState([50000, 2000000]);
   const [chooseSize, setChooseSize] = useState();
@@ -106,6 +106,7 @@ const Option = (props) => {
       Router.push({
         pathname: newPath,
         query: {
+          result: router.query.result ? router.query.result : null,
           color: chooseColor,
           size: chooseSize,
           lowPrice: pricerange[0],
@@ -117,52 +118,62 @@ const Option = (props) => {
       Router.push({
         pathname: newPath,
         query: {
-          color: chooseColor,       
+          result: router.query.result ? router.query.result : null,
+          color: chooseColor,
           lowPrice: pricerange[0],
           upPrice: pricerange[1]
         }
       });
-    }else if (chooseSize){
+    } else if (chooseSize) {
       Router.push({
         pathname: newPath,
         query: {
-          size: chooseSize,     
+          result: router.query.result ? router.query.result : null,
+          size: chooseSize,
           lowPrice: pricerange[0],
           upPrice: pricerange[1]
         }
       });
-    }else{
+    } else {
       Router.push({
         pathname: newPath,
-        query: {  
+        query: {
+          result: router.query.result ? router.query.result : null,
           lowPrice: pricerange[0],
           upPrice: pricerange[1]
         }
       });
     }
   }
-
+  const handleDrop = () =>{
+    const head = document.querySelector('.content-tittle')
+      head.classList.toggle('active_arrow')
+      const title = document.querySelector('.drop_down_op')
+      title.classList.toggle('delete_drop');
+  }
   return (
     <>
       <div className="body-nav" id="body-nav">
         <div className="left-content">
 
           <div className="left-content-body-range">
-            <h4 className="content-tittle">Price Range</h4>
-            <span className="price-min"><NumberFormat value={pricerange[0]} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></span>
-            -
-            <span className="price-max"><NumberFormat value={pricerange[1]} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></span>
-            <div className="line_price">
-              <Slider
-                className="MenuItem"
-                value={pricerange}
-                max={2000000}
-                min={50000}
-                onChange={updateRange}
-              >
-              </Slider>
-            </div>
 
+            <h4 className="content-tittle" onClick={handleDrop}>Price Range</h4>
+            <div className="drop_down_op">
+              <span className="price-min kk"><NumberFormat value={pricerange[0]} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></span>
+              -
+              <span className="price-max kk"><NumberFormat value={pricerange[1]} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></span>
+              <div className="line_price">
+                <Slider
+                  className="MenuItem"
+                  value={pricerange}
+                  max={2000000}
+                  min={50000}
+                  onChange={updateRange}
+                >
+                </Slider>
+              </div>
+            </div>
           </div>
           <div className="left-content-body-size">
             <h4 className="content-tittle">Sizes</h4>
