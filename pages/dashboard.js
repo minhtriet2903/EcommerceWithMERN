@@ -144,7 +144,10 @@ function Users_Spended_Mapping(Users, bills) {
     if (re[bills[i].userId] == undefined) {
       continue;
     }
-    re[bills[i].userId][1]++;
+    
+    for(let j = 0; j < bills[i].Products.length; j++){
+      re[bills[i].userId][1]+=bills[i].Products[j].quantity;
+    }
     re[bills[i].userId][2] += bills[i].TotalPrice;
   }
 
@@ -186,9 +189,10 @@ Statictical.getInitialProps = async (ctx) => {
   //console.log("http://localhost:5035/bills/dateRange?startDate="+Last_month_Bills_Start_date.toLocaleDateString()+"&endDate="+Last_month_Bills_End_date.toLocaleDateString());
 
   var Today = new Date();
+  console.log(Today.toISOString().replace(/T.*/,'').split('-').reverse().join('-'));
   const res_Today_Bills = await fetch(
     "http://localhost:5035/bills/dateRange?startDate=" +
-      Today.toLocaleDateString() +
+      Today.toISOString().replace(/T.*/,'').split('-').reverse().join('-') +
       "&endDate=" +
       Today
   );
