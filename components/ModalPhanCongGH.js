@@ -29,6 +29,16 @@ const Modal = ({ show, onClose, children, title, item }) => {
         console.log(e);
       });
   };
+  function cut(sstring){
+    var re="";
+    for(let i=0;i<sstring.length;i++){
+      if(sstring[i]>='A'&&sstring[i]<='Z'){
+        break;
+      }
+      re+=sstring[i];
+    }
+    return re;
+  }
   const router = useRouter();
   const setBillForShipper = (shipper) => {
     axios
@@ -79,6 +89,23 @@ const Modal = ({ show, onClose, children, title, item }) => {
       .catch((err) => {
         console.log(err);
       });
+      if(item.userName=="NoLogin"){
+        axios
+          .put("http://localhost:5035/users/"  , {
+            email: item.userEmail,
+            subject: "Thông báo đơn hàng đang được giao",
+            htmlContent: `
+              Đơn hàng ngày:${cut(item.BillDate)} của bạn đang được giao
+              Trân Trọng!
+              `
+          })
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     router.push("/bill");
   };
 

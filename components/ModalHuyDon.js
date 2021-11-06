@@ -78,7 +78,7 @@ const Modal = ({ show, onClose, children, title, item }) => {
             x
           </a>
         </StyledModalHeader>
-        {title && <StyledModalTitle>{title}</StyledModalTitle>}
+        {title }
         <StyledModalBody>
           <h2>
             Hủy đơn hàng id = {item._id} tại khu vực: {item.Province}
