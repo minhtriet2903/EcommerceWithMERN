@@ -69,7 +69,7 @@ const ProductContainer = (props) => {
     //change page 
     const pageItem = (number) => setCurrentPage(number)
     const showProduct = (product) => {
-        var result = '';
+        var result = 'Không có sản phẩm nào';
         const { onAddToCart } = props;
         if (product.length > 0) {
             result = currentPost.map((product, index) => {
@@ -128,3 +128,4 @@ const mapDispatchToProps = (dispatch, props) => {
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProductContainer);
+

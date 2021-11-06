@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSignOutAlt,
@@ -84,6 +85,7 @@ function Sidebar() {
   const logOut = () => {
     cookieCutter.set("Acc", "");
     setUser("");
+    document.cookie = "Acc=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.replace("/");
   };
   useEffect(() => {
@@ -113,34 +115,45 @@ function Sidebar() {
       <SideBar>
         <Section>Quản lí</Section>
         <SidebarItem>
-          <a href="/course">
-            <FontAwesomeIcon icon={faTshirt} style={{ marginRight: "12px" }} />
-            Sản phẩm
-          </a>
+          <Link href="/course">
+            <a>
+              <FontAwesomeIcon icon={faTshirt} style={{ marginRight: "12px" }} />
+              Sản phẩm
+            </a></Link>
+
         </SidebarItem>
         <SidebarItem>
-          <a href="/bill">
-            <FontAwesomeIcon
-              icon={faFileInvoice}
-              style={{ marginRight: "12px" }}
-            />
-            Hóa đơn
-          </a>
+          <Link href="/bill">
+            <a>
+              <FontAwesomeIcon
+                icon={faFileInvoice}
+                style={{ marginRight: "12px" }}
+              />
+              Hóa đơn
+            </a>
+          </Link>
+
         </SidebarItem>
         <SidebarItem>
-          <a href="/dashboard">
-            <FontAwesomeIcon
-              icon={faClipboard}
-              style={{ marginRight: "12px" }}
-            />
-            Thống kê
-          </a>
+          <Link href="/dashboard">
+            <a>
+              <FontAwesomeIcon
+                icon={faClipboard}
+                style={{ marginRight: "12px" }}
+              />
+              Thống kê
+            </a>
+          </Link>
+
         </SidebarItem>
         <SidebarItem>
-          <a href="/user">
-            <FontAwesomeIcon icon={faUser} style={{ marginRight: "12px" }} />
-            Tài khoản
-          </a>
+          <Link href="/user">
+            <a >
+              <FontAwesomeIcon icon={faUser} style={{ marginRight: "12px" }} />
+              Tài khoản
+            </a>
+          </Link>
+
         </SidebarItem>
         <SectionFooter>Tài khoản</SectionFooter>
         <UserSection>
@@ -165,10 +178,13 @@ function Sidebar() {
           )}
         </UserSection>
         <SidebarItem>
-          <a href="/setting">
+        <Link href="/setting">
+        <a >
             <FontAwesomeIcon icon={faCog} style={{ marginRight: "12px" }} />
             Cài đặt
           </a>
+          </Link>
+         
         </SidebarItem>
         <SidebarItem>
           <a onClick={logOut}>

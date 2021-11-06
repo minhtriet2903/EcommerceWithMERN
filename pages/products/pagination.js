@@ -10,8 +10,8 @@ const Pagination = ({ postPerPage, totalPosts,pageItem }) => {
     
     const pagination = pageNumbers > 0 ?  
         <ReactPaginate
-        previousLabel={'<<'}
-        nextLabel={'>>'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         breakLabel={'...'}
         breakClassName={'break-me'}
         activeClassName={'paginationActive'}
@@ -20,8 +20,8 @@ const Pagination = ({ postPerPage, totalPosts,pageItem }) => {
         nextLinkClassName={'nextBttn'}
         subContainerClassName={'pages pagination'}
         pageCount={pageNumbers}
-        marginPagesDisplayed={3}
-        pageRangeDisplayed={5} 
+      /*   marginPagesDisplayed={3}
+        pageRangeDisplayed={5}  */
         onPageChange={changePage} 
         />
         :

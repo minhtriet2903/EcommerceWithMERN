@@ -17,27 +17,31 @@ const ProductAll = (props) => {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const postPerPage = 8;
-    
+
     //props contain attribute of product and  1 action to add to cart of each other  
     useEffect(() => {
-        if(router.asPath !== router.route){               
-        var request = {
-            params: {
-                keyword:router.query.result,
-                color: router.query.color  ? router.query.color : null,
-                size: router.query.size ? router.query.size : null,
-                lowPrice: router.query.lowPrice,
-                upPrice: router.query.upPrice,              
+        if (router.query.result !== undefined && router.query.result !== '') {
+            if (router.asPath !== router.route) {
+                var request = {
+                    params: {
+                        keyword: router.query.result,
+                        color: router.query.color ? router.query.color : null,
+                        size: router.query.size ? router.query.size : null,
+                        lowPrice: router.query.lowPrice,
+                        upPrice: router.query.upPrice,
+                    }
+                }
+                const fetchh = async () => {
+                    const data = await axios.get(Config.API_URL, request ? request : {});
+                    props.actFetchProduct(data.data);
+                    setPosts(data.data);
+                    console.log(router.query.result);
+                };
+                fetchh();
             }
-        }     
-        const fetchh = async () => {
-            const data = await axios.get(Config.API_URL, request ? request : {});
-            props.actFetchProduct(data.data);           
-             setPosts(data.data); 
-            
-        };
-        fetchh();
-    }
+        }else{
+            setPosts('');
+        }
     }, [router])
     useEffect(() => {
         const fetchh = async () => {
@@ -62,7 +66,7 @@ const ProductAll = (props) => {
     //change page 
     const pageItem = (number) => setCurrentPage(number)
     const showProduct = (product) => {
-        var result = '';
+        var result = 'Không có sản phẩm nào';
         const { onAddToCart } = props;
         if (product.length > 0) {
             result = currentPost.map((product, index) => {
@@ -75,18 +79,18 @@ const ProductAll = (props) => {
     return (
         <>
             <Product>
-               
+
                 <div className="body-container">
                     <Options AmountColor={props.color} AmountSize={props.size} actFetchProduct={props.actFetchProduct} />
                     <div className="section-body">
                         <div>
-                            <h3>Kết quả tìm kiếm với: {"'"+router.query.result+"'"}</h3>
+                            <h3>TÌM KIẾM: {"'" + router.query.result + "'"}</h3>
                         </div>
                         <section>
                             {showProduct(currentPost)}
                         </section>
-                        
-                         <Pagination postPerPage={postPerPage} totalPosts={posts.length} pageItem={pageItem}/> 
+
+                        <Pagination postPerPage={postPerPage} totalPosts={posts.length} pageItem={pageItem} />
                     </div>
                 </div>
             </Product>

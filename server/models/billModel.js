@@ -5,8 +5,9 @@ mongoose.Promise = global.Promise;
 const courseSchema = new mongoose.Schema({
     userId: {
         type: String,
-        required: true,
-        default:'NoLogin'
+        default:'NoLogin',
+        required: true
+       
     },
     userName: {
         type: String,
@@ -25,6 +26,9 @@ const courseSchema = new mongoose.Schema({
     Status: {
         type: String,
         default: "Đã đặt hàng",
+    },
+    Phone:{
+        type:String
     },
     Address: {
         type: String,

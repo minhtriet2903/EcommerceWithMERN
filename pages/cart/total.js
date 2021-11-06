@@ -10,13 +10,16 @@ const Total = (props) => {
   const { cart } = props;
   const { arr } = props;
   const [user, setUser] = useState("");
+
   const [total, setTotal] = useState(0);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [province, setProvince] = useState("");
   const [address, setAddress] = useState("");
-  const [showVerifyEmail,setShowVerifyEmail]=useState(false);
-  const [code,setCode]=useState(0);
-  const city = ["Bình Phước","Bình Dương","Tây Ninh","Đồng Nai","Vũng Tàu","TP.Hồ Chí Minh","Long An"]
+  const [showVerifyEmail, setShowVerifyEmail] = useState(false);
+  const [code, setCode] = useState(0);
+  const city = ["Bình Phước", "Bình Dương", "Tây Ninh", "Đồng Nai", "Vũng Tàu", "TP.Hồ Chí Minh", "Long An"]
   useEffect(() => {
     setTotal(cart);
   });
@@ -28,6 +31,10 @@ const Total = (props) => {
         const data = await res31.json();
         setUser(data);
         setAddress(data.address);
+        setEmail(data.email)
+        setName(data.name)
+        setPhone(data.phoneNumber)
+        console.log(data)
       };
       fetchUser();
     }
@@ -41,27 +48,38 @@ const Total = (props) => {
   const handleAddress = (e) => {
     setAddress(e.target.value);
   };
-  const postBill= async()=>{
+  const handleName = (e) => {
+    setName(e.target.value);
+  }
+  const handlePhone = (e) => {
+    setPhone(e.target.value)
+  }
+  const postBill = async () => {
     const response = await fetch(Config.API_URL_BILL, {
       method: "POST",
       body: JSON.stringify({
         userId: user._id,
-        userName: user.name,
+        userName: name,
         totalPrice: cart,
         products: arr,
+        phone: phone,
         province: province,
         address: address,
         idShipper: "",
-        userEmail:email
+        userEmail: email
       }),
       headers: {
         "Content-Type": "application/json",
       },
     });
+
     const data = await response.json();
     if (data.success) {
+      console.log(data)
+      cookieCutter.set("Bill", data.billId);
       swal("Thông Báo!", "Thanh toán thành công", "success");
       props.actDeleteAllCart();
+       router.push('/billdisplay'); 
     } else {
       swal("Thông Báo!", "Thanh toán không thành công thành công", "error");
     }
@@ -75,23 +93,31 @@ const Total = (props) => {
     return re;
   }
   const handlePostBill = async () => {
-    if (province !== "" && address !== "") {
-      if(user._id){
+    console.log(name + " " + email + " "+phone + " " + province + " "+ address + " ")
+    if (name === "" || email === "" || phone === "" || province === "" || address === "") {
+      swal(
+        "Thông Báo!",
+        "Vui lòng điền đầy đủ thông tin trước khi thanh toán!",
+        "error"
+      );
+    }
+    else {
+      if (user._id) {
         postBill();
-      }else{
-        if(email !== ""){
+      } 
+      else {
           var verifycode = randomNumber(6);
-            const response = await fetch("http://localhost:5035/users", {
-              method: "POST",
-              body: JSON.stringify({
-                email: email,
-                subject: "Xác nhận mua hàng",
-                htmlContent: "Mã xác nhận của bạn là: " + verifycode,
-              }),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+          const response = await fetch("http://localhost:5035/users", {
+            method: "POST",
+            body: JSON.stringify({
+              email: email,
+              subject: "Xác nhận mua hàng",
+              htmlContent: "Mã xác nhận của bạn là: " + verifycode,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
           setCode(verifycode);
           setShowVerifyEmail(true);
           swal(
@@ -99,20 +125,8 @@ const Total = (props) => {
             "Một mã xác nhận vừa được gửi đển email của bạn!",
             "success"
           );
-        }else{
-          swal(
-            "Thông Báo!",
-            "Vui lòng điền đầy đủ thông tin trước khi thanh toán!",
-            "error"
-          );
-        }
+        
       }
-    } else {
-      swal(
-        "Thông Báo!",
-        "Vui lòng điền đầy đủ thông tin trước khi thanh toán!",
-        "success"
-      );
     }
   };
   return (
@@ -127,16 +141,17 @@ const Total = (props) => {
                 <input
                   type="text"
                   placeholder="Họ và tên ..."
-                  value={user.name}
+                  value={name}
+                  onChange={handleName}
                 />
               </div>
               <div className="detail_infor">
                 <label>Số điện thoại :</label>
-                <input type="text" placeholder="Số điện thoại ..." />
+                <input type="text" placeholder="Số điện thoại ..." value={phone} onChange={handlePhone} />
               </div>
               <div className="detail_infor">
                 <label>Email :</label>
-                <input type="text" placeholder="Email ..." value={user.email} onChange={handleEmail}/>
+                <input type="text" placeholder="Email ..." value={email} onChange={handleEmail} />
               </div>
               <div className="detail_infor">
                 <label>Địa chỉ :</label>
@@ -151,9 +166,9 @@ const Total = (props) => {
               <div className="detail_infor">
                 <label>Tỉnh :</label>
                 <select onChange={handleCity}>
-                  <option>--</option>
+                  <option></option>
                   {
-                    city.map((item,index) =>{
+                    city.map((item, index) => {
                       return <option key={index}>{item}</option>
                     })
                   }
@@ -188,10 +203,10 @@ const Total = (props) => {
         </div>
       </div>
       <VerifyCode
-      show={showVerifyEmail}
-      setShow={setShowVerifyEmail}
-      code={code}
-      setSussessState={postBill}
+        show={showVerifyEmail}
+        setShow={setShowVerifyEmail}
+        code={code}
+        setSussessState={postBill}
       />
     </>
   );

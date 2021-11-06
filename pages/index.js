@@ -5,6 +5,7 @@ import Frame from "../components/Frame";
 import cookies from "next-cookies";
 import Headerr from "../pages/header";
 export default function LandingPage({ data }) {
+
   return (
     <>
       <Frame data={data[2]}>

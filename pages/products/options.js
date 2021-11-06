@@ -106,6 +106,7 @@ const Option = (props) => {
       Router.push({
         pathname: newPath,
         query: {
+          age:router.query.age,
           result: router.query.result ? router.query.result : null,
           color: chooseColor,
           size: chooseSize,
@@ -118,6 +119,7 @@ const Option = (props) => {
       Router.push({
         pathname: newPath,
         query: {
+          age:router.query.age,
           result: router.query.result ? router.query.result : null,
           color: chooseColor,
           lowPrice: pricerange[0],
@@ -128,6 +130,7 @@ const Option = (props) => {
       Router.push({
         pathname: newPath,
         query: {
+          age:router.query.age,
           result: router.query.result ? router.query.result : null,
           size: chooseSize,
           lowPrice: pricerange[0],
@@ -138,12 +141,31 @@ const Option = (props) => {
       Router.push({
         pathname: newPath,
         query: {
+          age:router.query.age,
           result: router.query.result ? router.query.result : null,
           lowPrice: pricerange[0],
           upPrice: pricerange[1]
         }
       });
     }
+  }
+  const handleClear = () =>{
+    const choose = document.querySelectorAll('.showColor_body');
+    choose.forEach(l => l.classList.remove('activeColor'));
+   
+    var check = document.querySelectorAll(".pro_size");
+    check.forEach(function (checkbox) {    
+        checkbox.checked = false;     
+    });
+    Router.push(
+      {
+        pathname: newPath,
+        query:{
+          age:router.query.age,
+        }
+      }
+        
+      )
   }
   const handleDrop = (e) =>{
     const i =Number(e.target.attributes.num.value);
@@ -187,6 +209,9 @@ const Option = (props) => {
             <div className="color-body drop_down_op">
               {showColor}
             </div>
+          </div>
+          <div className="clear_all" onClick={handleClear}>
+            <span>Clear</span>
           </div>
           <div className="btn_apply_option">
             <button onClick={handlePostCM}>Apply</button>

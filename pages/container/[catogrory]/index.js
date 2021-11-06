@@ -18,11 +18,13 @@ const ProductByGt = (props) => {
   const router = useRouter();
 
   const [posts, setPosts] = useState([]);
+  const [loading,setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const postPerPage = 8;
 
   //props contain attribute of product and  1 action to add to cart of each other
   useEffect(() => {
+    setLoading(true);
     if (router.asPath !== router.route) {
       var request = {
         params: {
@@ -46,10 +48,37 @@ const ProductByGt = (props) => {
         const data = await axios.get(Config.API_URL, request ? request : {});
         props.actFetchProduct(data.data);
         setPosts(data.data);
+        
       };
       fetchh();
     }
   }, [router]);
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost + postPerPage;
+  const currentPost = posts.slice(indexOfLastPost, indexOfFirstPost);
+  console.log(loading)
+  //change page
+  const pageItem = (number) => setCurrentPage(number);
+  const showProduct = (product) => {
+    var result = "";
+    const { onAddToCart } = props;
+    console.log(product)
+    if(loading){
+      result="Không có sản phẩm nào";
+    }
+    if (product.length > 0) {
+      result = currentPost.map((product, index) => {
+        return (
+          <Productcontent
+            key={index}
+            product={product}
+            onAddToCart={onAddToCart}
+          />
+        );
+      });
+    }
+    return result;
+  };
   useEffect(() => {
     const fetchh = async () => {
       const res = await fetch(Config.API_URL + "/color");
@@ -66,28 +95,7 @@ const ProductByGt = (props) => {
   }, []);
 
   //get current post
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost + postPerPage;
-  const currentPost = posts.slice(indexOfLastPost, indexOfFirstPost);
-
-  //change page
-  const pageItem = (number) => setCurrentPage(number);
-  const showProduct = (product) => {
-    var result = "";
-    const { onAddToCart } = props;
-    if (product.length > 0) {
-      result = currentPost.map((product, index) => {
-        return (
-          <Productcontent
-            key={index}
-            product={product}
-            onAddToCart={onAddToCart}
-          />
-        );
-      });
-    }
-    return result;
-  };
+  
 
   return (
     <>

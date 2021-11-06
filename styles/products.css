@@ -268,6 +268,23 @@ body{
   top: -900000px;
   left: -9999999px; 
 }
+/*clear button================*/
+.clear_all{
+
+
+}
+.clear_all span{
+  width: 100%;
+  font-size: 12px;
+  display: inline-block;
+  color: aqua;
+  text-align: right;
+  cursor: pointer;
+}
+.clear_all span:hover{
+  color: black;
+}
+
 /*btn apply =====================================*/
 .btn_apply_option button{
   border: none;
@@ -314,12 +331,12 @@ section {
  
 }
 .paginationBttns a{
-  padding: 8px;
+  padding: 0 8px;
   margin: 8px;
   display: flex;
   align-items: center;
   border: 1px solid black;
-  border-radius: 8px;
+ 
   font-weight: 500;
   color: #000;
 }

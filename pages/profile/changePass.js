@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/dist/client/router";
+import cookieCutter from "cookie-cutter";
 import { shallowEqual } from "react-redux";
 import axios from "axios";
 const ChangePass = ({ data }) => {
+  const router = useRouter();
   const [password, setPassWord] = useState("");
   const [newPassword, setNewPassWord] = useState("");
   const [RePassword, setRePassWord] = useState("");
@@ -46,6 +49,10 @@ const ChangePass = ({ data }) => {
           .then(function (response) {
             console.log("sussces");
             swal("Thông Báo!", "Thay đổi mật khẩu thành công", "success");
+             cookieCutter.set("Acc", "");
+          
+            document.cookie = "Acc=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            router.push("/"); 
           })
           .catch(function (error) {
             swal("Thông Báo!", "Thay đổi thất bại", "error");

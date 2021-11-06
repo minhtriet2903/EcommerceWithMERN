@@ -69,7 +69,7 @@ const Headerr = (props) => {
       "Áo khoác",
       "Áo len",
       "Suit",
-      "Quần tây",,
+      "Quần tây", ,
       "Quần kaki",
       "Quần thể thao",
       "Đầm",
@@ -83,7 +83,7 @@ const Headerr = (props) => {
       "Áo khoác",
       "Áo len",
       "Suit",
-      "Quần tây",,
+      "Quần tây", ,
       "Quần kaki",
       "Quần thể thao",
       "Đầm",
@@ -141,6 +141,7 @@ const Headerr = (props) => {
     }
   }, [router]);
   useEffect(() => {
+
     const Acc = cookieCutter.get("Acc");
     if (Acc) {
       const fetchUser = async () => {
@@ -150,8 +151,11 @@ const Headerr = (props) => {
         console.log(data)
       };
       fetchUser();
+    } else {
+      setUser('');
     }
-  }, []);
+
+  }, [router]);
   var bachGround =
     router.asPath !== "/" ? (
       <>
@@ -182,6 +186,7 @@ const Headerr = (props) => {
   const Logout = () => {
     cookieCutter.set("Acc", "");
     setUser("");
+    document.cookie = "Acc=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.replace("/");
   };
 
@@ -208,7 +213,7 @@ const Headerr = (props) => {
 
   return (
     <>
-    
+
       <header className="header" id="header">
         <div className="out_line">
           <div className="out_line_body">
@@ -231,7 +236,7 @@ const Headerr = (props) => {
                   <input
                     className="input_header"
                     type="text"
-                    value={valueFind}
+
                     onChange={(e) => {
                       setValueFind(e.target.value);
                     }}
@@ -350,9 +355,8 @@ const Headerr = (props) => {
                               return (
                                 <Link
                                   key={index}
-                                  href={`/container/${
-                                    female.type
-                                  }/${item.toLowerCase()}`}
+                                  href={`/container/${female.type
+                                    }/${item.toLowerCase()}`}
                                 >
                                   <a>{item}</a>
                                 </Link>
@@ -379,9 +383,8 @@ const Headerr = (props) => {
                               return (
                                 <Link
                                   key={index}
-                                  href={`/container/${
-                                    kid.type
-                                  }/${item.toLowerCase()}`}
+                                  href={`/container/${kid.type
+                                    }/${item.toLowerCase()}`}
                                 >
                                   <a>{item}</a>
                                 </Link>
@@ -427,3 +430,4 @@ const mapDispatchToProps = (dispatch, props) => {
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Headerr);
+

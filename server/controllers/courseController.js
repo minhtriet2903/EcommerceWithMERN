@@ -283,7 +283,18 @@ exports.getCourseTop3LatestOfMale = (req, res) => {
     { $match: { Sex: "Nam", age: "Adult" } },
   ])
     .then((allCourse) => {
-      return res.status(200).json(allCourse);
+      var data = [];
+      if(allCourse.length > 7)
+      {
+        for(let i=0;i<7; i++){
+          data.push(allCourse[i]);
+        }
+      }else{
+        for(let i=0;i<allCourse.length; i++){
+          data.push(allCourse[i]);
+        }
+      }
+      return res.status(200).json(data);
     })
     .catch((err) => {
       res.status(500).json({
@@ -299,7 +310,19 @@ exports.getCourseTop3LatestOfFemale = (req, res) => {
     { $match: { Sex: "Nữ", age: "Adult" } },
   ])
     .then((allCourse) => {
-      return res.status(200).json(allCourse);
+      var data = [];
+      if(allCourse.length > 7)
+      {
+        for(let i=0;i<7; i++){
+          data.push(allCourse[i]);
+        }
+      }else{
+        for(let i=0;i<allCourse.length; i++){
+          data.push(allCourse[i]);
+        }
+      }
+      
+      return res.status(200).json(data);
     })
     .catch((err) => {
       res.status(500).json({
@@ -312,7 +335,18 @@ exports.getCourseTop3LatestOfFemale = (req, res) => {
 exports.getCourseTop3LatestOfKid = (req, res) => {
   Course.aggregate([{ $sort: { DateIn: -1 } }, { $match: { age: "Kid" } }])
     .then((allCourse) => {
-      return res.status(200).json(allCourse);
+      var data = [];
+      if(allCourse.length > 7)
+      {
+        for(let i=0;i<7; i++){
+          data.push(allCourse[i]);
+        }
+      }else{
+        for(let i=0;i<allCourse.length; i++){
+          data.push(allCourse[i]);
+        }
+      }
+      return res.status(200).json(data);
     })
     .catch((err) => {
       res.status(500).json({
@@ -328,7 +362,18 @@ exports.getCourseTopSalerForMale = (req, res) => {
     { $match: { Sex: "Nam", age: "Adult" } },
   ])
     .then((allCourse) => {
-      return res.status(200).json(allCourse);
+      var data = [];
+      if(allCourse.length > 7)
+      {
+        for(let i=0;i<7; i++){
+          data.push(allCourse[i]);
+        }
+      }else{
+        for(let i=0;i<allCourse.length; i++){
+          data.push(allCourse[i]);
+        }
+      }
+      return res.status(200).json(data);
     })
     .catch((err) => {
       res.status(500).json({
@@ -344,7 +389,18 @@ exports.getCourseTopSalerForFemale = (req, res) => {
     { $match: { Sex: "Nữ", age: "Adult" } },
   ])
     .then((allCourse) => {
-      return res.status(200).json(allCourse);
+      var data = [];
+      if(allCourse.length > 7)
+      {
+        for(let i=0;i<7; i++){
+          data.push(allCourse[i]);
+        }
+      }else{
+        for(let i=0;i<allCourse.length; i++){
+          data.push(allCourse[i]);
+        }
+      }
+      return res.status(200).json(data);
     })
     .catch((err) => {
       res.status(500).json({
@@ -360,7 +416,18 @@ exports.getCourseTopMostSalerForKid = (req, res) => {
     { $match: { age: "Kid" } },
   ])
     .then((allCourse) => {
-      return res.status(200).json(allCourse);
+      var data = [];
+      if(allCourse.length > 7)
+      {
+        for(let i=0;i<7; i++){
+          data.push(allCourse[i]);
+        }
+      }else{
+        for(let i=0;i<allCourse.length; i++){
+          data.push(allCourse[i]);
+        }
+      }
+      return res.status(200).json(data);
     })
     .catch((err) => {
       res.status(500).json({

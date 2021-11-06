@@ -1,17 +1,13 @@
 const Bill = require("../models/BillModel");
 exports.createBill = (req, res) => {
     console.log(req.body);
-    if(!req.body.userId){
-        req.body.userId="NoLogin";
-    }
-    if(!req.body.userName){
-        req.body.userName="NoLogin";
-    }
+   
     const bill = new Bill({
         userId: req.body.userId,
         userName: req.body.userName,
         TotalPrice: req.body.totalPrice,
         Products: req.body.products,
+        Phone:req.body.phone,
         Province: req.body.province,
         Address: req.body.address,
         Area: req.body.area,
@@ -23,6 +19,7 @@ exports.createBill = (req, res) => {
         .then((newCourse) => {
             return res.status(201).json({
                 success: true,
+                billId:bill._id,
                 message: "New cause created successfully",
                 Course: newCourse,
             });
