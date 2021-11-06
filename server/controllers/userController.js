@@ -94,13 +94,15 @@ const deleteUser = (req, res) => {
 };
 //Thiện<
 const sendMail = (req, res) => {
+  //guesswhoisthis111222@gmail.com
   const adminEmail = "guesswhoisthis111222@gmail.com";
   const adminPassword = "guesswhoisthis";
   const mailHost = "smtp.gmail.com";
   const to = req.body.email;
   const subject = req.body.subject;
   const htmlContent = req.body.htmlContent;
-  const mailPort = 587;
+  const mailPort = 25;
+
   const transporter = nodeMailer.createTransport({
     host: mailHost,
     port: mailPort,
@@ -109,17 +111,29 @@ const sendMail = (req, res) => {
       user: adminEmail,
       pass: adminPassword,
     },
+    tls: {
+      rejectUnauthorized: false
+  }
+  
   });
+ 
   const options = {
     from: adminEmail,
     to: to,
     subject: subject,
     html: htmlContent,
   };
+  console.log(options)
   res.status(404).send({
     message: "Chắc gửi rồi á",
   });
-  return transporter.sendMail(options);
+  transporter.sendMail(options,function(err,data){
+    if(err){
+      console.log(err)
+    }else
+    console.log("mail has sent")
+  })
+ /*  return transporter.sendMail(options); */
 };
 
 //Thiện>

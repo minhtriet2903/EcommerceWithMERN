@@ -43,7 +43,7 @@ export const SetPassword = ({ show, setShow, getName }) => {
     });
 
     const data = await response.json();
-    console.log(data.tutorials);
+   
     for (let i = 0; i < data.tutorials.length; i++) {
       if (data.tutorials[i].email == email) {
         return data.tutorials[i]._id;
@@ -67,7 +67,7 @@ export const SetPassword = ({ show, setShow, getName }) => {
       if (data.exists != 0) {
         var verifycode = randomNumber(6);
         const response = await fetch("http://localhost:5035/users", {
-          method: "PUT",
+          method: "POST",
           body: JSON.stringify({
             email: email,
             subject: "Xác nhận đổi mật khẩu",
@@ -77,11 +77,12 @@ export const SetPassword = ({ show, setShow, getName }) => {
             "Content-Type": "application/json",
           },
         });
+       
         hide();
         /*  setLoginstate[0](setLoginstate[6](data.user.name, setLoginstate[1], setLoginstate[2], setLoginstate[3], setLoginstate[4], setLoginstate[5]));  */
         setcode(verifycode);
         var idd = await getUserIdByEmail();
-        console.log(idd);
+      
         setuserId(idd);
         setShowVerify(true);
       } else {

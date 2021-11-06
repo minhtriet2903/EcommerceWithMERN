@@ -1,0 +1,66 @@
+.footer_body{
+    margin-top: 40px;
+    height:300px;
+    width:100%;
+    padding-top:40px;
+    background-color:rgb(8, 10, 10,0.95);
+    text-align:center;
+    display: flex;
+}
+.footer_logo {
+    cursor: pointer;
+}
+.footer_left_area {
+    flex: 2;
+    display: flex;
+    text-align: center;
+    color: rgb(204, 204, 204);
+    padding: 0.5rem;
+}
+
+.footer_left_area_item {
+   
+    flex: 1;
+    color: rgb(204, 204, 204);
+}
+
+.footer_big_font {
+    font-size: 130%;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.footer_inline {
+    display: flex;
+    width: 60%;
+    margin: 0 20%;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 110%;
+}
+
+.footer_inline_contact {
+    display: flex;
+    width: 70%;
+    margin: 0 15%;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 110%;
+}
+
+.footer_inline a {
+    color: rgb(204, 204, 204);
+    flex: 1;
+}
+
+.footer_vote {
+    color: rgb(204, 204, 204);
+    width: 60%;
+    margin: 0 20%;
+}
+
+.footer_right_area {
+    flex: 1;
+    text-align: center;
+}

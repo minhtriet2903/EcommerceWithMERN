@@ -152,8 +152,8 @@ export default function Home({ data }) {
       <ContentContainer>
         <Content>
           <p>Lọc theo ngày hóa đơn</p>
-          <div class="row align-items-center">
-            <div class="col-auto d-flex flex-row ">
+          <div className="row align-items-center">
+            <div className="col-auto d-flex flex-row ">
               <p>Từ ngày</p>
               <div style={{ marginLeft: "8px" }}>
                 <DatePicker
@@ -162,7 +162,7 @@ export default function Home({ data }) {
                 />
               </div>
             </div>
-            <div class="col-auto d-flex flex-row ">
+            <div className="col-auto d-flex flex-row ">
               <p>Đến ngày</p>
               <div style={{ marginLeft: "8px" }}>
                 <DatePicker
@@ -171,7 +171,7 @@ export default function Home({ data }) {
                 />
               </div>
             </div>
-            <div class="col-auto d-flex flex-row ">
+            <div className="col-auto d-flex flex-row ">
               <p>Tỉnh</p>
               <div style={{ marginLeft: "16px" }}>
                 <select
@@ -189,7 +189,7 @@ export default function Home({ data }) {
                 </select>
               </div>
             </div>
-            <div class="col-auto d-flex flex-row ">
+            <div className="col-auto d-flex flex-row ">
               <p>Trạng thái </p>
               <div style={{ marginLeft: "16px" }}>
                 <select
@@ -223,7 +223,7 @@ export default function Home({ data }) {
               alignItems: "center",
             }}
           >
-            <div class="col-auto d-flex flex-row ">
+            <div className="col-auto d-flex flex-row ">
               <Item>Lọc theo</Item>
               <div style={{ marginLeft: "16px" }}>
                 <select
@@ -244,7 +244,7 @@ export default function Home({ data }) {
               </Button>
             </div>
           </div>
-          <div class="table-responsive" style={{ textAlign: "center" }}>
+          <div className="table-responsive" style={{ textAlign: "center" }}>
             <table className="table table-striped" style={{ width: "1500px" }}>
               <thead>
                 <tr>
@@ -259,8 +259,8 @@ export default function Home({ data }) {
                 </tr>
               </thead>
               <tbody>
-                {tableData.map((item) => (
-                  <tr>
+                {tableData.map((item,index) => (
+                  <tr key={index}>
                     <td>{item.BillDate}</td>
                     <td>{item.Products.length}</td>
                     <td>{item.TotalPrice}</td>

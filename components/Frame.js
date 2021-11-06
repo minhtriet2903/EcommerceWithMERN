@@ -6,7 +6,7 @@ export default function Frame ({children,data}){
     <div>
      
         {children}
-      <Footer/>
+    
     </div>
 )
 }

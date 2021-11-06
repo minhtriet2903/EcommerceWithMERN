@@ -10,6 +10,7 @@ import "../styles/login.css";
 import "../styles/register.css";
 import "../styles/profile.css";
 import "../styles/historyBill.css";
+import "../styles/footer.css";
 import { createStore, compose } from "redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -23,7 +24,8 @@ import {useState} from "react";
 import { useRouter } from 'next/router';
 import cookieCutter from "cookie-cutter";
 import Sidebar from "../components/SideBar";
-
+import Footer from "./Footer";
+import Messenger from "../components/messenger";
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
@@ -71,11 +73,14 @@ const MyApp = ({ Component, pageProps }) => {
   
       <Provider store={store}>
       {  
-
-       user ? user.role !=='Manager' ?<Headerr />:<Sidebar />: <Headerr />   
-
-    }
+        user ? user.role !=='Manager' ?<Headerr />:<Sidebar />: <Headerr />   
+      }
         <Component {...pageProps} />
+        <Messenger />
+        {  
+        user ? user.role !=='Manager' ? <Footer />:'':  <Footer /> 
+      }
+       
       </Provider>
     </>
   )

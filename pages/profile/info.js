@@ -10,7 +10,7 @@ const Info = ({ data }) => {
   useEffect(() => {
     setEmail(data.email);
     setName(data.name);
-    setPhone("022222333");
+    setPhone(data.phoneNumber);
     setSex(data.sex);
     setAddress(data.address);
   }, [data]);
@@ -18,7 +18,7 @@ const Info = ({ data }) => {
     axios
       .put(
         "http://localhost:5035/users/" + data._id,
-        { sex: sex, address: address },
+        { sex: sex,phoneNumber:phone, address: address },
         {
           headers: { "Content-Type": "application/json" },
         }

@@ -87,7 +87,7 @@ const Home = ({ item }) => {
       >
         Hello from the modal!
       </DeleteNotificationModal>
-      <SideBar></SideBar>
+     
       <ContentContainer>
         <Content>
           <Link href={"/bill"}>
@@ -96,7 +96,7 @@ const Home = ({ item }) => {
               <FontAwesomeIcon icon={faHome} />{" "}
             </Button>
           </Link>
-          <div class="table-responsive">
+          <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -108,8 +108,8 @@ const Home = ({ item }) => {
                 </tr>
               </thead>
               <tbody>
-                {item.Products.map((it) => (
-                  <tr>
+                {item.Products.map((it,index) => (
+                  <tr key={index}>
                     <td>{it.product.id}</td>
                     <td>{it.quantity}</td>
                     <td>{it.product.price}</td>

@@ -131,8 +131,8 @@ export default function Home({ data }) {
       <ContentContainer>
         <Content>
           <p>Lọc theo ngày nhập hàng</p>
-          <div class="row align-items-center">
-            <div class="col-auto d-flex flex-row ">
+          <div className="row align-items-center">
+            <div className="col-auto d-flex flex-row ">
               <p>Từ ngày</p>
               <div style={{ marginLeft: "8px" }}>
                 <DatePicker
@@ -141,7 +141,7 @@ export default function Home({ data }) {
                 />
               </div>
             </div>
-            <div class="col-auto d-flex flex-row ">
+            <div className="col-auto d-flex flex-row ">
               <p>Đến ngày</p>
               <div style={{ marginLeft: "8px" }}>
                 <DatePicker
@@ -150,7 +150,7 @@ export default function Home({ data }) {
                 />
               </div>
             </div>
-            <div class="col-auto ">
+            <div className="col-auto ">
               <Button onClick={() => filterWithDateRange()}>Lọc</Button>
             </div>
           </div>
@@ -161,7 +161,7 @@ export default function Home({ data }) {
             </Button>
           </Link>
           <nav aria-label="Page navigation example"></nav>
-          <div class="table-responsive">
+          <div className="table-responsive">
             <table className="table table-striped">
               <thead style={{ textAlign: "center" }}>
                 <tr>
@@ -181,8 +181,8 @@ export default function Home({ data }) {
                 </tr>
               </thead>
               <tbody>
-                {tableData.map((item) => (
-                  <tr>
+                {tableData.map((item,index) => (
+                  <tr key={index}>
                     <td>{item.Name}</td>
                     <td>
                       <img src={item.Image} width="50px" height="50px" />

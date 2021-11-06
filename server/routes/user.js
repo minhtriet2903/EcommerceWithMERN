@@ -15,6 +15,6 @@ router.put("/users/:id", userController.updateUser);
 router.delete("/users/:id", userController.deleteUser);
 router.get("/users/:id/customer/bills", billController.getBillOfUser);
 router.get("/users/:id/shipper/bills", billController.getBillOfShipper);
-router.put("/users", userController.sendMail);
+router.post("/users", userController.sendMail);
 
 module.exports = router;

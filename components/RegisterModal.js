@@ -13,34 +13,7 @@ const Modal = ({ show, onClose, children, title }) => {
     e.preventDefault();
     onClose();
   };
-
-  const modalContent = show ? (
-    <StyledModalOverlay>
-      <StyledModal>
-        <StyledModalHeader>
-          <a href="#" onClick={handleCloseClick}>
-            x
-          </a>
-        </StyledModalHeader>
-        {title && <StyledModalTitle>{title}</StyledModalTitle>}
-        <StyledModalBody>
-          <h2>Ban</h2>
-        </StyledModalBody>
-      </StyledModal>
-    </StyledModalOverlay>
-  ) : null;
-
-  if (isBrowser) {
-    return ReactDOM.createPortal(
-      modalContent,
-      document.getElementById("modal-root")
-    );
-  } else {
-    return null;
-  }
-};
-
-const StyledModalBody = styled.div`
+  const StyledModalBody = styled.div`
   padding-top: 10px;
 `;
 
@@ -68,5 +41,32 @@ const StyledModalOverlay = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
 `;
+
+  const modalContent = show ? (
+    <StyledModalOverlay>
+      <StyledModal>
+        <StyledModalHeader>
+          <a href="#" onClick={handleCloseClick}>
+            x
+          </a>
+        </StyledModalHeader>
+        {title && <StyledModalTitle>{title}</StyledModalTitle>}
+        <StyledModalBody>
+          <h2>Ban</h2>
+        </StyledModalBody>
+      </StyledModal>
+    </StyledModalOverlay>
+  ) : null;
+
+  if (isBrowser) {
+    return ReactDOM.createPortal(
+      modalContent,
+      document.getElementById("modal-root")
+    );
+  } else {
+    return null;
+  }
+};
+
 
 export default Modal;

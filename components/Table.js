@@ -56,17 +56,17 @@ export default function Table({ data }) {
         <Contaner>
           <h4>{data.name}</h4>
           <Rowheader>
-            {data.header.map((item) => (
-              <Cell style={{ width: 100 / data.header.length + "%" }}>
+            {data.header.map((item,index) => (
+              <Cell key={index} style={{ width: 100 / data.header.length + "%" }}>
                 {item}
               </Cell>
             ))}
           </Rowheader>
           <Rows>
-            {data.rows.map((row) => (
-              <Row>
-                {row.map((item) => (
-                  <Cell style={{ width: 100 / data.header.length + "%" }}>
+            {data.rows.map((row,index) => (
+              <Row key={index}>
+                {row.map((item,indexx) => (
+                  <Cell key={indexx} style={{ width: 100 / data.header.length + "%" }}>
                     {item}
                   </Cell>
                 ))}

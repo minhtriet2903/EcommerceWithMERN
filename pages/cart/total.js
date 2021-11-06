@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import NumberFormat from "react-number-format";
 import cookieCutter from "cookie-cutter";
 import * as Config from "./../constant/config";
+import { VerifyCode } from "../verifyCode";
+
 const Total = (props) => {
   const router = useRouter();
   const { cart } = props;
@@ -12,6 +14,8 @@ const Total = (props) => {
   const [email, setEmail] = useState("");
   const [province, setProvince] = useState("");
   const [address, setAddress] = useState("");
+  const [showVerifyEmail,setShowVerifyEmail]=useState(false);
+  const [code,setCode]=useState(0);
   const city = ["Bình Phước","Bình Dương","Tây Ninh","Đồng Nai","Vũng Tàu","TP.Hồ Chí Minh","Long An"]
   useEffect(() => {
     setTotal(cart);
@@ -28,36 +32,80 @@ const Total = (props) => {
       fetchUser();
     }
   }, []);
-
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
   const handleCity = (e) => {
     setProvince(e.target.value);
   };
   const handleAddress = (e) => {
     setAddress(e.target.value);
   };
+  const postBill= async()=>{
+    const response = await fetch(Config.API_URL_BILL, {
+      method: "POST",
+      body: JSON.stringify({
+        userId: user._id,
+        userName: user.name,
+        totalPrice: cart,
+        products: arr,
+        province: province,
+        address: address,
+        idShipper: "",
+        userEmail:email
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (data.success) {
+      swal("Thông Báo!", "Thanh toán thành công", "success");
+      props.actDeleteAllCart();
+    } else {
+      swal("Thông Báo!", "Thanh toán không thành công thành công", "error");
+    }
+  }
+  function randomNumber(len) {
+    var re = 0;
+    for (let i = 0; i < len; i++) {
+      re *= 10;
+      re += Math.floor(Math.random() * 10) % 10;
+    }
+    return re;
+  }
   const handlePostBill = async () => {
     if (province !== "" && address !== "") {
-      const response = await fetch(Config.API_URL_BILL, {
-        method: "POST",
-        body: JSON.stringify({
-          userId: user._id,
-          userName: user.name,
-          totalPrice: cart,
-          products: arr,
-          province: province,
-          address: address,
-          idShipper: "",
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      if (data.success) {
-        swal("Thông Báo!", "Thanh toán thành công", "success");
-        props.actDeleteAllCart();
-      } else {
-        swal("Thông Báo!", "Thanh toán thành công", "danger");
+      if(user._id){
+        postBill();
+      }else{
+        if(email !== ""){
+          var verifycode = randomNumber(6);
+            const response = await fetch("http://localhost:5035/users", {
+              method: "POST",
+              body: JSON.stringify({
+                email: email,
+                subject: "Xác nhận mua hàng",
+                htmlContent: "Mã xác nhận của bạn là: " + verifycode,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          setCode(verifycode);
+          setShowVerifyEmail(true);
+          swal(
+            "Thông Báo!",
+            "Một mã xác nhận vừa được gửi đển email của bạn!",
+            "noitify"
+          );
+        }else{
+          swal(
+            "Thông Báo!",
+            "Vui lòng điền đầy đủ thông tin trước khi thanh toán!",
+            "warning"
+          );
+        }
       }
     } else {
       swal(
@@ -88,7 +136,7 @@ const Total = (props) => {
               </div>
               <div className="detail_infor">
                 <label>Email :</label>
-                <input type="text" placeholder="Email ..." value={user.email} />
+                <input type="text" placeholder="Email ..." value={user.email} onChange={handleEmail}/>
               </div>
               <div className="detail_infor">
                 <label>Địa chỉ :</label>
@@ -139,6 +187,12 @@ const Total = (props) => {
           </div>
         </div>
       </div>
+      <VerifyCode
+      show={showVerifyEmail}
+      setShow={setShowVerifyEmail}
+      code={code}
+      setSussessState={postBill}
+      />
     </>
   );
 };

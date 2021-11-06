@@ -145,11 +145,12 @@ const Option = (props) => {
       });
     }
   }
-  const handleDrop = () =>{
-    const head = document.querySelector('.content-tittle')
-      head.classList.toggle('active_arrow')
-      const title = document.querySelector('.drop_down_op')
-      title.classList.toggle('delete_drop');
+  const handleDrop = (e) =>{
+    const i =Number(e.target.attributes.num.value);
+    const head = document.querySelectorAll('.content-tittle')
+      head[i].classList.toggle('active_arrow')
+      const title = document.querySelectorAll('.drop_down_op')
+      title[i].classList.toggle('delete_drop');
   }
   return (
     <>
@@ -158,7 +159,7 @@ const Option = (props) => {
 
           <div className="left-content-body-range">
 
-            <h4 className="content-tittle" onClick={handleDrop}>Price Range</h4>
+            <h4 className="content-tittle" num="0" onClick={handleDrop}>Price Range</h4>
             <div className="drop_down_op">
               <span className="price-min kk"><NumberFormat value={pricerange[0]} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></span>
               -
@@ -176,14 +177,14 @@ const Option = (props) => {
             </div>
           </div>
           <div className="left-content-body-size">
-            <h4 className="content-tittle">Sizes</h4>
-            <ul className="size-body">
+            <h4 className="content-tittle" num="1" onClick={handleDrop}>Sizes</h4>
+            <ul className="size-body drop_down_op">
               {EleSize}
             </ul>
           </div>
           <div className="left-content-body-colors">
-            <h4 className="content-tittle">Color</h4>
-            <div className="color-body">
+            <h4 className="content-tittle" num="2" onClick={handleDrop}>Color</h4>
+            <div className="color-body drop_down_op">
               {showColor}
             </div>
           </div>

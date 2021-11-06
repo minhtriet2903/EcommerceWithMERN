@@ -22,6 +22,18 @@ const Devide = styled.table`
 const Mother = styled.div`
   background-color: #f0efef;
 `;
+const ContentContainer = styled.div`
+  padding-left: 250px;
+`;
+const Content = styled.div`
+  margin: 20px;
+  background-color: white;
+  height: auto;
+  width: auto;
+  padding: 12px;
+  border-radius: 12px;
+  justify-content: center;
+`;
 export default function Statictical({ data }) {
   const total = (da) => {
     var re = 0;
@@ -38,64 +50,73 @@ export default function Statictical({ data }) {
     return re;
   };
   return (
-    <Mother>
-      <Buttonscontaner>
-        <Showblock
-          color={"red"}
-          data={{
-            time: "doanh thu tháng này",
-            value: total(data.This_month_Bills),
-            count: Count(data.This_month_Bills),
-          }}
-        />
-        <Showblock
-          color={"blue"}
-          data={{
-            time: "doanh thu tháng trước",
-            value: total(data.Last_month_Bills),
-            count: Count(data.Last_month_Bills),
-          }}
-        />
-        <Showblock
-          color={"green"}
-          data={{
-            time: "doanh thu hôm nay",
-            value: total(data.Today_Bills),
-            count: Count(data.Today_Bills),
-          }}
-        />
-        <Showblock
-          color={"yellow"}
-          data={{
-            time: "Tổng doanh thu",
-            value: total(data.Total_Bills),
-            count: Count(data.Total_Bills),
-          }}
-        />
-      </Buttonscontaner>
-      <Devide>
-        <tr>
-          <td>
-            <Table
+    <ContentContainer>
+      <Content>
+        <Mother>
+          <Buttonscontaner>
+            <Showblock
+              color={"red"}
               data={{
-                name: "Sản phẩm",
-                header: ["Tên sản phẩm", "Giá đơn vị", "Số lượng bán", "Tổng"],
-                rows: data.Pros_Pre,
+                time: "doanh thu tháng này",
+                value: total(data.This_month_Bills),
+                count: Count(data.This_month_Bills),
               }}
             />
-          </td>
-          <td>
-            <Table
+            <Showblock
+              color={"blue"}
               data={{
-                name: "Khách hàng",
-                header: ["Tên khách hàng", "Số hàng đã mua", "Tổng tiêu"],
-                rows: data.Users_Pre,
+                time: "doanh thu tháng trước",
+                value: total(data.Last_month_Bills),
+                count: Count(data.Last_month_Bills),
               }}
             />
-          </td>
-        </tr>
-      </Devide>
-    </Mother>
+            <Showblock
+              color={"green"}
+              data={{
+                time: "doanh thu hôm nay",
+                value: total(data.Today_Bills),
+                count: Count(data.Today_Bills),
+              }}
+            />
+            <Showblock
+              color={"yellow"}
+              data={{
+                time: "Tổng doanh thu",
+                value: total(data.Total_Bills),
+                count: Count(data.Total_Bills),
+              }}
+            />
+          </Buttonscontaner>
+          <Devide>
+            <tr>
+              <td>
+                <Table
+                  data={{
+                    name: "Sản phẩm",
+                    header: [
+                      "Tên sản phẩm",
+                      "Giá đơn vị",
+                      "Số lượng bán",
+                      "Tổng",
+                    ],
+                    rows: data.Pros_Pre,
+                  }}
+                />
+              </td>
+              <td>
+                <Table
+                  data={{
+                    name: "Khách hàng",
+                    header: ["Tên khách hàng", "Số hàng đã mua", "Tổng tiêu"],
+                    rows: data.Users_Pre,
+                  }}
+                />
+              </td>
+            </tr>
+          </Devide>
+        </Mother>
+      </Content>
+    </ContentContainer>
   );
 }
 function Cutrightmost(string, keep) {
@@ -188,7 +209,7 @@ Statictical.getInitialProps = async (ctx) => {
   var Today = new Date();
   const res_Today_Bills = await fetch(
     "http://localhost:5035/bills/dateRange?startDate=" +
-      Today.toLocaleDateString() +
+    Today.toISOString().replace(/T.*/,'').split('-').reverse().join('-') +
       "&endDate=" +
       Today
   );

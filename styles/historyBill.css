@@ -1,9 +1,9 @@
 .detail_bill_body{
-    padding: 1rem 1rem;
+    padding: 0 0.5rem  0.5rem 0.5rem;
     overflow-y: auto;
     max-height: 500px;
     height: 400px;
-   
+  position: relative;
 }
 
 .bill_status {
@@ -11,4 +11,25 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    
+}
+
+.alert_color{
+    font-weight: 600;
+}
+
+.bill_title{
+    position: absolute;
+    width: 100%;
+    border-bottom: 1px solid black;
+    height: 50px;
+    
+    background-color: white;
+}
+.bill_title p{
+    font-size: 25px;
+}
+.hisBill_detail_content{
+    width: 100%;
+    margin-top: 50px;
 }

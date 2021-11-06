@@ -36,7 +36,7 @@ export const UpdatePassword = ({ show, setShow, getName, id }) => {
           "Content-Type": "application/json",
         },
       });
-      setPassnoity("Cập nhật thành công");
+      swal("Thông Báo!", "Thay đổi thành công", "success");
       await new Promise((resolve) => setTimeout(resolve, 2000));
       hide();
     }

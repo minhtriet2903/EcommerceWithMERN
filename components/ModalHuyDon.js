@@ -49,7 +49,7 @@ const Modal = ({ show, onClose, children, title, item }) => {
           .then((res) => {
             console.log(res);
             axios
-              .put("http://localhost:5035/users",{
+              .post("http://localhost:5035/users",{
                 email: res.data.email,
                 subject: "Thông báo hủy đơn hàng",
                 htmlContent: cancelBillMessage(item)

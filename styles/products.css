@@ -120,7 +120,7 @@ body{
 }
 .delete_drop{
 
-  height: 55px;
+  height: max-content;
   
 }
 
