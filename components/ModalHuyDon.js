@@ -38,25 +38,49 @@ const Modal = ({ show, onClose, children, title, item }) => {
     return re;
   };
   const cancelAndSend = () => {
+    if(item.userId !== "NoLogin"){
+      axios
+        .put("http://localhost:5035/bills/" + item._id, {
+          Status: "Đã hủy đơn",
+        })
+        .then((res) => {
+          console.log(res.data);
+          axios
+            .get("http://localhost:5035/users/"+item.userId)
+            .then((res) => {
+              console.log(res);
+              axios
+                .post("http://localhost:5035/users",{
+                  email: res.data.email,
+                  subject: "Thông báo hủy đơn hàng",
+                  htmlContent: cancelBillMessage(item)
+                })
+                .then((res) => {
+
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }else{
     axios
       .put("http://localhost:5035/bills/" + item._id, {
         Status: "Đã hủy đơn",
       })
-      .then((res) => {
-        console.log(res.data);
-        axios
-          .get("http://localhost:5035/users/"+item.userId)
-          .then((res) => {
-            console.log(res);
+      .then((res) => {      
             axios
               .post("http://localhost:5035/users",{
-                email: res.data.email,
+                email: item.userEmail,
                 subject: "Thông báo hủy đơn hàng",
                 htmlContent: cancelBillMessage(item)
-              })
-              .then((res) => {
-                  
-              })
+              })             
               .catch((err) => {
                 console.log(err);
               });
@@ -64,10 +88,9 @@ const Modal = ({ show, onClose, children, title, item }) => {
           .catch((err) => {
             console.log(err);
           });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+     
+     
+    }
   };
 
   const modalContent = show ? (

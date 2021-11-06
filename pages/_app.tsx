@@ -76,7 +76,7 @@ const MyApp = ({ Component, pageProps }) => {
         user ? user.role !=='Manager' ?<Headerr />:<Sidebar />: <Headerr />   
       }
         <Component {...pageProps} />
-        <Messenger />
+        {/* <Messenger /> */}
         {  
         user ? user.role !=='Manager' ? <Footer />:'':  <Footer /> 
       }

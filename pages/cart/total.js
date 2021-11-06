@@ -97,13 +97,13 @@ const Total = (props) => {
           swal(
             "Thông Báo!",
             "Một mã xác nhận vừa được gửi đển email của bạn!",
-            "noitify"
+            "success"
           );
         }else{
           swal(
             "Thông Báo!",
             "Vui lòng điền đầy đủ thông tin trước khi thanh toán!",
-            "warning"
+            "error"
           );
         }
       }
@@ -111,7 +111,7 @@ const Total = (props) => {
       swal(
         "Thông Báo!",
         "Vui lòng điền đầy đủ thông tin trước khi thanh toán!",
-        "warning"
+        "success"
       );
     }
   };
