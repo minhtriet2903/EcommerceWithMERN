@@ -160,7 +160,7 @@ function Sidebar() {
           {user ? (
             <div>
               <UserImg
-                src="http://localhost:5035/upload/images/default.png"
+                src="/admin.png"
                 width="50px"
                 height="50px"
               ></UserImg>
@@ -169,7 +169,7 @@ function Sidebar() {
           ) : (
             <div>
               <UserImg
-                src="http://localhost:5035/upload/images/default.png"
+                src="/admin.png"
                 width="50px"
                 height="50px"
               ></UserImg>

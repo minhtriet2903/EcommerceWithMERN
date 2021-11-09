@@ -112,7 +112,7 @@ export default function OnsaleProduct({data}){
         
                                     <Link
         
-                                        href={`${path}/${product._id}`}
+                                href={`${path}/details?id=${product._id}`}
                                     ><a>VIEW</a></Link>
         
                                 </div>
@@ -120,7 +120,7 @@ export default function OnsaleProduct({data}){
                         </div>
                         <div className="product-name_price-content">
                             <Link
-                                href={`${path}/${product._id}`}><a><h5>{product.Name}</h5></a></Link>
+                               href={`${path}/details?id=${product._id}`}><a><h5>{product.Name}</h5></a></Link>
                             <div className="product_price">
                                 <p className="text-dark">
                                     <NumberFormat value={product.Price} displayType={'text'} thousandSeparator={true} suffix={'đ'} />
@@ -138,10 +138,10 @@ export default function OnsaleProduct({data}){
                                     id="Color"
                                     onClick={() => {
                                         router.push({
-                                            pathname: `${path}/[details]`,
+                                            pathname: `${path}/details`,
                                             query: {
-                                                details: product._id,
-                                                color: color
+                                                id: product._id,
+                                                color: product.colors
                                             },
         
                                         })

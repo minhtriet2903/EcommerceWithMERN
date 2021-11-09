@@ -87,6 +87,7 @@ export default function Home({ data }) {
       Status: trangthai,
     });
 
+
     const updateShipperBillQuantity = axios.put(
       "http://localhost:5035/users/" + id,
       {
@@ -105,7 +106,7 @@ export default function Home({ data }) {
       .catch((errors) => {
         console.log(errors);
       });
-    router.push("/shipperAdmin");
+    window.location.reload();
   };
   const handleChange = () => (e) => {
     const name = e.target.name;
@@ -186,8 +187,8 @@ export default function Home({ data }) {
     <div>
       <Content>
         <p>Lọc theo ngày hóa đơn</p>
-        <div class="row align-items-center">
-          <div class="col-auto d-flex flex-row ">
+        <div className="row align-items-center">
+          <div className="col-auto d-flex flex-row ">
             <p>Từ ngày</p>
             <div style={{ marginLeft: "8px" }}>
               <DatePicker
@@ -196,7 +197,7 @@ export default function Home({ data }) {
               />
             </div>
           </div>
-          <div class="col-auto d-flex flex-row ">
+          <div className="col-auto d-flex flex-row ">
             <p>Đến ngày</p>
             <div style={{ marginLeft: "8px" }}>
               <DatePicker
@@ -205,7 +206,7 @@ export default function Home({ data }) {
               />
             </div>
           </div>
-          <div class="col-auto d-flex flex-row ">
+          <div className="col-auto d-flex flex-row ">
             <p>Tỉnh</p>
             <div style={{ marginLeft: "16px" }}>
               <select
@@ -223,7 +224,7 @@ export default function Home({ data }) {
               </select>
             </div>
           </div>
-          <div class="col-auto d-flex flex-row ">
+          <div className="col-auto d-flex flex-row ">
             <p>Trạng thái </p>
             <div style={{ marginLeft: "16px" }}>
               <select
@@ -257,7 +258,7 @@ export default function Home({ data }) {
             alignItems: "center",
           }}
         >
-          <div class="col-auto d-flex flex-row ">
+          <div className="col-auto d-flex flex-row ">
             <Item>Lọc theo</Item>
             <div style={{ marginLeft: "16px" }}>
               <select
@@ -278,7 +279,7 @@ export default function Home({ data }) {
             </Button>
           </div>
         </div>
-        <div class="table-responsive">
+        <div className="table-responsive">
           <table
             className="table table-striped"
             style={{ textAlign: "center" }}
@@ -294,8 +295,8 @@ export default function Home({ data }) {
               </tr>
             </thead>
             <tbody>
-              {tableData.map((item) => (
-                <tr>
+              {tableData.map((item,index) => (
+                <tr key={index}>
                   <td>{item.userName}</td>
                   <td>{item.BillDate}</td>
                   <td>{item.Products.length}</td>

@@ -17,7 +17,7 @@ import {
 import DeleteNotificationModal from "../../../components/DeleteCmtNotificationModal";
 
 export const getStaticPaths = async () => {
-  const res = await fetch("http://localhost:5035/courses");
+  const res = await fetch("http://localhost:5035/coursesAll");
   const data = await res.json();
 
   const paths = data.map((item) => {
@@ -96,7 +96,7 @@ const Home = ({ item }) => {
               <FontAwesomeIcon icon={faHome} />{" "}
             </Button>
           </Link>
-          <div class="table-responsive">
+          <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -107,8 +107,8 @@ const Home = ({ item }) => {
                 </tr>
               </thead>
               <tbody>
-                {item.Comments.map((cmt) => (
-                  <tr>
+                {item.Comments.map((cmt,index) => (
+                  <tr key={index}>
                     <td>{cmt.userId}</td>
                     <td>{cmt.text}</td>
                     <td>{cmt.date}</td>

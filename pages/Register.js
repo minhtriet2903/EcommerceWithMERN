@@ -102,7 +102,7 @@ export const Register = ({ show, setShow, reshow }) => {
     else {
       var verifycode = randomNumber(6);
         const response = await fetch("http://localhost:5035/users", {
-          method: "PUT",
+          method: "POST",
           body: JSON.stringify({
             email: email,
             subject: "Xác nhận Gmail",

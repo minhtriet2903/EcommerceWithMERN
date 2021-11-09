@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post("/courses", CourseController.createCourse);
 router.get("/courses", CourseController.getCourse);
+router.get("/coursesAll", CourseController.getAll);
 router.get("/courses/relative", CourseController.getRelativeCourses);
 router.get("/courses/dateRange", CourseController.getCourseWithDateRange);
 router.get(

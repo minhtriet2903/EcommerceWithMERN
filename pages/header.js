@@ -148,7 +148,7 @@ const Headerr = (props) => {
         const res31 = await fetch("http://localhost:5035/users/" + Acc);
         const data = await res31.json();
         setUser(data);
-        console.log(data)
+      
       };
       fetchUser();
     } else {

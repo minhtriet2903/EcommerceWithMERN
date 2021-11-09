@@ -18,9 +18,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 
 Home.getInitialProps = async (ctx) => {
-  const res = await fetch("http://localhost:5035/courses");
+  const res = await fetch("http://localhost:5035/coursesAll");
   const json = await res.json();
-  return { data: json };
+
+  return { data: json};
 };
 
 const ContentContainer = styled.div`
@@ -56,6 +57,7 @@ const DateFilter = styled.div`
   display: flex;
 `;
 export default function Home({ data }) {
+ 
   const [showModal, setShowModal] = useState(false);
   const [itemId, setItemId] = useState("false");
   const [esc, setEsc] = useState(false);
@@ -81,6 +83,7 @@ export default function Home({ data }) {
         console.log(error);
       });
   };
+
   const getEscTopSale = () => {
     if (esc) {
       var tmp_tale = [...tableData];
@@ -181,7 +184,7 @@ export default function Home({ data }) {
                 </tr>
               </thead>
               <tbody>
-                {tableData.map((item,index) => (
+                 {tableData.map((item,index) => (
                   <tr key={index}>
                     <td>{item.Name}</td>
                     <td>
@@ -213,7 +216,7 @@ export default function Home({ data }) {
                       </Link>
                     </td>
                   </tr>
-                ))}
+                )) } 
               </tbody>
             </table>
           </div>
