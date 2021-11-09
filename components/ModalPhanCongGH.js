@@ -89,9 +89,9 @@ const Modal = ({ show, onClose, children, title, item }) => {
       .catch((err) => {
         console.log(err);
       });
-      if(item.userName=="NoLogin"){
+      if(item.userId=="NoLogin"){
         axios
-          .put("http://localhost:5035/users/"  , {
+          .post("http://localhost:5035/users/"  , {
             email: item.userEmail,
             subject: "Thông báo đơn hàng đang được giao",
             htmlContent: `
