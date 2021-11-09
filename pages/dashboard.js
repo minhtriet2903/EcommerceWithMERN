@@ -178,15 +178,24 @@ function Users_Spended_Mapping(Users, bills) {
   }
   return returnn;
 }
+function deformDate(s){
+  // s.setMonth(s.getMonth());
+  var re="";
+  re+=String(s.getMonth() + 1).padStart(2, '0')+"-";
+  re+=String(s.getDate()).padStart(2, '0')+"-";
+  re+=s.getFullYear();
+  return re;
+}
 Statictical.getInitialProps = async (ctx) => {
   var This_month_Bills_Start_date = new Date();
-  var Now = new Date().toLocaleDateString();
+  var Now = new Date();
+  Now.setDate(Now.getDate()+1);
   This_month_Bills_Start_date.setDate(1);
   const resThismonthBills = await fetch(
     "http://localhost:5035/bills/dateRange?startDate=" +
-      This_month_Bills_Start_date.toLocaleDateString() +
+    deformDate(This_month_Bills_Start_date) +
       "&endDate=" +
-      Now
+      deformDate(Now)
   );
   const jsonThismonthBills = await resThismonthBills.json();
 
@@ -196,34 +205,37 @@ Statictical.getInitialProps = async (ctx) => {
     Last_month_Bills_Start_date.getMonth() - 1
   );
   var Last_month_Bills_End_date = new Date(
-    Last_month_Bills_Start_date.toLocaleDateString()
+    Last_month_Bills_Start_date
   );
   Last_month_Bills_End_date.setMonth(Last_month_Bills_End_date.getMonth() + 1);
   Last_month_Bills_End_date.setDate(0);
   const res_Last_month_Bills = await fetch(
     "http://localhost:5035/bills/dateRange?startDate=" +
-      Last_month_Bills_Start_date.toLocaleDateString() +
+    deformDate(Last_month_Bills_Start_date) +
       "&endDate=" +
-      Last_month_Bills_End_date.toLocaleDateString()
+      deformDate(Last_month_Bills_End_date)
   );
   const json_Last_month_Bills = await res_Last_month_Bills.json();
   //console.log("http://localhost:5035/bills/dateRange?startDate="+Last_month_Bills_Start_date.toLocaleDateString()+"&endDate="+Last_month_Bills_End_date.toLocaleDateString());
 
   var Today = new Date();
-  //console.log(Today.toISOString().replace(/T.*/,'').split('-').reverse().join('-'));
+  // console.log("http://localhost:5035/bills/dateRange?startDate=" +
+  // deformDate(This_month_Bills_Start_date) +
+  //   "&endDate=" +
+  //   deformDate(Now));
   var Tomorrow = new Date();
   Tomorrow.setDate(Today.getDate() + 1);
   const res_Today_Bills = await fetch(
     "http://localhost:5035/bills/dateRange?startDate=" +
-    Today.toLocaleDateString() +
+    deformDate(Today) +
       "&endDate=" +
-      Tomorrow.toLocaleDateString()
+      deformDate(Tomorrow)
   );
   const json_Today_Bills = await res_Today_Bills.json();
   console.log("http://localhost:5035/bills/dateRange?startDate=" +
-  Today.toLocaleDateString() +
+  deformDate(Last_month_Bills_Start_date) +
     "&endDate=" +
-    Tomorrow.toLocaleDateString());
+    deformDate(Last_month_Bills_End_date));
 
   const res_All_Bills = await fetch("http://localhost:5035/bills");
   const json_All_Bills = await res_All_Bills.json();
