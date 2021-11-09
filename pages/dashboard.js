@@ -210,15 +210,20 @@ Statictical.getInitialProps = async (ctx) => {
   //console.log("http://localhost:5035/bills/dateRange?startDate="+Last_month_Bills_Start_date.toLocaleDateString()+"&endDate="+Last_month_Bills_End_date.toLocaleDateString());
 
   var Today = new Date();
-  console.log(Today.toISOString().replace(/T.*/,'').split('-').reverse().join('-'));
+  //console.log(Today.toISOString().replace(/T.*/,'').split('-').reverse().join('-'));
+  var Tomorrow = new Date();
+  Tomorrow.setDate(Today.getDate() + 1);
   const res_Today_Bills = await fetch(
     "http://localhost:5035/bills/dateRange?startDate=" +
-    Today.toISOString().replace(/T.*/,'').split('-').reverse().join('-') +
+    Today.toLocaleDateString() +
       "&endDate=" +
-      Today
+      Tomorrow.toLocaleDateString()
   );
   const json_Today_Bills = await res_Today_Bills.json();
-  console.log("http://localhost:5035/bills/dateRange?startDate="+Today.toLocaleDateString()+"&endDate="+Today.toLocaleDateString() );
+  console.log("http://localhost:5035/bills/dateRange?startDate=" +
+  Today.toLocaleDateString() +
+    "&endDate=" +
+    Tomorrow.toLocaleDateString());
 
   const res_All_Bills = await fetch("http://localhost:5035/bills");
   const json_All_Bills = await res_All_Bills.json();

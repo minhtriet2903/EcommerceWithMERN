@@ -2,609 +2,602 @@ const Course = require("../models/CourseModel");
 const multer = require("multer");
 
 var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/upload/images/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
+    destination: function(req, file, cb) {
+        cb(null, "public/upload/images/");
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname);
+    },
 });
 
 var upload = multer({ storage: storage }).single("file");
 
-exports.uploadAvatar = function (req, res) {
-  upload(req, res, function (err) {
-    console.log(req.body);
-    console.log(req.file);
+exports.uploadAvatar = function(req, res) {
+    upload(req, res, function(err) {
+        console.log(req.body);
+        console.log(req.file);
 
-    if (err) {
-      return res.end("Error uploading file.");
-    }
-    res.json(req.file);
-  });
+        if (err) {
+            return res.end("Error uploading file.");
+        }
+        res.json(req.file);
+    });
 };
 
 // create new cause
 exports.createCourse = (req, res) => {
-  console.log(req.body);
-  const course = new Course({
-    Name: req.body.name,
-    Description: req.body.description,
-    DateIn: req.body.datein,
-    Price: req.body.price,
-    Sex: req.body.sex,
-    Discount: req.body.discount,
-    Image: req.body.image,
-    enteringQuantity: req.body.enteringQuantity,
-    size: req.body.size,
-    age: req.body.age,
-    materials: req.body.materials,
-    colors: req.body.colors,
-    tag: req.body.tag,
-  });
-
-  return course
-    .save()
-    .then((newCourse) => {
-      return res.status(201).json({
-        success: true,
-        message: "New cause created successfully",
-        Course: newCourse,
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: error.message,
-      });
+    console.log(req.body);
+    const course = new Course({
+        Name: req.body.name,
+        Description: req.body.description,
+        DateIn: req.body.datein,
+        Price: req.body.price,
+        Sex: req.body.sex,
+        Discount: req.body.discount,
+        Image: req.body.image,
+        enteringQuantity: req.body.enteringQuantity,
+        size: req.body.size,
+        age: req.body.age,
+        materials: req.body.materials,
+        colors: req.body.colors,
+        tag: req.body.tag,
     });
+
+    return course
+        .save()
+        .then((newCourse) => {
+            return res.status(201).json({
+                success: true,
+                message: "New cause created successfully",
+                Course: newCourse,
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: error.message,
+            });
+        });
 };
 
 exports.getColor = (req, res) => {
-  var colorss = [];
-  var sizeee = [];
-  var result = [];
+    var colorss = [];
+    var sizeee = [];
+    var result = [];
 
-  Course.find()
-    .then((allCourse) => {
-      allCourse.map((item, index) => {
-        colorss.push(item.colors);
-      });
-      colorss.sort();
-      let amountcolor = 1;
-      for (let i = 0; i < colorss.length; i++) {
-        if (colorss[i] === colorss[i + 1]) amountcolor++;
-        else {
-          result.push({ colors: colorss[i], amountcolor: amountcolor });
-          amountcolor = 1;
-        }
-      }
+    Course.find()
+        .then((allCourse) => {
+            allCourse.map((item, index) => {
+                colorss.push(item.colors);
+            });
+            colorss.sort();
+            let amountcolor = 1;
+            for (let i = 0; i < colorss.length; i++) {
+                if (colorss[i] === colorss[i + 1]) amountcolor++;
+                else {
+                    result.push({ colors: colorss[i], amountcolor: amountcolor });
+                    amountcolor = 1;
+                }
+            }
 
-      return res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: err.message,
-      });
-    });
+            return res.status(200).json(result);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
 };
 /*size*/
 exports.getSize = (req, res) => {
-  var sizeee = [];
-  var result = [];
+    var sizeee = [];
+    var result = [];
 
-  Course.find()
-    .then((allCourse) => {
-      allCourse.map((item, index) => {
-        sizeee.push(item.size);
-      });
-      sizeee.sort();
-      let amountSize = 1;
-      for (let i = 0; i < sizeee.length; i++) {
-        if (sizeee[i] === sizeee[i + 1]) amountSize++;
-        else {
-          result.push({ size: sizeee[i], amountSize: amountSize });
-          amountSize = 1;
-        }
-      }
-      return res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: err.message,
-      });
-    });
+    Course.find()
+        .then((allCourse) => {
+            allCourse.map((item, index) => {
+                sizeee.push(item.size);
+            });
+            sizeee.sort();
+            let amountSize = 1;
+            for (let i = 0; i < sizeee.length; i++) {
+                if (sizeee[i] === sizeee[i + 1]) amountSize++;
+                else {
+                    result.push({ size: sizeee[i], amountSize: amountSize });
+                    amountSize = 1;
+                }
+            }
+            return res.status(200).json(result);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
 };
 const getPagination = (page, size) => {
-  const limit = size ? +size : 3;
-  const offset = page ? page * limit : 0;
+    const limit = size ? +size : 3;
+    const offset = page ? page * limit : 0;
 
-  return { limit, offset };
+    return { limit, offset };
 };
 // Retrieve all Courses from the database.
-exports.getAll = (req,res) =>{
-  const keyword = req.query.keyword;
+exports.getAll = (req, res) => {
+    const keyword = req.query.keyword;
+    if (keyword)
+        Course.find({ Name: { $regex: keyword } })
+        .then((allCourse) => {
+            let result = allCourse.filter(
+                (item) =>
+                (req.query.content == null ||
+                    item.tag === req.query.content) &&
+                (req.query.color == null ||
+                    item.colors.includes(req.query.color)) &&
+                (req.query.size == null || item.size.includes(req.query.size)) &&
+                (req.query.age == null || item.age === req.query.age) &&
+                (req.query.materials == null ||
+                    item.materials.includes(req.query.material)) &&
+                (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+                ((req.query.lowPrice == null && req.query.upPrice == null) ||
+                    (item.Price >= req.query.lowPrice &&
+                        item.Price <= req.query.upPrice))
+            );
 
- if (keyword)
-   Course.find({ Name: { $regex: keyword } })
-     .then((allCourse) => {
-       let result = allCourse.filter(
-         (item) =>
-         (req.query.content == null ||
-           item.tag === req.query.content) &&
-           (req.query.color == null ||
-             item.colors.includes(req.query.color)) &&
-           (req.query.size == null || item.size.includes(req.query.size)) &&
-           (req.query.age == null || item.age === req.query.age) &&
-           (req.query.materials == null ||
-             item.materials.includes(req.query.material)) &&
-           (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
-           ((req.query.lowPrice == null && req.query.upPrice == null) ||
-             (item.Price >= req.query.lowPrice &&
-               item.Price <= req.query.upPrice))
-       );
-      
-       return res.status(200).json(result);
-     })
-     .catch((err) => {
-       res.status(500).json({
-         success: false,
-         message: "Server error. Please try again.",
-         error: err.message,
-       });
-     });
- else {
-   
-    Course.find()
-     .then((allCourse) => {
-       let result = allCourse.filter(
-         (item) =>
-         (req.query.content == null ||
-           item.tag === req.query.content) &&
-           (req.query.color == null ||
-             item.colors.includes(req.query.color)) &&
-           (req.query.size == null || item.size.includes(req.query.size)) &&
-           (req.query.age == null || item.age === req.query.age) &&
-           
-           (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
-           ((req.query.lowPrice == null && req.query.upPrice == null) ||
-             (item.Price >= req.query.lowPrice &&
-               item.Price <= req.query.upPrice))
-       );
-      
-       return res.status(200).json(result)
-     })
-     .catch((err) => {
-       res.status(500).json({
-         success: false,
-         message: "Server error. Please try again.",
-         error: err.message,
-       });
-     }); 
- }
+            return res.status(200).json(result);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
+    else {
+
+        Course.find()
+            .then((allCourse) => {
+                let result = allCourse.filter(
+                    (item) =>
+                    (req.query.content == null ||
+                        item.tag === req.query.content) &&
+                    (req.query.color == null ||
+                        item.colors.includes(req.query.color)) &&
+                    (req.query.size == null || item.size.includes(req.query.size)) &&
+                    (req.query.age == null || item.age === req.query.age) &&
+
+                    (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+                    ((req.query.lowPrice == null && req.query.upPrice == null) ||
+                        (item.Price >= req.query.lowPrice &&
+                            item.Price <= req.query.upPrice))
+                );
+
+                return res.status(200).json(result)
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    success: false,
+                    message: "Server error. Please try again.",
+                    error: err.message,
+                });
+            });
+    }
 }
 exports.getCourse = (req, res) => {
-  console.log(req.query);
-  const keyword = req.query.keyword;
-   const { pagee,status} = req.query;
-   const sizee = 12;
-   const { limit, offset } = getPagination(pagee, sizee);  
-  const start = Number((pagee - 1 ) *sizee);
-  const end = Number(pagee * sizee); 
-  
-  console.log(start)
-  if (keyword)
-    Course.find({ Name: { $regex: keyword } })
-      .then((allCourse) => {
-        let result = allCourse.filter(
-          (item) =>
-          (req.query.content == null ||
-            item.tag === req.query.content) &&
-            (req.query.color == null ||
-              item.colors.includes(req.query.color)) &&
-            (req.query.size == null || item.size.includes(req.query.size)) &&
-            (req.query.age == null || item.age === req.query.age) &&
-            (req.query.materials == null ||
-              item.materials.includes(req.query.material)) &&
-            (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
-            ((req.query.lowPrice == null && req.query.upPrice == null) ||
-              (item.Price >= req.query.lowPrice &&
-                item.Price <= req.query.upPrice))
-        );
-       
-        const data = result.slice(start,end);
-        const pagePer = Math.ceil(result.length/sizee);
-        return res.status(200).json({
-          currentPage:Number(pagee),
-          
-          pageNum:pagePer,
-          product:data
+    console.log(req.query);
+    const keyword = req.query.keyword;
+    const { pagee, status } = req.query;
+    const sizee = 12;
+    const { limit, offset } = getPagination(pagee, sizee);
+    const start = Number((pagee - 1) * sizee);
+    const end = Number(pagee * sizee);
+
+    console.log(start)
+    if (keyword)
+        Course.find({ Name: { $regex: keyword } })
+        .then((allCourse) => {
+            let result = allCourse.filter(
+                (item) =>
+                (req.query.content == null ||
+                    item.tag === req.query.content) &&
+                (req.query.color == null ||
+                    item.colors.includes(req.query.color)) &&
+                (req.query.size == null || item.size.includes(req.query.size)) &&
+                (req.query.age == null || item.age === req.query.age) &&
+                (req.query.materials == null ||
+                    item.materials.includes(req.query.material)) &&
+                (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+                ((req.query.lowPrice == null && req.query.upPrice == null) ||
+                    (item.Price >= req.query.lowPrice &&
+                        item.Price <= req.query.upPrice))
+            );
+
+            const data = result.slice(start, end);
+            const pagePer = Math.ceil(result.length / sizee);
+            return res.status(200).json({
+                currentPage: Number(pagee),
+
+                pageNum: pagePer,
+                product: data
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
         });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          message: "Server error. Please try again.",
-          error: err.message,
-        });
-      });
-  else {
-    
-     Course.find()
-      .then((allCourse) => {
-        let result = allCourse.filter(
-          (item) =>
-          (req.query.content == null ||
-            item.tag === req.query.content) &&
-            (req.query.color == null ||
-              item.colors.includes(req.query.color)) &&
-            (req.query.size == null || item.size.includes(req.query.size)) &&
-            (req.query.age == null || item.age === req.query.age) &&
-            
-            (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
-            ((req.query.lowPrice == null && req.query.upPrice == null) ||
-              (item.Price >= req.query.lowPrice &&
-                item.Price <= req.query.upPrice))
-        );
-        const data = result.slice(start,end);
-        const pagePer = Math.ceil(result.length/sizee);
-        return res.status(200).json({
-          currentPage:Number(pagee),
-          
-          pageNum:pagePer,
-          product:data
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          message: "Server error. Please try again.",
-          error: err.message,
-        });
-      }); 
-  }
+    else {
+
+        Course.find()
+            .then((allCourse) => {
+                let result = allCourse.filter(
+                    (item) =>
+                    (req.query.content == null ||
+                        item.tag === req.query.content) &&
+                    (req.query.color == null ||
+                        item.colors.includes(req.query.color)) &&
+                    (req.query.size == null || item.size.includes(req.query.size)) &&
+                    (req.query.age == null || item.age === req.query.age) &&
+
+                    (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+                    ((req.query.lowPrice == null && req.query.upPrice == null) ||
+                        (item.Price >= req.query.lowPrice &&
+                            item.Price <= req.query.upPrice))
+                );
+                const data = result.slice(start, end);
+                const pagePer = Math.ceil(result.length / sizee);
+                return res.status(200).json({
+                    currentPage: Number(pagee),
+
+                    pageNum: pagePer,
+                    product: data
+                });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    success: false,
+                    message: "Server error. Please try again.",
+                    error: err.message,
+                });
+            });
+    }
 };
 exports.getRelativeCourses = (req, res) => {
-  console.log(req.query);
-  const keyword = req.query.keyword;
-  if (keyword)
-    Course.find({ Name: { $regex: keyword } })
-      .then((allCourse) => {
-        let result = allCourse.filter(
-          (item) =>
-            (req.query.age == null || item.age === req.query.age) &&
-            (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
-            ((req.query.lowPrice == null && req.query.upPrice == null) ||
-              (item.Price >= req.query.lowPrice &&
-                item.Price <= req.query.upPrice))
-        );
-        return res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          message: "Server error. Please try again.",
-          error: err.message,
+    console.log(req.query);
+    const keyword = req.query.keyword;
+    if (keyword)
+        Course.find({ Name: { $regex: keyword } })
+        .then((allCourse) => {
+            let result = allCourse.filter(
+                (item) =>
+                (req.query.age == null || item.age === req.query.age) &&
+                (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+                ((req.query.lowPrice == null && req.query.upPrice == null) ||
+                    (item.Price >= req.query.lowPrice &&
+                        item.Price <= req.query.upPrice))
+            );
+            return res.status(200).json(result);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
         });
-      });
-  else {
-    Course.find()
-      .then((allCourse) => {
-        let result = allCourse.filter(
-          (item) =>
-            (req.query.age == null || item.age === req.query.age) &&
-            (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
-            ((req.query.lowPrice == null && req.query.upPrice == null) ||
-              (item.Price >= req.query.lowPrice &&
-                item.Price <= req.query.upPrice))
-        );
-        return res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          message: "Server error. Please try again.",
-          error: err.message,
-        });
-      });
-  }
+    else {
+        Course.find()
+            .then((allCourse) => {
+                let result = allCourse.filter(
+                    (item) =>
+                    (req.query.age == null || item.age === req.query.age) &&
+                    (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+                    ((req.query.lowPrice == null && req.query.upPrice == null) ||
+                        (item.Price >= req.query.lowPrice &&
+                            item.Price <= req.query.upPrice))
+                );
+                return res.status(200).json(result);
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    success: false,
+                    message: "Server error. Please try again.",
+                    error: err.message,
+                });
+            });
+    }
 };
 exports.getCourseWithDateRange = (req, res) => {
-  Course.find()
-    .then((allCourse) => {
-      var x = new Date(req.query.startDate);
-      var y = new Date(req.query.endDate);
-      let result = allCourse.filter(
-        (item) => item.DateIn >= x && item.DateIn <= y
-      );
-      return res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: err.message,
-      });
-    });
+    Course.find()
+        .then((allCourse) => {
+            var x = new Date(req.query.startDate);
+            var y = new Date(req.query.endDate);
+            let result = allCourse.filter(
+                (item) => item.DateIn >= x && item.DateIn <= y
+            );
+            return res.status(200).json(result);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
 };
 exports.getCoursesOrderByTopSale = (req, res) => {
-  if (req.query.esc) {
-    Course.aggregate([{ $sort: { soldQuantity: -1 } }])
-      .then((allCourse) => {
-        return res.status(200).json(allCourse);
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          message: "Server error. Please try again.",
-          error: err.message,
-        });
-      });
-  } else {
-    Course.aggregate([{ $sort: { soldQuantity: 1 } }])
-      .then((allCourse) => {
-        return res.status(200).json(allCourse);
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          message: "Server error. Please try again.",
-          error: err.message,
-        });
-      });
-  }
+    if (req.query.esc) {
+        Course.aggregate([{ $sort: { soldQuantity: -1 } }])
+            .then((allCourse) => {
+                return res.status(200).json(allCourse);
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    success: false,
+                    message: "Server error. Please try again.",
+                    error: err.message,
+                });
+            });
+    } else {
+        Course.aggregate([{ $sort: { soldQuantity: 1 } }])
+            .then((allCourse) => {
+                return res.status(200).json(allCourse);
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    success: false,
+                    message: "Server error. Please try again.",
+                    error: err.message,
+                });
+            });
+    }
 };
 exports.getCourseTop3LatestOfMale = (req, res) => {
-  Course.aggregate([
-    { $sort: { DateIn: -1 } },
-    { $match: { Sex: "Nam", age: "Adult" } },
-  ])
-    .then((allCourse) => {
-      var data = [];
-      if(allCourse.length > 7)
-      {
-        for(let i=0;i<7; i++){
-          data.push(allCourse[i]);
-        }
-      }else{
-        for(let i=0;i<allCourse.length; i++){
-          data.push(allCourse[i]);
-        }
-      }
-      return res.status(200).json(data);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: err.message,
-      });
-    });
+    Course.aggregate([
+            { $sort: { DateIn: -1 } },
+            { $match: { Sex: "Nam", age: "Adult" } },
+        ])
+        .then((allCourse) => {
+            var data = [];
+            if (allCourse.length > 7) {
+                for (let i = 0; i < 7; i++) {
+                    data.push(allCourse[i]);
+                }
+            } else {
+                for (let i = 0; i < allCourse.length; i++) {
+                    data.push(allCourse[i]);
+                }
+            }
+            return res.status(200).json(data);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
 };
 exports.getCourseTop3LatestOfFemale = (req, res) => {
-  Course.aggregate([
-    { $sort: { DateIn: -1 } },
-    { $match: { Sex: "Nữ", age: "Adult" } },
-  ])
-    .then((allCourse) => {
-      var data = [];
-      if(allCourse.length > 7)
-      {
-        for(let i=0;i<7; i++){
-          data.push(allCourse[i]);
-        }
-      }else{
-        for(let i=0;i<allCourse.length; i++){
-          data.push(allCourse[i]);
-        }
-      }
-      
-      return res.status(200).json(data);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: err.message,
-      });
-    });
+    Course.aggregate([
+            { $sort: { DateIn: -1 } },
+            { $match: { Sex: "Nữ", age: "Adult" } },
+        ])
+        .then((allCourse) => {
+            var data = [];
+            if (allCourse.length > 7) {
+                for (let i = 0; i < 7; i++) {
+                    data.push(allCourse[i]);
+                }
+            } else {
+                for (let i = 0; i < allCourse.length; i++) {
+                    data.push(allCourse[i]);
+                }
+            }
+
+            return res.status(200).json(data);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
 };
 exports.getCourseTop3LatestOfKid = (req, res) => {
-  Course.aggregate([{ $sort: { DateIn: -1 } }, { $match: { age: "Kid" } }])
-    .then((allCourse) => {
-      var data = [];
-      if(allCourse.length > 7)
-      {
-        for(let i=0;i<7; i++){
-          data.push(allCourse[i]);
-        }
-      }else{
-        for(let i=0;i<allCourse.length; i++){
-          data.push(allCourse[i]);
-        }
-      }
-      return res.status(200).json(data);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: err.message,
-      });
-    });
+    Course.aggregate([{ $sort: { DateIn: -1 } }, { $match: { age: "Kid" } }])
+        .then((allCourse) => {
+            var data = [];
+            if (allCourse.length > 7) {
+                for (let i = 0; i < 7; i++) {
+                    data.push(allCourse[i]);
+                }
+            } else {
+                for (let i = 0; i < allCourse.length; i++) {
+                    data.push(allCourse[i]);
+                }
+            }
+            return res.status(200).json(data);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
 };
 exports.getCourseTopSalerForMale = (req, res) => {
-  Course.aggregate([
-    { $sort: { soldQuantity: -1 } },
-    { $match: { Sex: "Nam", age: "Adult" } },
-  ])
-    .then((allCourse) => {
-      var data = [];
-      if(allCourse.length > 7)
-      {
-        for(let i=0;i<7; i++){
-          data.push(allCourse[i]);
-        }
-      }else{
-        for(let i=0;i<allCourse.length; i++){
-          data.push(allCourse[i]);
-        }
-      }
-      return res.status(200).json(data);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: err.message,
-      });
-    });
+    Course.aggregate([
+            { $sort: { soldQuantity: -1 } },
+            { $match: { Sex: "Nam", age: "Adult" } },
+        ])
+        .then((allCourse) => {
+            var data = [];
+            if (allCourse.length > 7) {
+                for (let i = 0; i < 7; i++) {
+                    data.push(allCourse[i]);
+                }
+            } else {
+                for (let i = 0; i < allCourse.length; i++) {
+                    data.push(allCourse[i]);
+                }
+            }
+            return res.status(200).json(data);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
 };
 exports.getCourseTopSalerForFemale = (req, res) => {
-  Course.aggregate([
-    { $sort: { soldQuantity: -1 } },
-    { $match: { Sex: "Nữ", age: "Adult" } },
-  ])
-    .then((allCourse) => {
-      var data = [];
-      if(allCourse.length > 7)
-      {
-        for(let i=0;i<7; i++){
-          data.push(allCourse[i]);
-        }
-      }else{
-        for(let i=0;i<allCourse.length; i++){
-          data.push(allCourse[i]);
-        }
-      }
-      return res.status(200).json(data);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: err.message,
-      });
-    });
+    Course.aggregate([
+            { $sort: { soldQuantity: -1 } },
+            { $match: { Sex: "Nữ", age: "Adult" } },
+        ])
+        .then((allCourse) => {
+            var data = [];
+            if (allCourse.length > 7) {
+                for (let i = 0; i < 7; i++) {
+                    data.push(allCourse[i]);
+                }
+            } else {
+                for (let i = 0; i < allCourse.length; i++) {
+                    data.push(allCourse[i]);
+                }
+            }
+            return res.status(200).json(data);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
 };
 exports.getCourseTopMostSalerForKid = (req, res) => {
-  Course.aggregate([
-    { $sort: { soldQuantity: -1 } },
-    { $match: { age: "Kid" } },
-  ])
-    .then((allCourse) => {
-      var data = [];
-      if(allCourse.length > 7)
-      {
-        for(let i=0;i<7; i++){
-          data.push(allCourse[i]);
-        }
-      }else{
-        for(let i=0;i<allCourse.length; i++){
-          data.push(allCourse[i]);
-        }
-      }
-      return res.status(200).json(data);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-        error: err.message,
-      });
-    });
+    Course.aggregate([
+            { $sort: { soldQuantity: -1 } },
+            { $match: { age: "Kid" } },
+        ])
+        .then((allCourse) => {
+            var data = [];
+            if (allCourse.length > 7) {
+                for (let i = 0; i < 7; i++) {
+                    data.push(allCourse[i]);
+                }
+            } else {
+                for (let i = 0; i < allCourse.length; i++) {
+                    data.push(allCourse[i]);
+                }
+            }
+            return res.status(200).json(data);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+                error: err.message,
+            });
+        });
 };
 exports.getCourseById = (req, res) => {
-  const id = req.params.id;
-  Course.findById(id)
-    .then((singleArticle) => {
-      res.status(200).json(singleArticle);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "This course does not exist",
-        error: err.message,
-      });
-    });
+    const id = req.params.id;
+    Course.findById(id)
+        .then((singleArticle) => {
+            res.status(200).json(singleArticle);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "This course does not exist",
+                error: err.message,
+            });
+        });
 };
 
 exports.deleteCourse = (req, res) => {
-  const id = req.params.id;
-  Course.findByIdAndRemove(id)
-    .exec()
-    .then(() => {
-      res.status(204).json({
-        success: true,
-      });
-    })
-    .catch((err) =>
-      res.status(500).json({
-        success: false,
-      })
-    );
+    const id = req.params.id;
+    Course.findByIdAndRemove(id)
+        .exec()
+        .then(() => {
+            res.status(204).json({
+                success: true,
+            });
+        })
+        .catch((err) =>
+            res.status(500).json({
+                success: false,
+            })
+        );
 };
 
 exports.updateCourse = (req, res) => {
-  if (!req.body) {
-    return res.status(400).send({
-      message: "Data to update can not be empty!",
-    });
-  }
-
-  const id = req.params.id;
-
-  Course.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found!`,
+    if (!req.body) {
+        return res.status(400).send({
+            message: "Data to update can not be empty!",
         });
-      } else res.send({ message: "Tutorial was updated successfully." });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating Tutorial with id=" + id,
-      });
-    });
+    }
+
+    const id = req.params.id;
+
+    Course.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+        .then((data) => {
+            if (!data) {
+                res.status(404).send({
+                    message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found!`,
+                });
+            } else res.send({ message: "Tutorial was updated successfully." });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Error updating Tutorial with id=" + id,
+            });
+        });
 };
 
 exports.postComment = (req, res) => {
-  const id = req.params.id;
-  const updateObject = req.body;
-  Course.updateOne({ _id: id }, { $push: { Comments: updateObject } })
-    .exec()
-    .then(() => {
-      Course.findById(id).then((singleArticle) => {
-        res.status(200).json({ Status: "comment successed", singleArticle });
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again.",
-      });
-    });
+    const id = req.params.id;
+    const updateObject = req.body;
+    Course.updateOne({ _id: id }, { $push: { Comments: updateObject } })
+        .exec()
+        .then(() => {
+            Course.findById(id).then((singleArticle) => {
+                res.status(200).json({ Status: "comment successed", singleArticle });
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again.",
+            });
+        });
 };
 exports.deleteComments = (req, res) => {
-  const id = req.params.id;
-  const cmtId = parseInt(req.params.commentId);
-  Course.updateOne({ _id: id }, { $pull: { Comments: { commentId: cmtId } } })
-    .then(() => {
-      Course.findById(id).then((singleArticle) => {
-        res.status(200).json({ Status: "comment successed", singleArticle });
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error. Please try again." + err,
-      });
-    });
+    const id = req.params.id;
+    const cmtId = parseInt(req.params.commentId);
+    Course.updateOne({ _id: id }, { $pull: { Comments: { commentId: cmtId } } })
+        .then(() => {
+            Course.findById(id).then((singleArticle) => {
+                res.status(200).json({ Status: "comment successed", singleArticle });
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                success: false,
+                message: "Server error. Please try again." + err,
+            });
+        });
 };
