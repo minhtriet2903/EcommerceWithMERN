@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect,lazy } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import Productcontent from '../../products/section';
 import { connect } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -13,84 +13,132 @@ import { actAddtoCart, actFetchProduct, actFetchColor, actFetchSizer } from '../
 
 const ProductContainer = (props) => {
     const router = useRouter();
-    const sexx = ["Nam","Nữ","Trẻ con"];
+    const { products } = props;
+    const sexx = ["Nam", "Nữ", "Trẻ con"];
     const [posts, setPosts] = useState([]);
+    const [totalPage, setTotalPage] = useState(0)
     const [currentPage, setCurrentPage] = useState(0);
     const postPerPage = 8;
 
     //props contain attribute of product and  1 action to add to cart of each other  
     useEffect(() => {
-        
-      
-    
-
         if (router.asPath !== router.route) {
             var request = {
                 params: {
-                     sex: router.query.catogrory === 'kid'? null : router.query.catogrory, 
-                     age:  router.query.catogrory === 'kid'? 'Kid' : 'Adult', 
-                    content:router.query.productContainer,
+                    sex: router.query.catogrory === 'kid' ? null : router.query.catogrory,
+                    age: router.query.catogrory === 'kid' ? 'Kid' : 'Adult',
+                    content: router.query.productContainer,
                     color: router.query.color ? router.query.color : null,
                     size: router.query.size ? router.query.size : null,
                     lowPrice: router.query.lowPrice,
                     upPrice: router.query.upPrice,
+                    pagee: router.query.pagee ? router.query.pagee : 1,
                 }
             }
             const fetchh = async () => {
                 const data = await axios.get(Config.API_URL, request ? request : {});
-                props.actFetchProduct(data.data);
-                 setPosts(data.data); 
-               
+                props.actFetchProduct(data.data.product);
+                setTotalPage(data.data.pageNum)
+                setCurrentPage(data.data.currentPage)
+
             };
             fetchh();
         }
     }, [router])
     useEffect(() => {
         const fetchh = async () => {
-        const res = await fetch(Config.API_URL + '/color');
-            const data = await res.json() 
-             props.actFetchColor(data);
+            const res = await fetch(Config.API_URL + '/color');
+            const data = await res.json()
+            props.actFetchColor(data);
 
         };
         fetchh();
         const fetchSize = async () => {
-             const res = await fetch(Config.API_URL + '/size');
-            const data = await res.json() 
-             props.actFetchSizer(data); 
+            const res = await fetch(Config.API_URL + '/size');
+            const data = await res.json()
+            props.actFetchSizer(data);
         };
         fetchSize();
     }, [])
 
     //get current post
-    const indexOfLastPost = currentPage * postPerPage;
-    const indexOfFirstPost = indexOfLastPost + postPerPage;
-    const currentPost = posts.slice(indexOfLastPost, indexOfFirstPost);
+
 
     //change page 
-    const pageItem = (number) => setCurrentPage(number)
+
     const showProduct = (product) => {
         var result = 'Không có sản phẩm nào';
         const { onAddToCart } = props;
         if (product.length > 0) {
-            result = currentPost.map((product, index) => {
+            result = product.map((product, index) => {
                 return <Productcontent key={index} product={product} onAddToCart={onAddToCart} />
             })
         }
         return result;
     }
+    const handlePage = async (e) => {
 
+        const currentPath = router.pathname;
+        const currentQuery = router.query;
+
+        currentQuery.pagee = e;
+        router.push({
+            pathname: currentPath,
+            query: currentQuery
+        })
+
+    }
+    const showPagination = (e) => {
+        var page = [];
+        var result = '';
+        for (let i = 1; i <= e; i++) {
+            page.push(Number(i))
+        }
+        result = page.length > 0 ? page.map((item, index) => {
+
+            return <li key={index} className={index + 1 === currentPage ? 'hightLight' : ''} onClick={() => handlePage(index + 1)}>{item}</li>
+        })
+            : '';
+        return result;
+    }
+    const handleChangePage = async (e) => {
+        const i = Number(e.target.attributes.num.value);
+        const currentPath = router.pathname;
+        const currentQuery = router.query;
+
+        currentQuery.pagee = i === 1 ? currentPage - 1 : currentPage + 1;
+        router.push({
+            pathname: currentPath,
+            query: currentQuery
+        })
+    }
     return (
         <>
             <Product>
 
                 <div className="body-container">
-                     <Options AmountColor={props.color} AmountSize={props.size} actFetchProduct={props.actFetchProduct} /> 
+                    <Options AmountColor={props.color} AmountSize={props.size} actFetchProduct={props.actFetchProduct} />
                     <div className="section-body">
                         <section>
-                            {showProduct(currentPost)}
+                            {showProduct(products)}
                         </section>
 
-                        <Pagination postPerPage={postPerPage} totalPosts={posts.length} pageItem={pageItem} />
+                        <div className="pagein_body">
+                            <div className="inside">
+                                {
+                                    currentPage === 1 ? '' : <i className='bx bxs-left-arrow' num="1" onClick={handleChangePage}></i>
+                                }
+                                <ul className="paginationBttns">
+                                    {
+                                        showPagination(totalPage)
+                                    }
+                                </ul>
+                                {
+                                    currentPage === totalPage || totalPage === 0 ? '' : <i className='bx bxs-right-arrow' num="2" onClick={handleChangePage}></i>
+                                }
+
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -104,7 +152,7 @@ const mapStateToProps = state => {
     return {
         products: state.product,
         color: state.color,
-        size: state.size 
+        size: state.size
         //get product from store in reducer and push in props
     }
 }

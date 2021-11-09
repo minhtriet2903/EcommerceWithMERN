@@ -8,7 +8,7 @@ const Breadcrumb = (props) => {
 
   const current = useRouter();
   const { router } = props;
-  const {detail} = props;
+  const { detail } = props;
   const name = router.asPath.split("?").filter(x => x);
   const [link, setLink] = useState([]);
   const path = router.pathname.split("/").filter(x => x);
@@ -21,18 +21,17 @@ const Breadcrumb = (props) => {
   useEffect(() => {
     var bread = [];
     path.map((item, index) => {
-      
- 
+
       if (item === '[catogrory]') {
-    
+
         if (router.query.catogrory !== 'undefined')
           bread.push(router.query.catogrory)
         else {
-          
-          if ((detail.Sex === 'Male'||detail.Sex === 'Nam') && detail.age === 'Adult') {
+
+          if ((detail.Sex === 'Male' || detail.Sex === 'Nam') && detail.age === 'Adult') {
             bread.push("Nam")
           }
-          else if ((detail.Sex === 'Female')||(detail.Sex === 'Nữ') && detail.age === 'Adult') {
+          else if ((detail.Sex === 'Female') || (detail.Sex === 'Nữ') && detail.age === 'Adult') {
             bread.push("Nữ")
           } else {
             bread.push("Trẻ con")
@@ -45,7 +44,7 @@ const Breadcrumb = (props) => {
       }
     })
     setLink(bread);
-   
+
   }, [detail])
 
 
@@ -56,6 +55,7 @@ const Breadcrumb = (props) => {
   /*  newUrl[newUrl.length-1][0]= newUrl[newUrl.length-1][0].replace(/[-]/g," ") */
 
   /*   window.location.protocol + "://" + */
+  console.log(current.query)
   const newlink = link;
   return (
     <>
@@ -66,7 +66,7 @@ const Breadcrumb = (props) => {
           </Link>
           {link.map((item, index) => {
             const isLast = index === link.length - 1;
-             if (current.pathname === '/container/[catogrory]/[productContainer]' && index === newUrl.length - 1)
+            if (current.pathname === '/container/[catogrory]/[productContainer]' && index === newUrl.length - 1)
               item = current.query.productContainer;
             else if (current.pathname === '/container/[catogrory]/details' && index === newUrl.length - 1)
               item = 'Chi tiết';
@@ -74,16 +74,31 @@ const Breadcrumb = (props) => {
               item = 'Giỏ hàng';
             } else if (current.pathname === '/container/find') {
               item = 'Tìm kiếm'
-            }else if(current.pathname === '/UserPage' && index === newUrl.length - 1){
+            } else if (current.pathname === '/UserPage' && index === newUrl.length - 1) {
               item = 'Thông tin cá nhân'
             }
-                 var routo = `/container/${newlink.slice(0,index + 1).join("/")}`;
-                 
-            
+            var routo = `/container/${newlink.slice(0, index + 1).join("/")}`;
+            console.log(routo)
             return isLast ? (
               <span key={index}>{item === 'Kid' ? 'Trẻ con' : item}</span>
             ) :
-              <Link key={index} className="breadcrumb_link"  color="inherit" onClick={() => { router.push(routo) }}>
+              <Link key={index} className="breadcrumb_link" color="inherit" onClick={() => {
+
+                item === 'Nam' || item === 'Nữ' ? current.push(routo + '?age=Adult') : router.push(routo)
+                /*   if(item === 'Nam' || item === 'Nữ'){
+                  current.push(routo + '?age=Adult')
+                } else if(item === 'Trẻ con') {
+                      const curr = current.pathname;
+                      const que = current.query;
+                      que.catogrory = 'Kid';
+                    
+                     
+                      current.push({
+                        pathname:routo,
+                        query:que
+                      })
+                }   */
+              }}>
                 {item === 'Kid' ? 'Trẻ con' : item}
               </Link>
           })}

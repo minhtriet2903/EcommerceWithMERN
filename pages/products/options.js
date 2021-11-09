@@ -14,9 +14,9 @@ const Option = (props) => {
   const path = router.asPath.split("?").filter(x => x);
 
   const newPath = path.slice(0, 1).toString();
-
+  
   const clickColor = useRef([])
-  const [pricerange, setPriceRange] = useState([50000, 2000000]);
+  const [pricerange, setPriceRange] = useState([0, 2000000]);
   const [chooseSize, setChooseSize] = useState();
   const [chooseColor, setChooseColor] = useState();
   const [turnn, setTurn] = useState(false);
@@ -162,6 +162,7 @@ const Option = (props) => {
         pathname: newPath,
         query:{
           age:router.query.age,
+          result: router.query.result ? router.query.result : null,
         }
       }
         

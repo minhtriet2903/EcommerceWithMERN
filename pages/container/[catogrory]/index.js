@@ -17,10 +17,12 @@ import {
 const ProductByGt = (props) => {
   const router = useRouter();
 
+  const { products } = props;
   const [posts, setPosts] = useState([]);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [totalPage, setTotalPage] = useState(0)
   const [currentPage, setCurrentPage] = useState(0);
-  const postPerPage = 8;
+
 
   //props contain attribute of product and  1 action to add to cart of each other
   useEffect(() => {
@@ -30,55 +32,32 @@ const ProductByGt = (props) => {
         params: {
           sex:
             router.query.catogrory === "Kid" ||
-            router.query.catogrory === "Trẻ em"
+              router.query.catogrory === "Trẻ em"
               ? null
               : router.query.catogrory,
           age:
             router.query.catogrory === "Kid" ||
-            router.query.catogrory === "Trẻ em"
+              router.query.catogrory === "Trẻ em"
               ? "Kid"
               : router.query.age,
           color: router.query.color ? router.query.color : null,
           size: router.query.size ? router.query.size : null,
           lowPrice: router.query.lowPrice,
           upPrice: router.query.upPrice,
+          pagee: router.query.pagee ? router.query.pagee : 1,
         },
       };
       const fetchh = async () => {
         const data = await axios.get(Config.API_URL, request ? request : {});
-        props.actFetchProduct(data.data);
-        setPosts(data.data);
-        
+     
+        props.actFetchProduct(data.data.product);
+      
+        setTotalPage(data.data.pageNum)
+        setCurrentPage(data.data.currentPage)
       };
       fetchh();
     }
   }, [router]);
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost + postPerPage;
-  const currentPost = posts.slice(indexOfLastPost, indexOfFirstPost);
-  console.log(loading)
-  //change page
-  const pageItem = (number) => setCurrentPage(number);
-  const showProduct = (product) => {
-    var result = "";
-    const { onAddToCart } = props;
-    console.log(product)
-    if(loading){
-      result="Không có sản phẩm nào";
-    }
-    if (product.length > 0) {
-      result = currentPost.map((product, index) => {
-        return (
-          <Productcontent
-            key={index}
-            product={product}
-            onAddToCart={onAddToCart}
-          />
-        );
-      });
-    }
-    return result;
-  };
   useEffect(() => {
     const fetchh = async () => {
       const res = await fetch(Config.API_URL + "/color");
@@ -94,6 +73,66 @@ const ProductByGt = (props) => {
     fetchSize();
   }, []);
 
+
+  //change page
+
+  const showProduct = (product) => {
+    var result = "";
+    const { onAddToCart } = props;
+
+    if (loading) {
+      result = "Không có sản phẩm nào";
+    }
+    if (product.length > 0) {
+      result = product.map((product, index) => {
+        return (
+          <Productcontent
+            key={index}
+            product={product}
+            onAddToCart={onAddToCart}
+          />
+        );
+      });
+    }
+    return result;
+  };
+  const handlePage = async (e) => {
+
+    const currentPath = router.pathname;
+    const currentQuery = router.query;
+
+    currentQuery.pagee = e;
+    router.push({
+      pathname: currentPath,
+      query: currentQuery
+    })
+
+  }
+  const showPagination = (e) => {
+    var page = [];
+    var result = '';
+    for (let i = 1; i <= e; i++) {
+      page.push(Number(i))
+    }
+    result = page.length > 0 ? page.map((item, index) => {
+
+      return <li key={index} className={index + 1 === currentPage ? 'hightLight' : ''} onClick={() => handlePage(index + 1)}>{item}</li>
+    })
+      : '';
+    return result;
+  }
+  const handleChangePage = async (e) => {
+    const i = Number(e.target.attributes.num.value);
+    const currentPath = router.pathname;
+    const currentQuery = router.query;
+
+    currentQuery.pagee = i === 1 ? currentPage - 1 : currentPage + 1;
+    router.push({
+      pathname: currentPath,
+      query: currentQuery
+    })
+  }
+
   //get current post
   
 
@@ -107,13 +146,24 @@ const ProductByGt = (props) => {
             actFetchProduct={props.actFetchProduct}
           />
           <div className="section-body">
-            <section>{showProduct(currentPost)}</section>
+            <section>{showProduct(products)}</section>
+            <div className="pagein_body">
+              <div className="inside">
+                {
+                  currentPage === 1 ? '' : <i className='bx bxs-left-arrow' num="1" onClick={handleChangePage}></i>
+                }
+                <ul className="paginationBttns">
+                  {
+                    showPagination(totalPage)
+                  }
+                </ul>
+                {
+                  currentPage === totalPage || totalPage === 0  ? '' : <i className='bx bxs-right-arrow' num="2" onClick={handleChangePage}></i>
+                }
 
-            <Pagination
-              postPerPage={postPerPage}
-              totalPosts={posts.length}
-              pageItem={pageItem}
-            />
+              </div>
+            </div>
+
           </div>
         </div>
       </Product>

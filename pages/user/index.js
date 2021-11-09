@@ -72,7 +72,7 @@ export default function Home({ data }) {
           page: index,
         },
       })
-      .then((res) => setUserTable(res.data.tutorials));
+      .then((res) => { console.log(res); setUserTable(res.data.tutorials)});
   };
 
   return (
@@ -153,7 +153,7 @@ export default function Home({ data }) {
               </li>
             </ul>
           </nav>
-          <div class="table-responsive" style={{ textAlign: "center" }}>
+          <div className="table-responsive" style={{ textAlign: "center" }}>
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -165,8 +165,8 @@ export default function Home({ data }) {
                 </tr>
               </thead>
               <tbody>
-                {userTable.map((item) => (
-                  <tr>
+                {userTable.map((item,index) => (
+                  <tr key={index}>
                     <td>{item.name}</td>
                     <td>{item.email}</td>
                     <td>{item.role}</td>

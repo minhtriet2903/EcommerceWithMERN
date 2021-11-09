@@ -218,13 +218,13 @@ Statictical.getInitialProps = async (ctx) => {
       Today
   );
   const json_Today_Bills = await res_Today_Bills.json();
-  //console.log("http://localhost:5035/bills/dateRange?startDate="+Today.toLocaleDateString()+"&endDate="+Today.toLocaleDateString() );
+  console.log("http://localhost:5035/bills/dateRange?startDate="+Today.toLocaleDateString()+"&endDate="+Today.toLocaleDateString() );
 
   const res_All_Bills = await fetch("http://localhost:5035/bills");
   const json_All_Bills = await res_All_Bills.json();
   //console.log(json_Total_Bills);
 
-  const res_All_Courses = await fetch("http://localhost:5035/courses");
+  const res_All_Courses = await fetch("http://localhost:5035/coursesAll");
   const json_All_Courses = await res_All_Courses.json();
 
   const res_All_Users = await fetch("http://localhost:5035/users?size=1000");

@@ -24,7 +24,7 @@ const Button = styled.button`
   }
 `;
 export const getStaticPaths = async () => {
-  const res = await fetch("http://localhost:5035/courses");
+  const res = await fetch("http://localhost:5035/coursesAll");
   const data = await res.json();
 
   const paths = data.map((item) => {
@@ -309,8 +309,8 @@ function Form({ item }) {
         <div style={{ display: "flex" }}>
           <div className="form-group" style={{ marginTop: "12px" }}>
             <label htmlFor="sex">Màu</label>
-            {colors.map((color) => (
-              <div>
+            {colors.map((color,index) => (
+              <div key={index}>
                 <input
                   name="color"
                   type="radio"
@@ -325,8 +325,8 @@ function Form({ item }) {
             style={{ marginTop: "12px", marginLeft: "12px" }}
           >
             <label htmlFor="size">Kích cỡ</label>
-            {sizes.map((size) => (
-              <div>
+            {sizes.map((size,index) => (
+              <div key={index}>
                 <input
                   name="size"
                   type="radio"
@@ -341,8 +341,8 @@ function Form({ item }) {
             style={{ marginTop: "12px", marginLeft: "12px" }}
           >
             <label htmlFor="material">Chất liệu</label>
-            {materials.map((material) => (
-              <div>
+            {materials.map((material,index) => (
+              <div key={index}>
                 <input
                   name="material"
                   type="radio"

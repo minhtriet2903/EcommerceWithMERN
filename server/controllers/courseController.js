@@ -61,12 +61,7 @@ exports.createCourse = (req, res) => {
       });
     });
 };
-const getPagination = (page, size) => {
-  const limit = size ? +size : 3;
-  const offset = page ? page * limit : 0;
 
-  return { limit, offset };
-};
 exports.getColor = (req, res) => {
   var colorss = [];
   var sizeee = [];
@@ -126,11 +121,84 @@ exports.getSize = (req, res) => {
       });
     });
 };
+const getPagination = (page, size) => {
+  const limit = size ? +size : 3;
+  const offset = page ? page * limit : 0;
 
+  return { limit, offset };
+};
 // Retrieve all Courses from the database.
+exports.getAll = (req,res) =>{
+  const keyword = req.query.keyword;
+
+ if (keyword)
+   Course.find({ Name: { $regex: keyword } })
+     .then((allCourse) => {
+       let result = allCourse.filter(
+         (item) =>
+         (req.query.content == null ||
+           item.tag === req.query.content) &&
+           (req.query.color == null ||
+             item.colors.includes(req.query.color)) &&
+           (req.query.size == null || item.size.includes(req.query.size)) &&
+           (req.query.age == null || item.age === req.query.age) &&
+           (req.query.materials == null ||
+             item.materials.includes(req.query.material)) &&
+           (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+           ((req.query.lowPrice == null && req.query.upPrice == null) ||
+             (item.Price >= req.query.lowPrice &&
+               item.Price <= req.query.upPrice))
+       );
+      
+       return res.status(200).json(result);
+     })
+     .catch((err) => {
+       res.status(500).json({
+         success: false,
+         message: "Server error. Please try again.",
+         error: err.message,
+       });
+     });
+ else {
+   
+    Course.find()
+     .then((allCourse) => {
+       let result = allCourse.filter(
+         (item) =>
+         (req.query.content == null ||
+           item.tag === req.query.content) &&
+           (req.query.color == null ||
+             item.colors.includes(req.query.color)) &&
+           (req.query.size == null || item.size.includes(req.query.size)) &&
+           (req.query.age == null || item.age === req.query.age) &&
+           
+           (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+           ((req.query.lowPrice == null && req.query.upPrice == null) ||
+             (item.Price >= req.query.lowPrice &&
+               item.Price <= req.query.upPrice))
+       );
+      
+       return res.status(200).json(result)
+     })
+     .catch((err) => {
+       res.status(500).json({
+         success: false,
+         message: "Server error. Please try again.",
+         error: err.message,
+       });
+     }); 
+ }
+}
 exports.getCourse = (req, res) => {
   console.log(req.query);
   const keyword = req.query.keyword;
+   const { pagee,status} = req.query;
+   const sizee = 12;
+   const { limit, offset } = getPagination(pagee, sizee);  
+  const start = Number((pagee - 1 ) *sizee);
+  const end = Number(pagee * sizee); 
+  
+  console.log(start)
   if (keyword)
     Course.find({ Name: { $regex: keyword } })
       .then((allCourse) => {
@@ -149,7 +217,15 @@ exports.getCourse = (req, res) => {
               (item.Price >= req.query.lowPrice &&
                 item.Price <= req.query.upPrice))
         );
-        return res.status(200).json(result);
+       
+        const data = result.slice(start,end);
+        const pagePer = Math.ceil(result.length/sizee);
+        return res.status(200).json({
+          currentPage:Number(pagee),
+          
+          pageNum:pagePer,
+          product:data
+        });
       })
       .catch((err) => {
         res.status(500).json({
@@ -159,7 +235,8 @@ exports.getCourse = (req, res) => {
         });
       });
   else {
-    Course.find()
+    
+     Course.find()
       .then((allCourse) => {
         let result = allCourse.filter(
           (item) =>
@@ -169,14 +246,20 @@ exports.getCourse = (req, res) => {
               item.colors.includes(req.query.color)) &&
             (req.query.size == null || item.size.includes(req.query.size)) &&
             (req.query.age == null || item.age === req.query.age) &&
-            (req.query.materials == null ||
-              item.materials.includes(req.query.material)) &&
+            
             (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
             ((req.query.lowPrice == null && req.query.upPrice == null) ||
               (item.Price >= req.query.lowPrice &&
                 item.Price <= req.query.upPrice))
         );
-        return res.status(200).json(result);
+        const data = result.slice(start,end);
+        const pagePer = Math.ceil(result.length/sizee);
+        return res.status(200).json({
+          currentPage:Number(pagee),
+          
+          pageNum:pagePer,
+          product:data
+        });
       })
       .catch((err) => {
         res.status(500).json({
@@ -184,7 +267,7 @@ exports.getCourse = (req, res) => {
           message: "Server error. Please try again.",
           error: err.message,
         });
-      });
+      }); 
   }
 };
 exports.getRelativeCourses = (req, res) => {
