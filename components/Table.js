@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import React, { useEffect, useState } from "react";
 
 const Contaner = styled.div`
   height: 90%;
@@ -15,7 +16,7 @@ const Contaner = styled.div`
   }
 `;
 const Block = styled.div`
-  height: 50%;
+  height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
@@ -43,13 +44,48 @@ const Cell = styled.div`
   display: flex;
 `;
 const Rows = styled.div`
-  height: 200px;
+  height: 300px;
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.1);
+  border-radius:3px;
   overflow-y: scroll;
   &:-webkit-scrollbar {
     display: none;
   }
 `;
+function prettynumber(num) {
+  for(let i = 0; i<num.length; i++) {
+    if(num[i]<'0'||num[i]>'9'){
+      return num;
+    }
+  }
+  var numm = num.toString();
+  var re = "";
+  for (var i = 0; i < numm.length; i++) {
+    re += numm[i].toString();
+    if ((numm.length - i) % 3 == 1 && i != numm.length - 1) {
+      re += ",";
+    }
+  }
+  return re;
+}
 export default function Table({ data }) {
+  function calTotal(dataa){
+    var total=0;
+    var counter=0;
+    for(let i=0;i<dataa.rows.length;i++){
+      total+=dataa.rows[i][dataa.rows[i].length-1];
+      counter+=dataa.rows[i][dataa.rows[i].length-2];
+    }
+    var re=[];
+    re.push("Tổng");
+    for(let i=2;i<dataa.header.length-1;i++){
+        re.push("");
+    }
+    re.push(counter);
+    re.push(total);
+    return re;
+  }
+  const [rowTotal, setRowTotal]= useState(calTotal(data));
   return (
     <>
       <Block>
@@ -64,15 +100,22 @@ export default function Table({ data }) {
           </Rowheader>
           <Rows>
             {data.rows.map((row,index) => (
-              <Row key={index}>
+              <Row >
                 {row.map((item,indexx) => (
-                  <Cell key={indexx} style={{ width: 100 / data.header.length + "%" }}>
-                    {item}
+                  <Cell style={{ width: 100 / data.header.length + "%" }}>
+                    {prettynumber(item)}
                   </Cell>
                 ))}
               </Row>
             ))}
           </Rows>
+          <Row >
+            {(calTotal(data)).map((item,indexx) => (
+              <Cell style={{ width: 100 / data.header.length + "%" }}>
+                {prettynumber(item)}
+              </Cell>
+            ))}
+          </Row>
         </Contaner>
       </Block>
     </>
