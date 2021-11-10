@@ -89,7 +89,7 @@ const Modal = ({ show, onClose, children, title, item }) => {
       .catch((err) => {
         console.log(err);
       });
-     
+
         axios
           .post("http://localhost:5035/users/"  , {
             email: item.userEmail,

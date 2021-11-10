@@ -19,6 +19,7 @@ import axios from "axios";
 
 Home.getInitialProps = async (ctx) => {
   const res = await fetch("http://localhost:5035/coursesAll");
+  console.log(res);
   const json = await res.json();
 
   return { data: json};
