@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import { useState } from "react";
-
-function Form() {
+import {storage}  from "../../components/firebase"
+const  Form = () =>{
   const editorRef = useRef();
   const [formStatus, setFormStatus] = useState(false);
   const [name, setName] = useState("");
@@ -12,13 +12,15 @@ function Form() {
   const [price, setPrice] = useState(0);
   const [enteringQuantity, setEnteringQuantity] = useState(0);
   const [colors, setColors] = useState([
-    "yello",
+    "yellow",
     "blue",
     "red",
     "pink",
     "purple",
     "green",
     "grey",
+    "black",
+    "orange",
   ]);
   const [selectedColors, setSelectedColors] = useState("");
   const [sizes, setSizes] = useState(["XS", "S", "M", "L", "XL", "XXL"]);
@@ -41,7 +43,8 @@ function Form() {
   const [selectedMaterials, setSelectedMaterials] = useState();
 
   const [isSucceed, setIsSucceed] = useState("");
-  const [imageUrl, setImageUrl] = useState();
+  const [imageUrl, setImageUrl] = useState("");
+  const [imgFire,setImgFire] = useState(null)
   const [editorLoaded, setEditorLoaded] = useState(false);
   const [tag, setTag] = useState("");
   const { CKEditor, ClassicEditor } = editorRef.current || {};
@@ -53,10 +56,12 @@ function Form() {
     };
     setEditorLoaded(true);
   }, []);
-
-  const handleChange = () => (e) => {
+  
+  const handleChange = (e) => {
+   
     const name = e.target.name;
     const value = e.target.value;
+   
     if (name == "name") {
       setName(value);
     } else if (name == "imageUrl") {
@@ -75,7 +80,30 @@ function Form() {
       setAge(value);
     }
   };
-
+  const handleChangeImg = (e) =>{
+    setImgFire(e.target.files[0]);
+    console.log(e.target.files[0])
+  }
+  const handleSave = () =>{
+    const uploadTask = storage.ref(`images/${imgFire.name}`).put(imgFire);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {},
+      error =>{
+        console.log(error)
+      },
+      () =>{
+        storage
+        .ref("images")
+        .child(imgFire.name)
+        .getDownloadURL()
+        .then(url =>{
+          setImageUrl(url)
+        })
+      }
+    )
+  }
+ 
   const handleSubmit = () => {
     axios
       .post(
@@ -90,7 +118,7 @@ function Form() {
           age,
           colors: selectedColors,
           size: selectedSizes,
-          materials,
+          materials:selectedMaterials,
           image: imageUrl,
           tag,
         },
@@ -105,19 +133,7 @@ function Form() {
         console.log(error);
       });
   };
-  const handleSelectColor = (color) => () => {
-    setSelectedColors(color);
-  };
-  const handleSelectMaterial = (material) => () => {
-    setSelectedMaterials(material);
-  };
-  const handleSelectSize = (size) => () => {
-    setSelectedSizes(size);
-  };
-
-  const handleSelectType = (type) => () => {
-    setSelectType(type);
-  };
+  console.log(selectedMaterials)
   return (
     <div className="container-md">
       <h2>Thêm sản phẩm</h2>
@@ -131,8 +147,8 @@ function Form() {
             placeholder="Nhập tên sản phẩm"
             required
             name="name"
-            value={name}
-            onChange={handleChange()}
+           
+            onChange={handleChange}
           />
         </div>
         <div className="form-group mb-2">
@@ -145,7 +161,7 @@ function Form() {
             required
             name="tag"
             value={tag}
-            onChange={handleChange()}
+            onChange={handleChange}
           />
         </div>
         <div className="form-group mb-2">
@@ -190,7 +206,7 @@ function Form() {
             required
             name="price"
             value={price}
-            onChange={handleChange()}
+            onChange={handleChange}
           />
         </div>
         <div className="form-group mb-2">
@@ -203,7 +219,7 @@ function Form() {
             required
             name="enteringQuantity"
             value={enteringQuantity}
-            onChange={handleChange()}
+            onChange={handleChange}
           />
         </div>
         <div className="form-group">
@@ -213,9 +229,10 @@ function Form() {
             id="sex"
             required
             name="sex"
-            value={sex}
-            onChange={handleChange()}
+          
+            onChange={handleChange}
           >
+            <option></option>
             <option>Nam</option>
             <option>Nữ</option>
           </select>
@@ -228,7 +245,7 @@ function Form() {
                 <input
                   name="color"
                   type="radio"
-                  onChange={handleSelectColor(color)}
+                  onChange={() => setSelectedColors(color)}
                 />
                 <label style={{ marginLeft: "8px" }}>{color}</label>
               </div>
@@ -244,7 +261,7 @@ function Form() {
                 <input
                   name="size"
                   type="radio"
-                  onChange={handleSelectSize(size)}
+                  onChange={() => setSelectedSizes(size)}
                 />
                 <label style={{ marginLeft: "8px" }}>{size}</label>
               </div>
@@ -260,7 +277,7 @@ function Form() {
                 <input
                   name="material"
                   type="radio"
-                  onChange={handleSelectMaterial(material)}
+                  onChange={() => setSelectedMaterials(material)}
                 />
                 <label style={{ marginLeft: "8px" }}>{material}</label>
               </div>
@@ -276,7 +293,7 @@ function Form() {
                 <input
                   name="type"
                   type="radio"
-                  onClick={handleSelectType(shirt)}
+                  onClick={() => setSelectType(shirt)}
                 />
                 <label style={{ marginLeft: "8px" }}>{shirt}</label>
               </div>
@@ -292,7 +309,7 @@ function Form() {
                 <input
                   name="type"
                   type="radio"
-                  onClick={handleSelectType(short)}
+                  onClick={() => setSelectType(short)}
                 />
                 <label style={{ marginLeft: "8px" }}>{short}</label>
               </div>
@@ -307,24 +324,19 @@ function Form() {
             required
             name="age"
             value={age}
-            onChange={handleChange()}
+            onChange={handleChange}
           >
             <option>Người lớn</option>
             <option>Trẻ em</option>
           </select>
         </div>
         <div className="form-group mb-2">
-          <label htmlFor="imageUrl">Đường dẫn ảnh trên cloud</label>
+          <label htmlFor="imageUrl">Hình ảnh</label>
           <input
-            type="text"
-            className="form-control"
-            id="imageUrl"
-            placeholder="Nhập đường dẫn của ảnh"
-            required
-            name="imageUrl"
-            value={imageUrl}
-            onChange={handleChange()}
+            type="file"                  
+            onChange={handleChangeImg}
           />
+        <button type="button" onClick={handleSave} className="btn btn-primary">Lưu ảnh</button>
         </div>
         <hr />
         <button type="submit" className="btn btn-primary">

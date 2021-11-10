@@ -89,9 +89,9 @@ const Modal = ({ show, onClose, children, title, item }) => {
       .catch((err) => {
         console.log(err);
       });
-      if(item.userName=="NoLogin"){
+     
         axios
-          .put("http://localhost:5035/users/"  , {
+          .post("http://localhost:5035/users/"  , {
             email: item.userEmail,
             subject: "Thông báo đơn hàng đang được giao",
             htmlContent: `
@@ -105,7 +105,7 @@ const Modal = ({ show, onClose, children, title, item }) => {
           .catch((err) => {
             console.log(err);
           });
-      }
+      
     router.push("/bill");
   };
 
@@ -117,13 +117,13 @@ const Modal = ({ show, onClose, children, title, item }) => {
             x
           </a>
         </StyledModalHeader>
-        {title && <StyledModalTitle>{title}</StyledModalTitle>}
+        {title }
         <StyledModalBody>
           <h2>
             Phân công hóa đơn id = {item._id} tại khu vực: {item.Province}
           </h2>
           <button onClick={getShippers}>Phân công</button>
-          <div class="table-responsive">
+          <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -134,8 +134,8 @@ const Modal = ({ show, onClose, children, title, item }) => {
                 </tr>
               </thead>
               <tbody>
-                {shippers.map((shipper) => (
-                  <tr>
+                {shippers.map((shipper,index) => (
+                  <tr key={index}>
                     <td>{shipper.name}</td>
                     <td>{shipper.shipperArea}</td>
                     <td>{shipper.currentBillQuantity}</td>

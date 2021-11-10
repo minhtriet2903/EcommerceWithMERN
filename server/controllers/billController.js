@@ -87,9 +87,13 @@ exports.getBillWithDateRange = (req, res) => {
         .then((bills) => {
             var x = new Date(req.query.startDate);
             var y = new Date(req.query.endDate);
+            console.log(x.toLocaleDateString() + " : " + y.toLocaleDateString());
             let result = bills.filter(
-                (item) => item.BillDate >= x && item.BillDate <= y
+                (item) => 
+                    item.BillDate >= x && item.BillDate <= y
+                
             );
+           
             return res.status(200).json(result);
         })
         .catch((err) => {

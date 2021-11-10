@@ -41,7 +41,7 @@ const CartItem = (props) => {
                     <div className="produt-name">
                         <p>{item.product.name} (Màu: {item.product.color}, Size: {item.product.size})
                         </p>
-
+                       
                         <div className="product-id">
                             <span>Mã sản phẩm : </span>
                             <span>{item.product.id}</span>

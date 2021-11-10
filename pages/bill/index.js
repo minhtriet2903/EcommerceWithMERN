@@ -249,6 +249,8 @@ export default function Home({ data }) {
               <thead>
                 <tr>
                   <th>Ngày hóa đơn</th>
+                  <th>Tên khách hàng</th>
+                  <th>Email</th>
                   <th>Số lượng hàng</th>
                   <th>Giá trị hóa đơn</th>
                   <th>Trạng thái hóa đơn</th>
@@ -262,10 +264,13 @@ export default function Home({ data }) {
                 {tableData.map((item,index) => (
                   <tr key={index}>
                     <td>{item.BillDate}</td>
+                    <td>{item.userName}</td>
+                    <td>{item.userEmail}</td>
                     <td>{item.Products.length}</td>
                     <td>{item.TotalPrice}</td>
                     <td>{item.Status}</td>
-                    <td>{item.Area}</td>
+                   
+                    <td>{item.Address}</td>
                     <td>{item.Province}</td>
                     <td>{item.shipperName}</td>
                     <td>

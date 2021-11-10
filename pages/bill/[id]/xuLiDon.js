@@ -117,7 +117,7 @@ const Home = ({ item }) => {
         <Content>
           <div>
             <h4>Chi tiết hóa đơn</h4>
-            <div class="table-responsive">
+            <div className="table-responsive">
               <table className="table table-striped">
                 <thead>
                   <tr>

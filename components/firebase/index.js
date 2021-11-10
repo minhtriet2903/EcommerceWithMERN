@@ -1,9 +1,9 @@
-import * as firebase from "firebase/app";                                                                    
+import firebase from "firebase/app";                                                                    
      import "firebase/auth"; // If you need it                                                                 
     import "firebase/firestore"; // If you need it                                                            
     import "firebase/storage"; // If you need it 
 
-
+  
     const firebaseConfig = {
         apiKey: "AIzaSyDvnzQqVJwobFqs151t-z9V3iBXNQZsFqo",
         authDomain: "fir-react-upload-992b7.firebaseapp.com",
@@ -14,8 +14,10 @@ import * as firebase from "firebase/app";
         measurementId: "G-MBHSXQSQZB"
       };
      
-    
-        firebase.initializeApp(firebaseConfig)
+ if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig)
+ }
+      
     
 
 

@@ -77,7 +77,7 @@ const Total = (props) => {
     if (data.success) {
       console.log(data)
       cookieCutter.set("Bill", data.billId);
-      swal("Thông Báo!", "Thanh toán thành công", "success");
+    
       props.actDeleteAllCart();
        router.push('/billdisplay'); 
     } else {

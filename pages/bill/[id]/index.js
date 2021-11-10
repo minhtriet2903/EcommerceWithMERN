@@ -62,6 +62,7 @@ const Button = styled.button`
   }
 `;
 export const getStaticProps = async (context) => {
+
   const id = context.params.id;
   const res = await fetch("http://localhost:5035/bills/" + id);
   const data = await res.json();
@@ -73,6 +74,7 @@ export const getStaticProps = async (context) => {
 };
 
 const Home = ({ item }) => {
+ 
   const [showModal, setShowModal] = useState(false);
   const [itemId, setItemId] = useState("false");
   const [cmtId, setCmtId] = useState("false");
@@ -101,7 +103,9 @@ const Home = ({ item }) => {
               <thead>
                 <tr>
                   <th>Mã hàng</th>
+                  <th>Tên sản phẩm</th>
                   <th>Số lượng</th>
+                
                   <th>Giá đơn vị</th>
                   <th>Giá trị</th>
                   <th>Thao tác</th>
@@ -111,6 +115,7 @@ const Home = ({ item }) => {
                 {item.Products.map((it,index) => (
                   <tr key={index}>
                     <td>{it.product.id}</td>
+                    <td>{it.product.name}</td>
                     <td>{it.quantity}</td>
                     <td>{it.product.price}</td>
                     <td>{it.product.price * it.quantity}</td>

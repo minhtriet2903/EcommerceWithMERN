@@ -1,8 +1,8 @@
 .detail_bill_body{
     padding: 0 0.5rem  0.5rem 0.5rem;
-    overflow-y: auto;
-    max-height: 500px;
-    height: 400px;
+   
+  
+  
   position: relative;
 }
 
@@ -19,10 +19,10 @@
 }
 
 .bill_title{
-    position: absolute;
+   
     width: 100%;
     border-bottom: 1px solid black;
-    height: 50px;
+  
     
     background-color: white;
 }
@@ -31,5 +31,110 @@
 }
 .hisBill_detail_content{
     width: 100%;
-    margin-top: 50px;
+    max-width: 1200px;
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 400px;
+}
+
+
+.content_b_body{
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.id_bill{
+    display: inline-block;
+   
+    width: 241px;
+}
+.date_b{
+    display: inline-block;
+  
+    width: 113px;
+}
+.sp_bill{
+    display: inline-block;
+    width: 150px;
+}
+.total_bill{
+    display: inline-block;
+    width: 100px;
+}
+.status_col{
+
+}
+.dd{
+    width: 108px;
+}
+.ww{
+    font-weight: 600;
+   
+}
+
+
+
+
+/*table*/
+.table_content_bill{
+    width: 100%;
+}
+.bill_co1{
+   
+    padding: 0 1rem 0 0 ;
+}
+.bill_co2{
+   
+    padding: 1rem;
+}
+.bill_co3{
+    padding: 1rem;
+}
+.bill_co4{
+    
+    padding: 1rem;
+}
+.bill_co5{
+   
+    padding: 1rem;
+}
+.bill_co6{
+   
+    padding: 1rem;
+}
+
+/*img*/
+.bill_img_body{
+    display: flex;
+    overflow-x: auto;
+    width: 150px;
+}
+.add_status_co{
+    width: 100px;
+}
+
+/*222*/
+.btn_detail_bill{
+    border: none;
+    border-radius: 8px;
+    background: lightskyblue;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 70px;
+}
+
+/*modal_content*/
+.add_body_modal{
+    height: 300px;
+    overflow: auto;
+}
+.add_codit{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+.name_{
+    display: inline-block;
+    font-weight: 600;
 }

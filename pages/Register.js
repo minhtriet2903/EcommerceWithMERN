@@ -62,24 +62,9 @@ export const Register = ({ show, setShow, reshow }) => {
     return false;
   }
   const Register = async () =>{
-    const response = await fetch('http://localhost:5035/users/register', {
-        method: 'POST',
-        body: JSON.stringify({
-          name, email, password, role
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      const data = await response.json()
-      if (data.exist === 1)
-        setvalidatemessage("Email đã tồn tại");
-      else if (data.exist === 2) {
-        setvalidatemessage("Tên đã tồn tại");
-      } else {
-        hide();
-        reshow(true);
-      }
+    
+      hide();
+      reshow(true);
  //     console.log(data.exist);
   }
   function randomNumber(len) {
@@ -100,6 +85,21 @@ export const Register = ({ show, setShow, reshow }) => {
       setvalidatemessage("Mật khẩu không trùng nhau");
     }
     else {
+      const response = await fetch('http://localhost:5035/users/register', {
+        method: 'POST',
+        body: JSON.stringify({
+          name, email, password, role
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await response.json()
+      if (data.exist === 1)
+        setvalidatemessage("Email đã tồn tại");
+      else if (data.exist === 2) {
+        setvalidatemessage("Tên đã tồn tại");
+      } else {
       var verifycode = randomNumber(6);
         const response = await fetch("http://localhost:5035/users", {
           method: "POST",
@@ -116,6 +116,7 @@ export const Register = ({ show, setShow, reshow }) => {
         /*  setLoginstate[0](setLoginstate[6](data.user.name, setLoginstate[1], setLoginstate[2], setLoginstate[3], setLoginstate[4], setLoginstate[5]));  */
         setcode(verifycode);
         setShowVerify(true);
+      }
     }
   }
   /* cookieCutter.set('Acc', response.data.user._id);

@@ -61,7 +61,8 @@ const BillDisplay = (props) => {
 
                     </div>
                 </div>
-
+          
+           
             </div>
         )
     }) : '';
@@ -169,6 +170,7 @@ const BillDisplay = (props) => {
                         </div>
                     </div>
                 </div>
+           
             </div> : ''}
 
         </>
