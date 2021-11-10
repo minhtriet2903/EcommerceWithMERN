@@ -15,29 +15,7 @@ import cookies from "next-cookies";
 
 import * as Message from "./constant/messages";
 
-const Menubutton = styled.a`
-  margin: 0;
-  padding: 1rem;
-  color: white;
-  text-decoration: none;
-  transform: translate(0, 10px);
-  border: 0px solid #ffffff;
-  border-radius: 20px;
-  height: 20px;
-  margin-top: -20px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  width: 100px;
-  display: flex;
-  align-items: flex-start;
-  float: right;
-  cursor: pointer;
-  font-size: 90%;
-  &:hover {
-    color: #c4c6c7;
-    font-weight: 200%;
-    transition: all 0.2s ease-out;
-  }
-`;
+
 
 const Headerr = (props) => {
   const router = useRouter();
@@ -173,19 +151,9 @@ const Headerr = (props) => {
       ""
     );
 
-  /*  function ACC(Acc, ShowLogin, setShowLogin, ShowRegister, setShowRegister, Logout) {
-
-    if (Acc == null) {
-      return <><Menubutton onClick={() => setShowLogin(true)}>Đăng nhập</Menubutton><Menubutton onClick={() => setShowRegister(true)}>Đăng ký</Menubutton></>;
-    }
-    return <><Menubutton onClick={() => Logout()}>Đăng xuất</Menubutton><Menubutton href="/UserPage">{Acc}</Menubutton></>;
-  } */
   const [ShowLogin, setShowLogin] = useState(false);
-  const [ShowRegister, setShowRegister] = useState(false);
-
   const Logout = () => {
-    cookieCutter.set("Acc", "");
-    setUser("");
+    
     document.cookie = "Acc=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.replace("/");
   };
@@ -207,13 +175,8 @@ const Headerr = (props) => {
       prevScrollpos = currentScrollPos;
     };
   }, []);
-  const hanldeNam = () => {
-    router.push("/container/Nam?age=Adult");
-  };
-
   return (
     <>
-
       <header className="header" id="header">
         <div className="out_line">
           <div className="out_line_body">

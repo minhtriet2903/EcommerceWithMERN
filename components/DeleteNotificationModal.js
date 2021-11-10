@@ -44,7 +44,8 @@ const DeleteNotificationModal = ({
   };
   const router = useRouter();
   const deleteItem = () => {
-    axios.delete("http://localhost:5035/" + prefix + "s/" + id);
+ 
+     axios.delete("http://localhost:5035/" + prefix + "s/" + id); 
   };
   const modalContent = show ? (
     <StyledModalOverlay>
@@ -54,12 +55,13 @@ const DeleteNotificationModal = ({
             x
           </a>
         </StyledModalHeader>
-        {title && <StyledModalTitle>{title}</StyledModalTitle>}
+        {title }
         <StyledModalBody>
           {prefix == "bill" && (
             <div>
               <h2>Bạn có chắc muốn xóa hóa đơn với id = {id}</h2>
-              <a href="/bill">
+              <Link href="/bill">
+              <a>
                 <Button
                   onClick={deleteItem}
                   style={{ background: "red", color: "whitesmoke" }}
@@ -68,12 +70,14 @@ const DeleteNotificationModal = ({
                 </Button>
                 <Button>Hủy</Button>
               </a>
+              </Link>
             </div>
           )}
           {prefix == "course" && (
             <div>
               <h2>Bạn có chắc muốn xóa sản phẩm với id = {id}</h2>
-              <a href="/course">
+              <Link href="/course">
+              <a>
                 <Button
                   onClick={deleteItem}
                   style={{ background: "red", color: "whitesmoke" }}
@@ -82,12 +86,14 @@ const DeleteNotificationModal = ({
                 </Button>
                 <Button>Hủy</Button>
               </a>
+              </Link>
             </div>
           )}
           {prefix == "user" && (
             <div>
               <h2>Bạn có chắc muốn xóa tài khoản với id = {id}</h2>
-              <a href="/user">
+              <Link href="/user">
+              <a>
                 <Button
                   onClick={deleteItem}
                   style={{ background: "red", color: "whitesmoke" }}
@@ -96,6 +102,7 @@ const DeleteNotificationModal = ({
                 </Button>
                 <Button>Hủy</Button>
               </a>
+              </Link>
             </div>
           )}
         </StyledModalBody>

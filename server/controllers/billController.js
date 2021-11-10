@@ -146,9 +146,11 @@ exports.updateBill = (req, res) => {
 };
 
 exports.getBillOfUser = (req, res) => {
+   
     const id = req.params.id;
-    Bill.find({ userId: id })
+    Bill.find({ userId: id }).sort({BillDate:-1})
         .then((billsOfUser) => {
+           
             res.status(200).json(billsOfUser);
         })
         .catch((err) => {
@@ -190,3 +192,18 @@ exports.deleteBillProducts = (req, res) => {
             });
         });
 };
+exports.deleteBill = (req, res) => {
+    const id = req.params.id;
+    Bill.findByIdAndRemove(id)
+      .exec()
+      .then(() => {
+        res.status(204).json({
+          success: true,
+        });
+      })
+      .catch((err) =>
+        res.status(500).json({
+          success: false,
+        })
+      );
+  };
