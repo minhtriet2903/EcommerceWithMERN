@@ -261,7 +261,7 @@ export default function Home({ data }) {
                 </tr>
               </thead>
               <tbody>
-                {tableData.map((item,index) => (
+                {tableData.map((item, index) => (
                   <tr key={index}>
                     <td>{item.BillDate}</td>
                     <td>{item.userName}</td>
@@ -269,20 +269,25 @@ export default function Home({ data }) {
                     <td>{item.Products.length}</td>
                     <td>{item.TotalPrice}</td>
                     <td>{item.Status}</td>
-                   
+
                     <td>{item.Address}</td>
                     <td>{item.Province}</td>
                     <td>{item.shipperName}</td>
                     <td>
                       {item.Status === "Đã đặt hàng" && (
-                        <a href={"/bill/" + item._id + "/xuLiDon"}>
-                          <Button>Xử lí đơn</Button>
-                        </a>
+                        <Link href={"/bill/" + item._id + "/xuLiDon"}>
+                          <a>
+                            <Button>Xử lí đơn</Button>
+                          </a>
+                        </Link>
                       )}
 
                       <Link href={"/bill/" + item._id}>
+                        <a>
                         <Button> Chi tiết </Button>
+                        </a>
                       </Link>
+                     
                       <a
                         onClick={() => {
                           setShowModal(true), setItemId(item._id);
@@ -293,6 +298,7 @@ export default function Home({ data }) {
                           <FontAwesomeIcon icon={faTrash} />{" "}
                         </Button>
                       </a>
+                      
                     </td>
                   </tr>
                 ))}

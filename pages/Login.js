@@ -46,11 +46,17 @@ export const Login = ({ show, setShow, getName }) => {
         hide();
         if (data.user.role === "Manager") router.push("/course");
         else if (data.user.role === "Shipper") router.push("/shipperAdmin");
-        else window.location.reload();
+        else{
+         /*  const current = router.pathname;
+          router.push(current) */
+          window.location.reload()
+        } 
       } else {
+        swal("Thông Báo!", "Sai mật khẩu hoặc tài khoản", "error");
         setPassnoity("Sai mật khẩu hoặc tài khoản");
       }
     } else {
+      swal("Thông Báo!", "Chưa điền đủ thông tin", "error");
       setPassnoity("Chưa điền đủ thông tin");
     }
   };

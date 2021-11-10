@@ -85,7 +85,7 @@ export default function Home({ data }) {
       >
         Hello from the modal!
       </DeleteNotificationModal>
-      <SideBar></SideBar>
+    
       <ContentContainer>
         <Content>
           <div

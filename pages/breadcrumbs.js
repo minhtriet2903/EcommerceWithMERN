@@ -78,7 +78,7 @@ const Breadcrumb = (props) => {
               item = 'Thông tin cá nhân'
             }
             var routo = `/container/${newlink.slice(0, index + 1).join("/")}`;
-            console.log(routo)
+           
             return isLast ? (
               <span key={index}>{item === 'Kid' ? 'Trẻ con' : item}</span>
             ) :

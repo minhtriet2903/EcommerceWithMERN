@@ -16,19 +16,10 @@ import {UpdateAddress} from '../components/UpdateAddress'; */
 export default  function UserPage({data,dataBill}) {
 
     const router = useRouter();
-    const [email, setEmail] = useState('')
-    const [phone, setPhone] = useState('')
-    const [sex, setSex] = useState('')
-    const [address, setAddress] = useState('')
-    const [selectProvince, setSelectProvince] = useState('')
+ 
     const [statePage,setStagePage] = useState(true);
     const [pageBill,setPageBill] = useState(0);
-     useEffect(() => {
-        setEmail(data.email)
-        setPhone('022222333')
-        setSex(data.sex)
-        setAddress(data.address)
-    }, [data]) 
+   
 
     function GetDate(fulltime) {
         const dateTime = new Date(fulltime);
@@ -36,13 +27,6 @@ export default  function UserPage({data,dataBill}) {
         return dateTime.toLocaleDateString();
     }
 
-    const Dv = useRef([]);
-    const ShowMode = (title) => {
-        return <h6>{title}</h6>;
-    }
- 
-
- 
     const handleDrop = () => {
 
         const content = document.getElementById('change_pass');
@@ -129,23 +113,7 @@ export default  function UserPage({data,dataBill}) {
 
         const json = await fetch(`http://localhost:5035/users/${Acc}/customer/bills`);
         const Billdata = await json.json();
-      /*   const res11 = await fetch("http://localhost:5035/users/" + Acc + "/bills");
-        var json11 = await res11.json();
-        for (var i = 0; i < json11.length; i++) {
-            for (var j = 0; j < (json11[i].Products).length; j++) {
-                var courseId = (json11[i].Products)[j].courseId;
-                if ((json11[i].Products)[j].courseId == undefined) {
-                    courseId = (json11[i].Products)[j].product.id;
-                }
-                const res21 = await fetch("http://localhost:5035/courses/" + courseId);
-                const json21 = await res21.json();
-                if (!json21) {
-                    (json11[i].Products)[j].courseName = "Không tồn tại";
-                    continue;
-                }
-                (json11[i].Products)[j].courseName = json21.Name;
-            }
-        } */
+     
 
 
         return { data: json21,dataBill:Billdata };

@@ -137,7 +137,8 @@ const DetailBill = (props) => {
                                                                 <div className="edit-amount-cart">
 
                                                                     <div className="amount">
-                                                                        <input type="text" name="amount" id="amount" value={item.quantity} />
+                                                                       
+                                                                        <span>{item.quantity}</span>
                                                                     </div>
 
                                                                 </div>

@@ -91,6 +91,7 @@ const Info = ({ data }) => {
           <label>Địa Chỉ</label>
           <textarea
             className="detail_info_content"
+            value={data.address}
             onChange={(e) => setAddress(e.target.value)}
           >
             {data.address}
