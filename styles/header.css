@@ -375,11 +375,15 @@ font-weight: 600;
   align-items: center;
   justify-content: space-between;
   margin: 10px 0 20px 0;
+  text-align: center;
 }
 .total_cart_modal p {
+  
+  text-align: center;
   text-transform: uppercase;
   font-size: 15px;
   font-weight: 500;
+  margin: 0;
 }
 .total_cart_modal span {
   display: inline-block;

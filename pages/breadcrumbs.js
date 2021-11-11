@@ -55,7 +55,7 @@ const Breadcrumb = (props) => {
   /*  newUrl[newUrl.length-1][0]= newUrl[newUrl.length-1][0].replace(/[-]/g," ") */
 
   /*   window.location.protocol + "://" + */
-  console.log(current.query)
+
   const newlink = link;
   return (
     <>

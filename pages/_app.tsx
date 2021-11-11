@@ -66,12 +66,12 @@ const MyApp = ({ Component, pageProps }) => {
 
   }, [router])
   Router.events.on("routeChangeStart", (url) => {
-    console.log("Route changing")
+   
     NProgress.start();
     setLoading(true);
   })
   Router.events.on("routeChangeComplete", (url) => {
-    console.log("Route change complete")
+ 
     NProgress.done();
     setLoading(false);
   })

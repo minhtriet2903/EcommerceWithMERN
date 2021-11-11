@@ -181,7 +181,7 @@ const Total = (props) => {
           <div className="body_cart-purchase">
             <div className="cart-purchase-detail">
               <div className="cart-purchase-detail-body">
-                <span>Thành tiền</span>
+                <span className="title_total_">Thành tiền</span>
                 <span className="price-total" id="price-total">
                   <NumberFormat
                     value={total}

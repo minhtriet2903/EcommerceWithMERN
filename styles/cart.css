@@ -2,7 +2,7 @@
 .section-cart {
   max-width: 1400px;
   margin: auto;
-  background-color: #efefef;
+  background-color: #F2F3F4;
   width: 100%;
 }
 /*=======================cart=========*/
@@ -224,7 +224,11 @@
   display: flex;
   justify-content: space-between;
 }
-
+.title_total_{
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 600;
+}
 
 .btn-cart-purchase {
   display: flex;

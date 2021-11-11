@@ -36,6 +36,7 @@ const Description = (props) => {
             setUser(data.name);
           }
           fetchUser();
+
         }
         
       }, [router])
@@ -72,7 +73,7 @@ const Description = (props) => {
         const data = await response.json()      
       /*   Router.reload(window.location.pathname); */
       setComment('');
-      window.location.reload();
+      router.push(router.asPath)
     }
     
     return (
@@ -102,7 +103,7 @@ const Description = (props) => {
                                                                              
                                     }}                                   
                                     onChange={(event, editor) => {
-                                        console.log(editor)
+                                       
                                         const data = editor.getData()
                                         setComment(data);                                      
                                     }}

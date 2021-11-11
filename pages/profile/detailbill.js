@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NumberFormat from 'react-number-format';
 import { SwipeableDrawer } from "@material-ui/core";
+import { route } from "next/dist/server/router";
+import { Router } from "next/dist/client/router";
+import { useRouter } from "next/dist/client/router";
 const DetailBill = (props) => {
+    const router = useRouter();
     const { bill } = props;
     const [date, setDate] = useState('')
     const [show, setShow] = useState(false)
@@ -31,11 +35,12 @@ const DetailBill = (props) => {
             Status: "Đã hủy đơn",
         }).then((res) => {
             swal("Thông Báo!", "Huỷ đơn hàng thành công", "success");
+            router.push(router.asPath)
 
         }).catch((err) => {
             swal("Thông Báo!", "Huỷ đơn hàng thất bại", "error");
         });
-        window.location.reload();
+        
     };
     useEffect(() => {
         const date = new Date(detail.BillDate)

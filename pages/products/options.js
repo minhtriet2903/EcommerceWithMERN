@@ -182,8 +182,8 @@ const Option = (props) => {
 
           <div className="left-content-body-range">
 
-            <h4 className="content-tittle" num="0" onClick={handleDrop}>Price Range</h4>
-            <div className="drop_down_op">
+            <h4 className="content-tittle active_arrow" num="0" onClick={handleDrop}>Price Range</h4>
+            <div className="drop_down_op delete_drop">
               <span className="price-min kk"><NumberFormat value={pricerange[0]} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></span>
               -
               <span className="price-max kk"><NumberFormat value={pricerange[1]} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></span>
@@ -192,7 +192,7 @@ const Option = (props) => {
                   className="MenuItem"
                   value={pricerange}
                   max={2000000}
-                  min={50000}
+                  min={0}
                   onChange={updateRange}
                 >
                 </Slider>
@@ -200,14 +200,14 @@ const Option = (props) => {
             </div>
           </div>
           <div className="left-content-body-size">
-            <h4 className="content-tittle" num="1" onClick={handleDrop}>Sizes</h4>
-            <ul className="size-body drop_down_op">
+            <h4 className="content-tittle active_arrow" num="1" onClick={handleDrop}>Sizes</h4>
+            <ul className="size-body drop_down_op delete_drop">
               {EleSize}
             </ul>
           </div>
           <div className="left-content-body-colors">
-            <h4 className="content-tittle" num="2" onClick={handleDrop}>Color</h4>
-            <div className="color-body drop_down_op">
+            <h4 className="content-tittle active_arrow" num="2" onClick={handleDrop}>Color</h4>
+            <div className="color-body drop_down_op delete_drop">
               {showColor}
             </div>
           </div>

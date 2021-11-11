@@ -16,8 +16,9 @@ a {
   justify-content: center;
   margin: auto;
   flex-direction: column;
-  padding: 0 10px 0 10px;
+  padding: 0 10px 10px 10px;
   max-width: 1200px;
+  background: #F2F3F4 ;
 }
 .body-main-detail {
   display: flex;
@@ -29,6 +30,7 @@ a {
   margin-top: 10px;
   border-radius: 8px;
   padding: 16px 16px 25px 16px;
+  box-shadow: 0 0 1px 1px #D7DBDD ;
 }
 /*img content*/
 .content-detail {
@@ -41,10 +43,11 @@ a {
 }
 .img-product-dt .slick-arrow {
   color: #6f0060;
+ 
 }
 .slick-prev {
   left: 7px;
-  z-index: 1;
+  z-index: 3;
 }
 .slick-next {
   right: 17px;
@@ -268,7 +271,7 @@ a {
   flex-direction: column;
   background-color: white;
   border-radius: 8px;
- 
+  box-shadow: 0 0 1px 1px #D7DBDD ;
 }
 /*btn-func*/
 
@@ -397,7 +400,7 @@ position: relative;
 }
 .wr-comment {
   padding: 10px 20px;
- 
+ z-index: 3;
 }
 .line_prevent{
   display: flex;
@@ -496,6 +499,7 @@ position: relative;
   background-color: white;
   padding: 5px;
   border-radius: 8px;
+  box-shadow: 0 0 1px 1px #D7DBDD ;
 }
 
 .extension-product-detail {
