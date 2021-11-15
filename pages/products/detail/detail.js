@@ -16,8 +16,7 @@ const Detail = (props) => {
   const [image, setImage] = useState([
     detail.Image,
     detail.Image,
-    detail.Image,
-    detail.Image,
+   
   ]);
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();

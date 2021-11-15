@@ -8,12 +8,7 @@ import {actFetchDetailProduct,actAddDetailToCart } from '../../actions';
 
 const DetailCon = (props) => {
     const router = useRouter();
-    
     const {detail} = props;
-    const {details} = router.query;
-   
-  
-    
   
     const {color} = router.query;
     const [product,setProduct] = useState();
@@ -37,14 +32,14 @@ const DetailCon = (props) => {
             params: {
                sex:detail.Sex,
                 /* materials: detail.materials ? detail.materials[0] : null, */
-                _id:detail._id
+              age:detail.age,
+              id:detail._id
                             
             }
         }     
         const fetchh = async () => {
             const data = await axios.get(Config.API_URL_RELATED, request ? request : {});
-            setProduct(data)          
-             
+            setProduct(data)                  
         };
         fetchh();
       },[detail]) ;
@@ -58,8 +53,7 @@ const DetailCon = (props) => {
     )
 }
  const mapStateToProps = state => {
-    return {
-      
+    return {  
         detail: state.detail//get product from store in reducer and push in props
     }
 }

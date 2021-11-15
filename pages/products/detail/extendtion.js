@@ -8,10 +8,11 @@ import Product from "../product";
 const Extend = (props) => {
   const router = useRouter();
   const { relate } = props;
-  const path = `/container/detailtype`;
+  
+  const path = `/container/${router.query.catogrory}`;
   const settings = {
     lazyLoad: "ondemand",
-    slidesToShow: 3,
+    slidesToShow:  relate.length >= 3 ? 3 : relate.length,
     slidesToScroll: 1,
     responsive: [
       {
@@ -63,7 +64,7 @@ const Extend = (props) => {
                   <div className="product-detail-link-hover">
                     <Link
                       /* as={`/product/${props.product._id}`} */
-                      href={`${path}/${product._id}`}
+                      href={`${path}/details?id=${product._id}`}
                     >
                       <a>VIEW</a>
                     </Link>
@@ -71,7 +72,7 @@ const Extend = (props) => {
                 </div>
               </div>
               <div className="product-name_price-content">
-                <Link href={`${path}/${product._id}`}>
+                <Link href={`${path}/details?id=${product._id}`}>
                   <a>
                     <h5>{product.Name}</h5>
                   </a>
@@ -103,12 +104,12 @@ const Extend = (props) => {
                     id="Color"
                     onClick={() => {
                       router.push({
-                        pathname: `${path}/[details]`,
+                        pathname: `${path}/details`,
                         query: {
-                          details: product._id,
-                          color: product.colors,
+                            id: product._id,
+                            color: product.colors
                         },
-                      });
+                    })
                     }}
                   ></span>
                 </label>

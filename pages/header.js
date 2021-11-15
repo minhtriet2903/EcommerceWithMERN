@@ -25,6 +25,7 @@ const Headerr = (props) => {
   const [valueFind, setValueFind] = useState("");
   const { cart } = props;
   const [amount, setAmount] = useState(0);
+  const [loading,setLoading] = useState(false);
   const [male, setMale] = useState({
     type: "Nam",
     content: [
@@ -121,12 +122,13 @@ const Headerr = (props) => {
   useEffect(() => {
 
     const Acc = cookieCutter.get("Acc");
-    if (Acc) {
+    if (Acc && loading === false) {
       const fetchUser = async () => {
         const res31 = await fetch("http://localhost:5035/users/" + Acc);
         const data = await res31.json();
         setUser(data);
-      
+        setLoading(true);
+    
       };
       fetchUser();
     } else {

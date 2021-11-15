@@ -105,9 +105,9 @@ export default function Table({ data }) {
           </Rowheader>
           <Rows className="Rows">
             {data.rows.map((row,index) => (
-              <Row >
+              <Row key={index}>
                 {row.map((item,indexx) => (
-                  <Cell style={{ width: 100 / data.header.length + "%" }}>
+                  <Cell key={indexx} style={{ width: 100 / data.header.length + "%" }}>
                     {prettynumber(item)}
                   </Cell>
                 ))}
@@ -116,7 +116,7 @@ export default function Table({ data }) {
           </Rows>
           <Row >
             {(calTotal(data)).map((item,indexx) => (
-              <Cell style={{ width: 100 / data.header.length + "%" }}>
+              <Cell key={indexx} style={{ width: 100 / data.header.length + "%" }}>
                 {prettynumber(item)}
               </Cell>
             ))}

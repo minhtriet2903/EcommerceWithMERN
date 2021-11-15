@@ -5,6 +5,7 @@ import { faHome, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import styled from "styled-components";
+import {storage}  from "../../../components/firebase"
 
 const Button = styled.button`
   border-radius: 12px;
@@ -95,6 +96,7 @@ function Form({ item }) {
   const [soldQuantity, setSoldQuantity] = useState(item.soldQuantity);
   const [selectedImage, setSelectedImage] = useState(item.Image);
   const [isSucceed, setIsSucceed] = useState("");
+  const [imgFire,setImgFire] = useState(null)
   const [imageUrl, setImageUrl] = useState(item.Image);
   const [tag, setTag] = useState("");
   const { CKEditor, ClassicEditor } = editorRef.current || {};
@@ -106,6 +108,31 @@ function Form({ item }) {
     };
     setEditorLoaded(true);
   }, []);
+  const handleChangeImg  = (e) =>{
+    setImgFire(e.target.files[0]);
+    console.log(e.target.files[0])
+  }
+  console.log(imageUrl)
+  const handleSave = () =>{
+    const uploadTask = storage.ref(`images/${imgFire.name}`).put(imgFire);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {},
+      error =>{
+        console.log(error)
+      },
+      () =>{
+        storage
+        .ref("images")
+        .child(imgFire.name)
+        .getDownloadURL()
+        .then(url =>{
+          setImageUrl(url)
+          console.log(url)
+        })
+      }
+    )
+  }
   const handleChange = () => (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -131,7 +158,8 @@ function Form({ item }) {
   };
 
   const handleSubmit = async () => {
-    axios
+    console.log(name + " " + description+ " " + " "+price + " " + sex+ " " + enteringQuantity + " " + age+ " " + " "+selectedColors + " " + selectedSizes+ " " )
+     axios
       .put(
         "http://localhost:5035/courses/" + item._id,
         {
@@ -144,7 +172,7 @@ function Form({ item }) {
           age: age,
           colors: selectedColors,
           size: selectedSizes,
-          materials,
+          materials : selectedMaterials,
           tag,
           Image: imageUrl,
         },
@@ -157,7 +185,7 @@ function Form({ item }) {
       })
       .catch(function (error) {
         console.log(error);
-      });
+      }); 
   };
   const handleSelectColor = (color) => () => {
     setSelectedColors(color);
@@ -184,17 +212,14 @@ function Form({ item }) {
         <p style={{ margin: "8px 0", fontSize: "16px" }}>Ảnh sản phẩm</p>
         <img src={imageUrl} width="200px" height="200px" />
         <div className="form-group mb-2">
-          <label htmlFor="imageUrl">Đường dẫn ảnh trên cloud</label>
-          <input
-            type="text"
-            className="form-control"
-            id="imageUrl"
-            placeholder="Nhập đường dẫn của ảnh"
-            required
-            name="imageUrl"
-            value={imageUrl}
-            onChange={handleChange()}
+          <label htmlFor="imageUrl">Hình ảnh</label>
+          
+           <input
+            type="file" 
+               
+            onChange={handleChangeImg}
           />
+        <button type="button" onClick={handleSave} className="btn btn-primary">Lưu ảnh</button>
         </div>
         <div className="form-group mb-2">
           <label htmlFor="tag">Mã lô hàng</label>

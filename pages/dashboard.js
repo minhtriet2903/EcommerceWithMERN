@@ -133,8 +133,6 @@ function filtSusscess(bills,keyword){
     return re;
   }
   for(var i=0;i<bills.length;i++){
-    console.log(keyword);
-    console.log(i);
     if(bills[i].Status==keyword){
       re.push(bills[i]);
     }
@@ -153,6 +151,7 @@ function getDistinctStatuses(bills){//
   return Statuses;
 }
 export default function Statictical({ data }) {
+  console.log(data)
 //  console.log(data.Total_Bills);
   const [startDate, setStartDate] = useState(new Date("01/01/2000"));
   const [endDate, setEndDate] = useState(new Date());
@@ -264,8 +263,11 @@ export default function Statictical({ data }) {
                   onChange={(e)=>setStatus(e.target.value)}
                 >
                   <option>All</option>
-                  {(getDistinctStatuses(data.Total_Bills)).map((item)=>(
-                    <option>{item}</option>
+
+                  {(getDistinctStatuses(data.Total_Bills)).map((item,index)=>(
+                    <option key={index}>{item}</option>
+
+ 
                   ))}
                 </select>
               </div>

@@ -279,12 +279,15 @@ exports.getRelativeCourses = (req, res) => {
         .then((allCourse) => {
             let result = allCourse.filter(
                 (item) =>
+               
                 (req.query.age == null || item.age === req.query.age) &&
                 (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
                 ((req.query.lowPrice == null && req.query.upPrice == null) ||
                     (item.Price >= req.query.lowPrice &&
                         item.Price <= req.query.upPrice))
+               
             );
+
             return res.status(200).json(result);
         })
         .catch((err) => {
@@ -297,13 +300,14 @@ exports.getRelativeCourses = (req, res) => {
     else {
         Course.find()
             .then((allCourse) => {
+                console.log(req.query.id)
                 let result = allCourse.filter(
-                    (item) =>
+                    (item) => 
                     (req.query.age == null || item.age === req.query.age) &&
-                    (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+                    (req.query.sex == null || item.Sex === req.query.sex) &&
                     ((req.query.lowPrice == null && req.query.upPrice == null) ||
                         (item.Price >= req.query.lowPrice &&
-                            item.Price <= req.query.upPrice))
+                            item.Price <= req.query.upPrice))                   
                 );
                 return res.status(200).json(result);
             })
@@ -554,7 +558,7 @@ exports.updateCourse = (req, res) => {
     }
 
     const id = req.params.id;
-
+    console.log(req.body)
     Course.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
         .then((data) => {
             if (!data) {
