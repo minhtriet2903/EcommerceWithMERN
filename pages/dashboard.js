@@ -198,16 +198,8 @@ export default function Statictical({ data }) {
       <Content>
         <Mother>
           <Buttonscontaner>
-            <Showblock
-              color={"red"}
-              data={{
-                time: "doanh thu tháng này",
-                value: total(filtSusscess(data.This_month_Bills,SuscessStatus)),
-                count: Count(filtSusscess(data.This_month_Bills,SuscessStatus)),
-              }}
-            />
-            <Showblock
-              color={"blue"}
+          <Showblock
+              color={"green"}
               data={{
                 time: "doanh thu tháng trước",
                 value: total(filtSusscess(data.Last_month_Bills,SuscessStatus)),
@@ -215,7 +207,16 @@ export default function Statictical({ data }) {
               }}
             />
             <Showblock
-              color={"green"}
+              color={"blue"}
+              data={{
+                time: "doanh thu tháng này",
+                value: total(filtSusscess(data.This_month_Bills,SuscessStatus)),
+                count: Count(filtSusscess(data.This_month_Bills,SuscessStatus)),
+              }}
+            />
+            
+            <Showblock
+              color={"blue"}
               data={{
                 time: "doanh thu hôm nay",
                 value: total(filtSusscess(data.Today_Bills,SuscessStatus)),
