@@ -4,6 +4,8 @@ import Table from "../components/Table";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+
+const SuscessStatus="Đã giao hàng";//keyWord that is considered success bill
 const Buttonscontaner = styled.div`
   display: flex;
   width: 100%;
@@ -122,11 +124,40 @@ function Users_Spended_Mapping(Users, bills) {
   returnn.push(re["NoLogin"]);
   return returnn;
 }
+function filtSusscess(bills,keyword){
+  var re=[];
+  if(keyword=="All"){
+    return bills;
+  }
+  if(!bills){
+    return re;
+  }
+  for(var i=0;i<bills.length;i++){
+    console.log(keyword);
+    console.log(i);
+    if(bills[i].Status==keyword){
+      re.push(bills[i]);
+    }
+  }
+  return re;
+}
+function getDistinctStatuses(bills){//
+  var re={};
+  for(var i=0;i<bills.length;i++){
+    re[bills[i].Status]=bills[i].Status;
+  }
+  var Statuses=[];
+  for(var i in re){
+    Statuses.push(re[i]);
+  }
+  return Statuses;
+}
 export default function Statictical({ data }) {
 //  console.log(data.Total_Bills);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date("01/01/2000"));
   const [endDate, setEndDate] = useState(new Date());
-  const [tableData, setTableData] = useState({Pros:data.Pros_Pre,Users:data.Users_Pre});
+  const [tableData, setTableData] = useState({Pros:SoldProductsMapping(data.Curses,filtSusscess(data.Total_Bills,"All")),Users:Users_Spended_Mapping(data.Users,filtSusscess(data.Total_Bills,"All"))});
+  const [status, setStatus] = useState("All");
   const total = (da) => {
     var re = 0;
     for (var i = 0; i < da.length; i++) {
@@ -146,15 +177,15 @@ export default function Statictical({ data }) {
     }
     return re;
   };
-  const filterWithDateRange = () => {
+  const filterAll = () => {
     setTableData({Pros:[], Users:[]});
     axios
       .get("http://localhost:5035/bills/dateRange?startDate="+deformDate(startDate)+"&endDate="+deformDate(endDate)
       )
       .then(function (response) {
         console.log(response);
-        const pros=SoldProductsMapping(data.Curses,response.data);
-        const users=Users_Spended_Mapping(data.Users,response.data);
+        const pros=SoldProductsMapping(data.Curses,filtSusscess(response.data,status));
+        const users=Users_Spended_Mapping(data.Users,filtSusscess(response.data,status));
         setTableData({Pros:pros, Users:users});
       })
       .catch(function (error) {
@@ -171,32 +202,32 @@ export default function Statictical({ data }) {
               color={"red"}
               data={{
                 time: "doanh thu tháng này",
-                value: total(data.This_month_Bills),
-                count: Count(data.This_month_Bills),
+                value: total(filtSusscess(data.This_month_Bills,SuscessStatus)),
+                count: Count(filtSusscess(data.This_month_Bills,SuscessStatus)),
               }}
             />
             <Showblock
               color={"blue"}
               data={{
                 time: "doanh thu tháng trước",
-                value: total(data.Last_month_Bills),
-                count: Count(data.Last_month_Bills),
+                value: total(filtSusscess(data.Last_month_Bills,SuscessStatus)),
+                count: Count(filtSusscess(data.Last_month_Bills,SuscessStatus)),
               }}
             />
             <Showblock
               color={"green"}
               data={{
                 time: "doanh thu hôm nay",
-                value: total(data.Today_Bills),
-                count: Count(data.Today_Bills),
+                value: total(filtSusscess(data.Today_Bills,SuscessStatus)),
+                count: Count(filtSusscess(data.Today_Bills,SuscessStatus)),
               }}
             />
             <Showblock
               color={"yellow"}
               data={{
                 time: "Tổng doanh thu",
-                value: total(data.Total_Bills),
-                count: Count(data.Total_Bills),
+                value: total(filtSusscess(data.Total_Bills,"Đã giao hàng")),
+                count: Count(filtSusscess(data.Total_Bills,"Đã giao hàng")),
               }}
             />
           </Buttonscontaner>
@@ -220,9 +251,28 @@ export default function Statictical({ data }) {
                 />
               </div>
             </div>
-            <div className="col-auto ">
-              <Button onClick={() => filterWithDateRange()}>Lọc</Button>
+            <div className="col-auto d-flex flex-row ">
+              <p>Trạng thái</p>
+              <div style={{ marginLeft: "16px" }}>
+                <select
+                  className="form-control"
+                  id="status"
+                  required
+                  name="status"
+                  value={status}
+                  onChange={(e)=>setStatus(e.target.value)}
+                >
+                  <option>All</option>
+                  {(getDistinctStatuses(data.Total_Bills)).map((item)=>(
+                    <option>{item}</option>
+                  ))}
+                </select>
+              </div>
             </div>
+            <div className="col-auto ">
+              <Button onClick={() => filterAll()}>Lọc</Button>
+            </div>
+            
           </div>
           <Devide>
             <tr>
@@ -326,8 +376,6 @@ Statictical.getInitialProps = async (ctx) => {
       Last_month_Bills: json_Last_month_Bills,
       Today_Bills: json_Today_Bills,
       Total_Bills: json_All_Bills,
-      Pros_Pre: SoldProductsMapping(json_All_Courses, json_All_Bills),
-      Users_Pre: Users_Spended_Mapping(json_All_Users, json_All_Bills),
       Curses:json_All_Courses,
       Users:json_All_Users
     },
