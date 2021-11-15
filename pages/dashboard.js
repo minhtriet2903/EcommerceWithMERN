@@ -133,8 +133,6 @@ function filtSusscess(bills,keyword){
     return re;
   }
   for(var i=0;i<bills.length;i++){
-   
-   
     if(bills[i].Status==keyword){
       re.push(bills[i]);
     }
@@ -264,8 +262,11 @@ export default function Statictical({ data }) {
                   onChange={(e)=>setStatus(e.target.value)}
                 >
                   <option>All</option>
+
                   {(getDistinctStatuses(data.Total_Bills)).map((item,index)=>(
                     <option key={index}>{item}</option>
+
+ 
                   ))}
                 </select>
               </div>
