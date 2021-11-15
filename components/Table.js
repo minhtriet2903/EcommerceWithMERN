@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 
 const Contaner = styled.div`
-  height: 90%;
+  height: 100%;
   width: 95%;
   border-radius: 10px;
   text-align: center;
@@ -13,6 +13,11 @@ const Contaner = styled.div`
   & h4 {
     text-align: left;
     height: 20px;
+  }
+  &:hover .Rows{
+    height:350px;
+    transition: all 0.5s ease-in-out;
+    transition-delay: 0.5s;
   }
 `;
 const Block = styled.div`
@@ -98,11 +103,11 @@ export default function Table({ data }) {
               </Cell>
             ))}
           </Rowheader>
-          <Rows>
+          <Rows className="Rows">
             {data.rows.map((row,index) => (
-              <Row >
+              <Row key={index}>
                 {row.map((item,indexx) => (
-                  <Cell style={{ width: 100 / data.header.length + "%" }}>
+                  <Cell key={indexx} style={{ width: 100 / data.header.length + "%" }}>
                     {prettynumber(item)}
                   </Cell>
                 ))}
@@ -111,7 +116,7 @@ export default function Table({ data }) {
           </Rows>
           <Row >
             {(calTotal(data)).map((item,indexx) => (
-              <Cell style={{ width: 100 / data.header.length + "%" }}>
+              <Cell key={indexx} style={{ width: 100 / data.header.length + "%" }}>
                 {prettynumber(item)}
               </Cell>
             ))}
