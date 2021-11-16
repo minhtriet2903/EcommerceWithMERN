@@ -74,7 +74,7 @@ const Home = ({ item }) => {
 
   const getRelativeData = () => {
     axios
-      .get("http://localhost:5035/courses")
+      .get("http://localhost:5035/coursesAll")
       .then(function (response) {
         let getAll = response.data;
         console.log(item.Products);
@@ -128,8 +128,8 @@ const Home = ({ item }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {item.Products.map((it) => (
-                    <tr>
+                  {item.Products.map((it,index) => (
+                    <tr key={index}>
                       <td>{it.product.id}</td>
                       <td>{it.quantity}</td>
                       <td>{it.product.price}</td>
@@ -141,7 +141,7 @@ const Home = ({ item }) => {
             </div>
             <h4>Các sản phẩm cần kiểm tra</h4>
             <Button onClick={getRelativeData}>Những sản phẩm liên quan</Button>
-            <div class="table-responsive" style={{ textAlign: "center" }}>
+            <div className="table-responsive" style={{ textAlign: "center" }}>
               <table className="table table-striped">
                 <thead>
                   <tr>
@@ -151,8 +151,8 @@ const Home = ({ item }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {relativeTable.map((item) => (
-                    <tr>
+                  {relativeTable.map((item,index) => (
+                    <tr key={index}>
                       <td>{item.Name}</td>
                       <td>{item.enteringQuantity}</td>
                       <td>{item.soldQuantity}</td>

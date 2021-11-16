@@ -126,7 +126,7 @@
 
 /*modal_content*/
 .add_body_modal{
-    height: 300px;
+    max-height: 300px;
     overflow: auto;
 }
 .add_codit{

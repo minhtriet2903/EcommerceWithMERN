@@ -81,10 +81,13 @@ const Detail = (props) => {
 
   const Calcula = (event) => {
     if (event.target.value === "+") {
-      if (amount < 100000)
+      if (amount < 100000 && (detail.enteringQuantity - detail.soldQuantity)> amount){
         setAmount((pre) => {
           return pre + 1;
         });
+      }else{
+        swal("Thông báo","Số lượng tồn kho không thể đáo ứng hơn","error")
+      }
     } else {
       if (amount > 1)
         setAmount((pre) => {
@@ -222,7 +225,7 @@ const Detail = (props) => {
             </div>
             <div className="product-condition">
               <span className="product-dt-tittle-name">
-                Tình trạng : {detail.enteringQuantity > 0 ? 'Còn hàng' : 'Hết hàng'}
+                Tình trạng : {(detail.enteringQuantity - detail.soldQuantity) > 0 ? 'Còn hàng' : 'Hết hàng'}
               </span>
             </div>
             <div className="amount-n-body">
@@ -262,7 +265,7 @@ const Detail = (props) => {
               </div>
             </div>
             
-              <div className={detail.enteringQuantity > 0 ?'btn-action' : 'btn-action active_hide_btn'} >
+              <div className={(detail.enteringQuantity - detail.soldQuantity) > 0 ?'btn-action' : 'btn-action active_hide_btn'} >
                 <button
                   type="submit"
                   className="btn-action-purchase"

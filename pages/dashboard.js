@@ -108,7 +108,7 @@ function Users_Spended_Mapping(Users, bills) {
   re["NoLogin"]=["Guest(NoLogin)",0,0];
   for (var i = 0; i < bills.length; i++) {
     if (re[bills[i].userId] == undefined) {
-      console.log(bills[i].userId);
+    
       continue;
     }
     for(let j = 0; j < bills[i].Products.length; j++){
@@ -151,7 +151,7 @@ function getDistinctStatuses(bills){//
   return Statuses;
 }
 export default function Statictical({ data }) {
-  console.log(data)
+  
 //  console.log(data.Total_Bills);
   const [startDate, setStartDate] = useState(new Date("01/01/2000"));
   const [endDate, setEndDate] = useState(new Date());

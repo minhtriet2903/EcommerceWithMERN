@@ -35,7 +35,7 @@
     z-index: 2;
     background-color: #fff;
     width: 700px;
-    height: 400px;
+    height: max-content;
     padding: 10px 40px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);

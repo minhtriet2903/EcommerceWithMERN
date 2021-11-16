@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { faCheck, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { storage } from "./firebase";
 const Button = styled.button`
   border-radius: 8px;
   background-color: lightskyblue;
@@ -30,6 +30,7 @@ const DeleteNotificationModal = ({
   children,
   title,
   id,
+  img,
   prefix,
 }) => {
   const [isBrowser, setIsBrowser] = useState(false);
@@ -44,7 +45,11 @@ const DeleteNotificationModal = ({
   };
   const router = useRouter();
   const deleteItem = () => {
- 
+    if(img){
+      let image = storage.refFromURL(img);
+      image.delete();
+    }
+    
      axios.delete("http://localhost:5035/" + prefix + "s/" + id); 
   };
   const modalContent = show ? (

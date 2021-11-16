@@ -53,6 +53,7 @@ export const getStaticProps = async (context) => {
 };
 
 function Form({ item }) {
+  const router = useRouter();
   const editorRef = useRef();
   const [formStatus, setFormStatus] = useState(false);
   const [name, setName] = useState(item.Name);
@@ -92,7 +93,7 @@ function Form({ item }) {
     "Đầm",
   ]);
   const [selectedMaterials, setSelectedMaterials] = useState(item.materials);
-
+  const [selectType,setSelectType] = useState(item.type);
   const [soldQuantity, setSoldQuantity] = useState(item.soldQuantity);
   const [selectedImage, setSelectedImage] = useState(item.Image);
   const [isSucceed, setIsSucceed] = useState("");
@@ -107,12 +108,14 @@ function Form({ item }) {
       ClassicEditor: require("@ckeditor/ckeditor5-build-classic"),
     };
     setEditorLoaded(true);
+    setImageUrl(item.Image)
   }, []);
+  
   const handleChangeImg  = (e) =>{
     setImgFire(e.target.files[0]);
     console.log(e.target.files[0])
   }
-  console.log(imageUrl)
+
   const handleSave = () =>{
     const uploadTask = storage.ref(`images/${imgFire.name}`).put(imgFire);
     uploadTask.on(
@@ -128,11 +131,41 @@ function Form({ item }) {
         .getDownloadURL()
         .then(url =>{
           setImageUrl(url)
-          console.log(url)
+        
+          axios
+          .put(
+            "http://localhost:5035/courses/" + item._id,
+            {
+              Name: name,
+              Description: description,
+              Price: price,
+              enteringQuantity,
+              Sex: sex,
+              enteringQuantity,
+              age: age,
+              colors: selectedColors,
+              size: selectedSizes,
+              materials : selectedMaterials,
+              tag,
+              Image: `${url}`,
+              type:selectType
+            },
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          )
+          .then(function (response) {
+            console.log(response);
+            router.push("/course");
+          })
+          .catch(function (error) {
+            console.log(error);
+          }); 
         })
       }
     )
   }
+ 
   const handleChange = () => (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -153,13 +186,16 @@ function Form({ item }) {
       let tmp = parseInt(value);
       setEnteringQuantity(tmp);
     } else if (name == "age") {
-      setAge(value);
+      if(value === "Người lớn")
+      setAge("Adult");
+      else
+        setAge("Kid");
     }
   };
 
-  const handleSubmit = async () => {
-    console.log(name + " " + description+ " " + " "+price + " " + sex+ " " + enteringQuantity + " " + age+ " " + " "+selectedColors + " " + selectedSizes+ " " )
-     axios
+  const handleSubmit = async () => {    
+    if(imageUrl !== ""){
+      axios
       .put(
         "http://localhost:5035/courses/" + item._id,
         {
@@ -175,6 +211,7 @@ function Form({ item }) {
           materials : selectedMaterials,
           tag,
           Image: imageUrl,
+          type:selectType
         },
         {
           headers: { "Content-Type": "application/json" },
@@ -182,10 +219,13 @@ function Form({ item }) {
       )
       .then(function (response) {
         console.log(response);
+        router.push("/course");
       })
       .catch(function (error) {
         console.log(error);
       }); 
+    }else
+     handleSave();  
   };
   const handleSelectColor = (color) => () => {
     setSelectedColors(color);
@@ -200,7 +240,8 @@ function Form({ item }) {
     setSelectType(type);
   };
   return (
-    <div className="container-md">
+    <div className="container_add">
+      <div className="add_body">
       <Link href={"/course"}>
         <Button>
           {" "}
@@ -208,7 +249,7 @@ function Form({ item }) {
         </Button>
       </Link>
       <h2>Chi tiết sản phẩm</h2>
-      <form method="PUT" onSubmit={handleSubmit}>
+     
         <p style={{ margin: "8px 0", fontSize: "16px" }}>Ảnh sản phẩm</p>
         <img src={imageUrl} width="200px" height="200px" />
         <div className="form-group mb-2">
@@ -219,7 +260,7 @@ function Form({ item }) {
                
             onChange={handleChangeImg}
           />
-        <button type="button" onClick={handleSave} className="btn btn-primary">Lưu ảnh</button>
+      
         </div>
         <div className="form-group mb-2">
           <label htmlFor="tag">Mã lô hàng</label>
@@ -331,6 +372,19 @@ function Form({ item }) {
             disabled
           />
         </div>
+        <div className="form-group mb-2">
+          <label htmlFor="CurrentMaterials">Loại hiện tại</label>
+          <input
+            type="text"
+            className="form-control"
+            id="CurrentMaterials"
+           
+            required
+            name="CurrentMaterials"
+            value={selectType}
+            disabled
+          />
+        </div>
         <div style={{ display: "flex" }}>
           <div className="form-group" style={{ marginTop: "12px" }}>
             <label htmlFor="sex">Màu</label>
@@ -393,6 +447,7 @@ function Form({ item }) {
               </div>
             ))}
           </div>
+        
           <div
             className="form-group"
             style={{ marginTop: "12px", marginLeft: "12px" }}
@@ -418,7 +473,7 @@ function Form({ item }) {
             id="age"
             required
             name="age"
-            value={age}
+           
             onChange={handleChange()}
           >
             <option>Người lớn</option>
@@ -452,10 +507,10 @@ function Form({ item }) {
           />
         </div>
         <hr />
-        <button type="submit" className="btn btn-primary">
+        <button type="button" onClick={handleSubmit} className="btn btn-primary">
           Cập nhật sản phẩm
         </button>
-      </form>
+        </div>
     </div>
   );
 }

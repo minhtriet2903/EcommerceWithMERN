@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import { useState } from "react";
-import {storage}  from "../../components/firebase"
-const  Form = () =>{
+import { useRouter } from "next/router";
+
+import { storage } from "../../components/firebase"
+const Form = () => {
+  const router = useRouter();
   const editorRef = useRef();
   const [formStatus, setFormStatus] = useState(false);
   const [name, setName] = useState("");
@@ -21,6 +24,7 @@ const  Form = () =>{
     "grey",
     "black",
     "orange",
+    "white"
   ]);
   const [selectedColors, setSelectedColors] = useState("");
   const [sizes, setSizes] = useState(["XS", "S", "M", "L", "XL", "XXL"]);
@@ -44,7 +48,7 @@ const  Form = () =>{
 
   const [isSucceed, setIsSucceed] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [imgFire,setImgFire] = useState(null)
+  const [imgFire, setImgFire] = useState(null)
   const [editorLoaded, setEditorLoaded] = useState(false);
   const [tag, setTag] = useState("");
   const { CKEditor, ClassicEditor } = editorRef.current || {};
@@ -55,13 +59,14 @@ const  Form = () =>{
       ClassicEditor: require("@ckeditor/ckeditor5-build-classic"),
     };
     setEditorLoaded(true);
+    
   }, []);
-  
+
   const handleChange = (e) => {
-   
+
     const name = e.target.name;
     const value = e.target.value;
-   
+
     if (name == "name") {
       setName(value);
     } else if (name == "imageUrl") {
@@ -69,6 +74,7 @@ const  Form = () =>{
     } else if (name == "tag") {
       setTag(value);
     } else if (name == "sex") {
+
       setSex(value);
     } else if (name == "price") {
       let tmp = parseInt(value);
@@ -77,272 +83,284 @@ const  Form = () =>{
       let tmp = parseInt(value);
       setEnteringQuantity(tmp);
     } else if (name == "age") {
-      setAge(value);
+      if (value === "Người lớn")
+        setAge("Adult");
+      else
+        setAge("Kid");
     }
   };
-  const handleChangeImg = (e) =>{
+  const handleChangeImg = (e) => {
     setImgFire(e.target.files[0]);
     console.log(e.target.files[0])
   }
-  const handleSave = () =>{
-    const uploadTask = storage.ref(`images/${imgFire.name}`).put(imgFire);
+  const handleSave = () => {
+    const uploadTask =  storage.ref(`images/${imgFire.name}`).put(imgFire);
     uploadTask.on(
       "state_changed",
-      snapshot => {},
-      error =>{
+      snapshot => { },
+      error => {
         console.log(error)
       },
-      () =>{
+      () => {
         storage
-        .ref("images")
-        .child(imgFire.name)
-        .getDownloadURL()
-        .then(url =>{
-          setImageUrl(url)
-        })
+          .ref("images")
+          .child(imgFire.name)
+          .getDownloadURL()
+          .then(url => {
+            setImageUrl(url)
+            axios
+              .post(
+                "http://localhost:5035/courses",
+                {
+                  name,
+                  description,
+                  sex,
+                  price,
+                  price,
+                  enteringQuantity,
+                  age,
+                  colors: selectedColors,
+                  size: selectedSizes,
+                  materials: selectedMaterials,
+                  image: `${url}`,
+                  tag,
+                  type: selectType
+                },
+                {
+                  headers: { "Content-Type": "application/json" },
+                }
+              )
+              .then(function (response) {
+                console.log(response);
+                router.push("/course")
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          })
       }
     )
   }
- 
+  
   const handleSubmit = () => {
-    axios
-      .post(
-        "http://localhost:5035/courses",
-        {
-          name,
-          description,
-          sex,
-          price,
-          price,
-          enteringQuantity,
-          age,
-          colors: selectedColors,
-          size: selectedSizes,
-          materials:selectedMaterials,
-          image: imageUrl,
-          tag,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    if (name === "" || sex === "" || age === "" || selectedColors === "" || selectedSizes === "" || tag === "" || selectType === "" || !imgFire) {
+      swal("Thông báo", "Thông tin cung cấp cho sản phẩm còn thiếu", "error")
+    } else{
+      handleSave();
+    }
   };
-  console.log(selectedMaterials)
+
   return (
-    <div className="container-md">
+    <div className="container_add">
+      <div className="add_body">
       <h2>Thêm sản phẩm</h2>
-      <form method="POST" onSubmit={handleSubmit} action="/course">
-        <div className="form-group mb-2">
-          <label htmlFor="name">Tên sản phẩm</label>
-          <input
-            type="text"
+
+      <div className="form-group mb-2">
+        <label htmlFor="name">Tên sản phẩm</label>
+        <input
+          type="text"
+          className="form-control"
+          id="name"
+          placeholder="Nhập tên sản phẩm"
+          required
+          name="name"
+
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group mb-2">
+        <label htmlFor="tag">Mã lô hàng</label>
+        <input
+          type="text"
+          className="form-control"
+          id="tag"
+          placeholder="Nhập mã lô hàng"
+          required
+          name="tag"
+          value={tag}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group mb-2">
+        <label htmlFor="description">Mô tả</label>
+        {editorLoaded ? (
+          <CKEditor
             className="form-control"
-            id="name"
-            placeholder="Nhập tên sản phẩm"
-            required
-            name="name"
-           
-            onChange={handleChange}
+            editor={ClassicEditor}
+            config={{
+              placeholder: "Hãy viết gì đó ...",
+              language: "vi",
+              toolbar: [
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "link",
+                "undo",
+                "redo",
+              ],
+            }}
+            data={data}
+            onReady={(editor) => {
+              // You can store the "editor" and use when it is needed.
+            }}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              setDescription(data);
+            }}
           />
+        ) : (
+          <p>Carregando...</p>
+        )}
+      </div>
+      <div className="form-group mb-2">
+        <label htmlFor="price">Giá</label>
+        <input
+          type="number"
+          className="form-control"
+          id="price"
+          placeholder="Giá sản phẩm"
+          required
+          name="price"
+          value={price}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group mb-2">
+        <label htmlFor="enteringQuantity">Số lượng nhập kho</label>
+        <input
+          type="number"
+          className="form-control"
+          id="enteringQuantity"
+          placeholder="Số lượng nhập kho"
+          required
+          name="enteringQuantity"
+          value={enteringQuantity}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="sex">Giới tính</label>
+        <select
+          className="form-control"
+          id="sex"
+          required
+          name="sex"
+
+          onChange={handleChange}
+        >
+          <option></option>
+          <option>Nam</option>
+          <option>Nữ</option>
+        </select>
+      </div>
+      <div style={{ display: "flex" }}>
+        <div className="form-group" style={{ marginTop: "12px" }}>
+          <label htmlFor="sex">Màu</label>
+          {colors.map((color, index) => (
+            <div key={index}>
+              <input
+                name="color"
+                type="radio"
+                onChange={() => setSelectedColors(color)}
+              />
+              <label style={{ marginLeft: "8px" }}>{color}</label>
+            </div>
+          ))}
         </div>
-        <div className="form-group mb-2">
-          <label htmlFor="tag">Mã lô hàng</label>
-          <input
-            type="text"
-            className="form-control"
-            id="tag"
-            placeholder="Nhập mã lô hàng"
-            required
-            name="tag"
-            value={tag}
-            onChange={handleChange}
-          />
+        <div
+          className="form-group"
+          style={{ marginTop: "12px", marginLeft: "12px" }}
+        >
+          <label htmlFor="size">Kích cỡ</label>
+          {sizes.map((size, index) => (
+            <div key={index}>
+              <input
+                name="size"
+                type="radio"
+                onChange={() => setSelectedSizes(size)}
+              />
+              <label style={{ marginLeft: "8px" }}>{size}</label>
+            </div>
+          ))}
         </div>
-        <div className="form-group mb-2">
-          <label htmlFor="description">Mô tả</label>
-          {editorLoaded ? (
-            <CKEditor
-              className="form-control"
-              editor={ClassicEditor}
-              config={{
-                placeholder: "Hãy viết gì đó ...",
-                language: "vi",
-                toolbar: [
-                  "heading",
-                  "|",
-                  "bold",
-                  "italic",
-                  "link",
-                  "undo",
-                  "redo",
-                ],
-              }}
-              data={data}
-              onReady={(editor) => {
-                // You can store the "editor" and use when it is needed.
-              }}
-              onChange={(event, editor) => {
-                const data = editor.getData();
-                setDescription(data);
-              }}
-            />
-          ) : (
-            <p>Carregando...</p>
-          )}
+        <div
+          className="form-group"
+          style={{ marginTop: "12px", marginLeft: "12px" }}
+        >
+          <label htmlFor="material">Chất liệu</label>
+          {materials.map((material, index) => (
+            <div key={index}>
+              <input
+                name="material"
+                type="radio"
+                onChange={() => setSelectedMaterials(material)}
+              />
+              <label style={{ marginLeft: "8px" }}>{material}</label>
+            </div>
+          ))}
         </div>
-        <div className="form-group mb-2">
-          <label htmlFor="price">Giá</label>
-          <input
-            type="number"
-            className="form-control"
-            id="price"
-            placeholder="Giá sản phẩm"
-            required
-            name="price"
-            value={price}
-            onChange={handleChange}
-          />
+        <div
+          className="form-group"
+          style={{ marginTop: "12px", marginLeft: "12px" }}
+        >
+          <label htmlFor="material">Áo</label>
+          {shirtTypes.map((shirt, index) => (
+            <div key={index}>
+              <input
+                name="type"
+                type="radio"
+                onClick={() => setSelectType(shirt)}
+              />
+              <label style={{ marginLeft: "8px" }}>{shirt}</label>
+            </div>
+          ))}
         </div>
-        <div className="form-group mb-2">
-          <label htmlFor="enteringQuantity">Số lượng nhập kho</label>
-          <input
-            type="number"
-            className="form-control"
-            id="enteringQuantity"
-            placeholder="Số lượng nhập kho"
-            required
-            name="enteringQuantity"
-            value={enteringQuantity}
-            onChange={handleChange}
-          />
+        <div
+          className="form-group"
+          style={{ marginTop: "12px", marginLeft: "12px" }}
+        >
+          <label htmlFor="material">Quần</label>
+          {shortsTypes.map((short, index) => (
+            <div key={index}>
+              <input
+                name="type"
+                type="radio"
+                onClick={() => setSelectType(short)}
+              />
+              <label style={{ marginLeft: "8px" }}>{short}</label>
+            </div>
+          ))}
         </div>
-        <div className="form-group">
-          <label htmlFor="sex">Giới tính</label>
-          <select
-            className="form-control"
-            id="sex"
-            required
-            name="sex"
-          
-            onChange={handleChange}
-          >
-            <option></option>
-            <option>Nam</option>
-            <option>Nữ</option>
-          </select>
-        </div>
-        <div style={{ display: "flex" }}>
-          <div className="form-group" style={{ marginTop: "12px" }}>
-            <label htmlFor="sex">Màu</label>
-            {colors.map((color, index) => (
-              <div key={index}>
-                <input
-                  name="color"
-                  type="radio"
-                  onChange={() => setSelectedColors(color)}
-                />
-                <label style={{ marginLeft: "8px" }}>{color}</label>
-              </div>
-            ))}
-          </div>
-          <div
-            className="form-group"
-            style={{ marginTop: "12px", marginLeft: "12px" }}
-          >
-            <label htmlFor="size">Kích cỡ</label>
-            {sizes.map((size, index) => (
-              <div key={index}>
-                <input
-                  name="size"
-                  type="radio"
-                  onChange={() => setSelectedSizes(size)}
-                />
-                <label style={{ marginLeft: "8px" }}>{size}</label>
-              </div>
-            ))}
-          </div>
-          <div
-            className="form-group"
-            style={{ marginTop: "12px", marginLeft: "12px" }}
-          >
-            <label htmlFor="material">Chất liệu</label>
-            {materials.map((material, index) => (
-              <div key={index}>
-                <input
-                  name="material"
-                  type="radio"
-                  onChange={() => setSelectedMaterials(material)}
-                />
-                <label style={{ marginLeft: "8px" }}>{material}</label>
-              </div>
-            ))}
-          </div>
-          <div
-            className="form-group"
-            style={{ marginTop: "12px", marginLeft: "12px" }}
-          >
-            <label htmlFor="material">Áo</label>
-            {shirtTypes.map((shirt, index) => (
-              <div key={index}>
-                <input
-                  name="type"
-                  type="radio"
-                  onClick={() => setSelectType(shirt)}
-                />
-                <label style={{ marginLeft: "8px" }}>{shirt}</label>
-              </div>
-            ))}
-          </div>
-          <div
-            className="form-group"
-            style={{ marginTop: "12px", marginLeft: "12px" }}
-          >
-            <label htmlFor="material">Quần</label>
-            {shortsTypes.map((short, index) => (
-              <div key={index}>
-                <input
-                  name="type"
-                  type="radio"
-                  onClick={() => setSelectType(short)}
-                />
-                <label style={{ marginLeft: "8px" }}>{short}</label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="age">Độ tuổi</label>
-          <select
-            className="form-control"
-            id="age"
-            required
-            name="age"
-            value={age}
-            onChange={handleChange}
-          >
-            <option>Người lớn</option>
-            <option>Trẻ em</option>
-          </select>
-        </div>
-        <div className="form-group mb-2">
-          <label htmlFor="imageUrl">Hình ảnh</label>
-          <input
-            type="file"                  
-            onChange={handleChangeImg}
-          />
-        <button type="button" onClick={handleSave} className="btn btn-primary">Lưu ảnh</button>
-        </div>
-        <hr />
-        <button type="submit" className="btn btn-primary">
-          Tạo sản phẩm
-        </button>
-      </form>
+      </div>
+      <div className="form-group">
+        <label htmlFor="age">Độ tuổi</label>
+        <select
+          className="form-control"
+          id="age"
+          required
+          name="age"
+
+          onChange={handleChange}
+        >
+          <option></option>
+          <option>Người lớn</option>
+          <option>Trẻ em</option>
+        </select>
+      </div>
+      <div className="form-group mb-2">
+        <label htmlFor="imageUrl">Hình ảnh</label>
+        <input
+          type="file"
+          onChange={handleChangeImg}
+        />
+
+      </div>
+      <hr />
+      <button type="button" onClick={handleSubmit} className="btn btn-primary">
+        Tạo sản phẩm
+      </button>
+      </div>
     </div>
   );
 }

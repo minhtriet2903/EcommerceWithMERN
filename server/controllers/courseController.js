@@ -41,6 +41,7 @@ exports.createCourse = (req, res) => {
         materials: req.body.materials,
         colors: req.body.colors,
         tag: req.body.tag,
+        type:req.body.type
     });
 
     return course
@@ -136,14 +137,14 @@ exports.getAll = (req, res) => {
             let result = allCourse.filter(
                 (item) =>
                 (req.query.content == null ||
-                    item.tag === req.query.content) &&
+                    item.type === req.query.content) &&
                 (req.query.color == null ||
-                    item.colors.includes(req.query.color)) &&
-                (req.query.size == null || item.size.includes(req.query.size)) &&
+                    item.colors === req.query.color) &&
+                (req.query.size == null || item.size === req.query.size) &&
                 (req.query.age == null || item.age === req.query.age) &&
                 (req.query.materials == null ||
                     item.materials.includes(req.query.material)) &&
-                (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+                (req.query.sex == null || item.Sex === req.query.sex) &&
                 ((req.query.lowPrice == null && req.query.upPrice == null) ||
                     (item.Price >= req.query.lowPrice &&
                         item.Price <= req.query.upPrice))
@@ -165,7 +166,7 @@ exports.getAll = (req, res) => {
                 let result = allCourse.filter(
                     (item) =>
                     (req.query.content == null ||
-                        item.tag === req.query.content) &&
+                        item.type === req.query.content) &&
                     (req.query.color == null ||
                         item.colors.includes(req.query.color)) &&
                     (req.query.size == null || item.size.includes(req.query.size)) &&
@@ -205,7 +206,7 @@ exports.getCourse = (req, res) => {
         let result = allCourse.filter(
           (item) =>
           (req.query.content == null ||
-            item.tag === req.query.content) &&
+            item.type === req.query.content) &&
             (req.query.color == null ||
               item.colors === req.query.color) &&
             (req.query.size == null || item.size == req.query.size) &&
@@ -240,7 +241,7 @@ exports.getCourse = (req, res) => {
         let result = allCourse.filter(
           (item) =>
           (req.query.content == null ||
-            item.tag === req.query.content) &&
+            item.type === req.query.content) &&
             (req.query.color == null ||
               item.colors === req.query.color) &&
             (req.query.size == null || item.size === req.query.size) &&

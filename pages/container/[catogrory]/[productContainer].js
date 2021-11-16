@@ -126,7 +126,7 @@ const ProductContainer = (props) => {
                         <div className="pagein_body">
                             <div className="inside">
                                 {
-                                    currentPage === 1 ? '' : <i className='bx bxs-left-arrow' num="1" onClick={handleChangePage}></i>
+                                    currentPage === 1 || currentPage===0 ? '' : <i className='bx bxs-left-arrow' num="1" onClick={handleChangePage}></i>
                                 }
                                 <ul className="paginationBttns">
                                     {

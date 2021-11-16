@@ -61,6 +61,7 @@ export default function Home({ data }) {
  
   const [showModal, setShowModal] = useState(false);
   const [itemId, setItemId] = useState("false");
+  const [img,setImg] = useState("");
   const [esc, setEsc] = useState(false);
   const [page, setPage] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
@@ -127,6 +128,7 @@ export default function Home({ data }) {
         onClose={() => setShowModal(false)}
         show={showModal}
         id={itemId}
+        img={img}
         prefix="course"
       >
         Hello from the modal!
@@ -204,7 +206,7 @@ export default function Home({ data }) {
                       </Link>
                       <a
                         onClick={() => {
-                          setShowModal(true), setItemId(item._id);
+                          setShowModal(true), setItemId(item._id) ; setImg(item.Image);
                         }}
                       >
                         <Button>

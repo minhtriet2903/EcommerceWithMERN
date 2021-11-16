@@ -29,6 +29,7 @@ import Messenger from "../components/messenger";
 import cookies from "next-cookies";
 import Router from "next/router";
 import NProgress from "nprogress"
+
 NProgress.configure({ showSpinner: false });
 declare global {
   interface Window {
@@ -46,24 +47,27 @@ const MyApp = ({ Component, pageProps }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false)
   const [user, setUser] = useState(null);
-
+  const [getU, setGetU] = useState(false);
   useEffect(() => {
 
     import("bootstrap/dist/js/bootstrap");
     const Acc = cookieCutter.get("Acc")
+    console.log(Acc)
     if (Acc) {
-
       const fetchUser = async () => {
         const res31 = await fetch("http://localhost:5035/users/" + Acc);
         const data = await res31.json();
-        
+      
         setUser(data);
       }
       fetchUser();
+      setGetU(true);
     } else {
+      setGetU(true);
       setUser(null);
     }
-
+   
+    
   }, [router])
   Router.events.on("routeChangeStart", (url) => {
    
@@ -73,8 +77,10 @@ const MyApp = ({ Component, pageProps }) => {
   Router.events.on("routeChangeComplete", (url) => {
  
     NProgress.done();
+   
     setLoading(false);
   })
+  console.log(getU)
   return (
     <>
 

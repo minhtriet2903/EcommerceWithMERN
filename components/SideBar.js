@@ -83,10 +83,12 @@ function Sidebar() {
   const [user, setUser] = useState("");
   const router = useRouter();
   const logOut = () => {
-    cookieCutter.set("Acc", "");
-    setUser("");
+    
     document.cookie = "Acc=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    router.replace("/");
+    window.setTimeout(() =>{
+      router.replace("/");
+    },1000)
+    
   };
   useEffect(() => {
     const Acc = cookieCutter.get("Acc");

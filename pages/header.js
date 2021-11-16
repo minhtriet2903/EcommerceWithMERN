@@ -34,10 +34,10 @@ const Headerr = (props) => {
       "Áo khoác",
       "Áo len",
       "Suit",
-      "Quần tây",
+      "Quần jean",
       "Quần kaki",
       "Quần thể thao",
-      "Đầm",
+      
     ],
   });
   const [female, setFemale] = useState({
@@ -48,7 +48,7 @@ const Headerr = (props) => {
       "Áo khoác",
       "Áo len",
       "Suit",
-      "Quần tây", ,
+      "Quần jean", ,
       "Quần kaki",
       "Quần thể thao",
       "Đầm",
@@ -62,7 +62,7 @@ const Headerr = (props) => {
       "Áo khoác",
       "Áo len",
       "Suit",
-      "Quần tây", ,
+      "Quần jean", ,
       "Quần kaki",
       "Quần thể thao",
       "Đầm",
@@ -157,7 +157,10 @@ const Headerr = (props) => {
   const Logout = () => {
     
     document.cookie = "Acc=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    router.replace("/");
+    window.setTimeout(() =>{
+      router.replace("/");
+    },1000)
+    
   };
 
   useEffect(() => {
@@ -321,7 +324,7 @@ const Headerr = (props) => {
                                 <Link
                                   key={index}
                                   href={`/container/${female.type
-                                    }/${item.toLowerCase()}`}
+                                    }/${item}`}
                                 >
                                   <a>{item}</a>
                                 </Link>

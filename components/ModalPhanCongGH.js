@@ -42,7 +42,7 @@ const Modal = ({ show, onClose, children, title, item }) => {
   const router = useRouter();
   const setBillForShipper = (shipper) => {
     axios
-      .get("http://localhost:5035/courses")
+      .get("http://localhost:5035/coursesAll")
       .then((res) => {
         let getAll = res.data;
         console.log(item.Products);
