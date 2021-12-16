@@ -280,9 +280,11 @@ exports.getRelativeCourses = (req, res) => {
         .then((allCourse) => {
             let result = allCourse.filter(
                 (item) =>
-               
+                
                 (req.query.age == null || item.age === req.query.age) &&
-                (req.query.sex == null || item.Sex.includes(req.query.sex)) &&
+                (req.query.sex == null || item.Sex === req.query.sex) &&
+                (req.query.materials == null || item.materials === req.query.materials) &&
+              
                 ((req.query.lowPrice == null && req.query.upPrice == null) ||
                     (item.Price >= req.query.lowPrice &&
                         item.Price <= req.query.upPrice))
@@ -310,7 +312,17 @@ exports.getRelativeCourses = (req, res) => {
                         (item.Price >= req.query.lowPrice &&
                             item.Price <= req.query.upPrice))                   
                 );
-                return res.status(200).json(result);
+                var data = [];
+                if (result.length > 7) {
+                    for (let i = 0; i < 7; i++) {
+                        data.push(result[i]);
+                    }
+                } else {
+                    for (let i = 0; i < result.length; i++) {
+                        data.push(result[i]);
+                    }
+                }
+                return res.status(200).json(data);
             })
             .catch((err) => {
                 res.status(500).json({
@@ -448,7 +460,7 @@ exports.getCourseTopSalerForMale = (req, res) => {
             { $match: { Sex: "Nam", age: "Adult" } },
         ])
         .then((allCourse) => {
-            var data = [];
+             var data = [];
             if (allCourse.length > 7) {
                 for (let i = 0; i < 7; i++) {
                     data.push(allCourse[i]);
@@ -457,7 +469,7 @@ exports.getCourseTopSalerForMale = (req, res) => {
                 for (let i = 0; i < allCourse.length; i++) {
                     data.push(allCourse[i]);
                 }
-            }
+            } 
             return res.status(200).json(data);
         })
         .catch((err) => {

@@ -91,10 +91,12 @@ const Home = ({ item }) => {
       <ContentContainer>
         <Content>
           <Link href={"/course"}>
+            <a>
             <Button>
               {" "}
               <FontAwesomeIcon icon={faHome} />{" "}
             </Button>
+            </a>
           </Link>
           <div className="table-responsive">
             <table className="table table-striped">
@@ -110,7 +112,7 @@ const Home = ({ item }) => {
                 {item.Comments.map((cmt,index) => (
                   <tr key={index}>
                     <td>{cmt.userId}</td>
-                    <td>{cmt.text}</td>
+                    <td dangerouslySetInnerHTML={{ __html: cmt.text}}></td>
                     <td>{cmt.date}</td>
                     <td>
                       <a

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSignOutAlt,
@@ -83,11 +84,15 @@ function Sidebar() {
   const [user, setUser] = useState("");
   const router = useRouter();
   const logOut = () => {
+   
+    // cookieCutter.set('Acc', '', { expires: new Date(0) })
+       
+   
+ 
+    Cookies.remove("Acc")
     
-    document.cookie = "Acc=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    window.setTimeout(() =>{
-      router.replace("/");
-    },1000)
+    router.push("/");
+    
     
   };
   useEffect(() => {

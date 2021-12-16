@@ -25,8 +25,7 @@ const CartContainer = (props) => { //props contain cart and cart contain product
         var arr = null;
         
         if(cart.length > 0){
-             arr = cart.map((item,index) =>{
-                return item })
+             arr = cart.map((item,index) =>{return item })
                 result = <Total cart={Calculator(cart)} arr={arr} actDeleteAllCart={actDeleteAllCart}/>;
             }
             return result;

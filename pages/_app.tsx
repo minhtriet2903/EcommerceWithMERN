@@ -5,7 +5,7 @@ import "../styles/cart.css";
 import "../styles/cartModal.css";
 import "../styles/header.css";
 import "../styles/landingpage.css";
-import "../styles/Home.module.css"
+
 import "../styles/login.css";
 import "../styles/register.css";
 import "../styles/profile.css";
@@ -42,37 +42,33 @@ const store = createStore(
   appReducers,
   composeEnhancers()
 );
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps}) => {
 
   const router = useRouter();
   const [loading, setLoading] = useState(false)
   const [user, setUser] = useState(null);
   const [getU, setGetU] = useState(false);
   useEffect(() => {
-
     import("bootstrap/dist/js/bootstrap");
     const Acc = cookieCutter.get("Acc")
-    console.log(Acc)
+   
     if (Acc) {
       const fetchUser = async () => {
         const res31 = await fetch("http://localhost:5035/users/" + Acc);
         const data = await res31.json();
-      
         setUser(data);
       }
       fetchUser();
-      setGetU(true);
+     ;
     } else {
-      setGetU(true);
       setUser(null);
     }
-   
-    
   }, [router])
   Router.events.on("routeChangeStart", (url) => {
    
     NProgress.start();
     setLoading(true);
+   
   })
   Router.events.on("routeChangeComplete", (url) => {
  
@@ -80,7 +76,6 @@ const MyApp = ({ Component, pageProps }) => {
    
     setLoading(false);
   })
-  console.log(getU)
   return (
     <>
 
@@ -100,7 +95,10 @@ const MyApp = ({ Component, pageProps }) => {
       { !loading ?
         <Provider store={store}>
           {
-            user ? user.role !== 'Manager' ? <Headerr /> : <Sidebar /> : <Headerr />
+              user ? 
+                user.role !== 'Manager' ?<>  <Headerr /> </>:<>  <Sidebar /> </>
+                : <> <Headerr /> </>
+      
           }
           <Component {...pageProps} />
           {/* <Messenger /> */}
@@ -126,4 +124,5 @@ const MyApp = ({ Component, pageProps }) => {
     data: data
   }
 } */
+
 export default MyApp;

@@ -6,7 +6,7 @@
   justify-content: center;
   width: 100%;
   background-color: #F7F7F7 ;
-  
+  margin-bottom: 10px;
 }
 .profile_body {
   display: flex;
@@ -104,10 +104,12 @@
 .profile_content {
   padding: 0 10px;
   background-color: #FFFFFF ;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
 .info_title {
   padding: 0 0 20px 10px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #E5E7E9;
 }
 .info_title p {
   font-size: 22px;

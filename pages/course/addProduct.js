@@ -13,6 +13,7 @@ const Form = () => {
   const [sex, setSex] = useState("");
   const [age, setAge] = useState("");
   const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
   const [enteringQuantity, setEnteringQuantity] = useState(0);
   const [colors, setColors] = useState([
     "yellow",
@@ -21,7 +22,7 @@ const Form = () => {
     "pink",
     "purple",
     "green",
-    "grey",
+    "gray",
     "black",
     "orange",
     "white"
@@ -37,12 +38,23 @@ const Form = () => {
     "Áo khoác",
     "Áo len",
     "Suit",
+   
   ]);
   const [shortsTypes, setShortsTypes] = useState([
     "Quần jean",
     "Quần kaki",
     "Quần thể thao",
     "Đầm",
+  ]);
+  const [shoes, setShoes] = useState([
+    "Giày"
+  ]);
+  const [clothes, setClothes] = useState([
+    "Quần áo",
+    "Phụ kiện",
+    "Quần thể thao",
+    "Đầm",
+    "Giày"
   ]);
   const [selectedMaterials, setSelectedMaterials] = useState();
 
@@ -74,12 +86,20 @@ const Form = () => {
     } else if (name == "tag") {
       setTag(value);
     } else if (name == "sex") {
-
       setSex(value);
     } else if (name == "price") {
       let tmp = parseInt(value);
+      // if(discount){
+      //   tmp = tmp * Number(discount / 100);
+
+      // }
       setPrice(tmp);
-    } else if (name == "enteringQuantity") {
+    } else if (name == "discount") {
+      let tmp = Number(value);
+       setDiscount(tmp)
+     
+     
+    }else if (name == "enteringQuantity") {
       let tmp = parseInt(value);
       setEnteringQuantity(tmp);
     } else if (name == "age") {
@@ -94,6 +114,7 @@ const Form = () => {
     console.log(e.target.files[0])
   }
   const handleSave = () => {
+  
     const uploadTask =  storage.ref(`images/${imgFire.name}`).put(imgFire);
     uploadTask.on(
       "state_changed",
@@ -107,7 +128,8 @@ const Form = () => {
           .child(imgFire.name)
           .getDownloadURL()
           .then(url => {
-            setImageUrl(url)
+            setImageUrl(url);
+
             axios
               .post(
                 "http://localhost:5035/courses",
@@ -115,8 +137,8 @@ const Form = () => {
                   name,
                   description,
                   sex,
-                  price,
-                  price,
+                  price: discount > 0 ? price - (price * (discount /100)) :  price,
+                  discount: discount > 0 ? price : null,
                   enteringQuantity,
                   age,
                   colors: selectedColors,
@@ -143,12 +165,15 @@ const Form = () => {
   }
   
   const handleSubmit = () => {
-    if (name === "" || sex === "" || age === "" || selectedColors === "" || selectedSizes === "" || tag === "" || selectType === "" || !imgFire) {
+    
+    if (name === "" || sex === "" || price === "" || age === "" || selectedColors === "" || selectedSizes === "" || tag === "" || selectType === "" || !imgFire) {
       swal("Thông báo", "Thông tin cung cấp cho sản phẩm còn thiếu", "error")
-    } else{
+    } else if(Number(price) < 0){
+      swal("Thông báo", "Giá tiền phải lớn hơn 0", "error")
+    }else{
       handleSave();
     }
-  };
+  }
 
   return (
     <div className="container_add">
@@ -223,6 +248,19 @@ const Form = () => {
           required
           name="price"
           value={price}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group mb-2">
+        <label htmlFor="price">Giảm giá (%)</label>
+        <input
+          type="number"
+          className="form-control"
+          id="discount"
+          placeholder="Giảm giá"
+          required
+          name="discount"
+          value={discount}
           onChange={handleChange}
         />
       </div>
@@ -332,6 +370,38 @@ const Form = () => {
             </div>
           ))}
         </div>
+        <div
+          className="form-group"
+          style={{ marginTop: "12px", marginLeft: "12px" }}
+        >
+          <label htmlFor="material">Trẻ con</label>
+          {clothes.map((short, index) => (
+            <div key={index}>
+              <input
+                name="type"
+                type="radio"
+                onClick={() => setSelectType(short)}
+              />
+              <label style={{ marginLeft: "8px" }}>{short}</label>
+            </div>
+          ))}
+        </div>
+        <div
+          className="form-group"
+          style={{ marginTop: "12px", marginLeft: "12px" }}
+        >
+          <label htmlFor="material">Giày</label>
+          {shoes.map((short, index) => (
+            <div key={index}>
+              <input
+                name="type"
+                type="radio"
+                onClick={() => setSelectType(short)}
+              />
+              <label style={{ marginLeft: "8px" }}>{short}</label>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="form-group">
         <label htmlFor="age">Độ tuổi</label>
@@ -350,10 +420,13 @@ const Form = () => {
       </div>
       <div className="form-group mb-2">
         <label htmlFor="imageUrl">Hình ảnh</label>
+        <div>
         <input
           type="file"
           onChange={handleChangeImg}
         />
+        </div>
+        
 
       </div>
       <hr />

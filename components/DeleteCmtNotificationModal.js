@@ -57,10 +57,11 @@ const DeleteNotificationModal = ({
             x
           </a>
         </StyledModalHeader>
-        {title && <StyledModalTitle>{title}</StyledModalTitle>}
+        {title}
         <StyledModalBody>
           <h2>Bạn có chắc muốn xóa bình luận id = {cmtId}</h2>
-          <a href={"/course/" + id + "/comments"}>
+          <Link  href={"/course/" + id + "/comments"}>
+          <a>
             <Button
               onClick={deleteItem}
               style={{ background: "red", color: "whitesmoke" }}
@@ -69,6 +70,7 @@ const DeleteNotificationModal = ({
             </Button>
             <Button>Hủy</Button>
           </a>
+          </Link>
         </StyledModalBody>
       </StyledModal>
     </StyledModalOverlay>

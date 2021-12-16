@@ -25,8 +25,8 @@ const ProductContainer = (props) => {
         if (router.asPath !== router.route) {
             var request = {
                 params: {
-                    sex: router.query.catogrory === 'kid' ? null : router.query.catogrory,
-                    age: router.query.catogrory === 'kid' ? 'Kid' : 'Adult',
+                    sex: router.query.catogrory === 'Kid' ? null : router.query.catogrory,
+                    age: router.query.catogrory === 'Kid' ? 'Kid' : 'Adult',
                     content: router.query.productContainer,
                     color: router.query.color ? router.query.color : null,
                     size: router.query.size ? router.query.size : null,

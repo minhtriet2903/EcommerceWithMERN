@@ -61,7 +61,8 @@ function Form({ item }) {
   const [sex, setSex] = useState(item.Sex);
   const [dateIn, setDateIn] = useState(item.DateIn);
   const [age, setAge] = useState(item.age);
-  const [price, setPrice] = useState(item.Price);
+  const [price, setPrice] = useState(item.Discount ? item.Discount : item.Price);
+  const [discount, setDiscount] = useState(100/(item.Discount / (item.Discount - item.Price)));
   const [enteringQuantity, setEnteringQuantity] = useState(
     item.enteringQuantity
   );
@@ -73,7 +74,10 @@ function Form({ item }) {
     "pink",
     "purple",
     "green",
-    "grey",
+    "gray",
+  ]);
+  const [shoes, setShoes] = useState([
+    "Giày"
   ]);
   const [selectedColors, setSelectedColors] = useState(item.colors);
   const [sizes, setSizes] = useState(["XS", "S", "M", "L", "XL", "XXL"]);
@@ -92,6 +96,12 @@ function Form({ item }) {
     "Quần thể thao",
     "Đầm",
   ]);
+  const [clothes, setClothes] = useState([
+    "Quần áo",
+    "Phụ kiện",
+    "Quần thể thao",
+    "Đầm",
+  ]);
   const [selectedMaterials, setSelectedMaterials] = useState(item.materials);
   const [selectType,setSelectType] = useState(item.type);
   const [soldQuantity, setSoldQuantity] = useState(item.soldQuantity);
@@ -99,7 +109,7 @@ function Form({ item }) {
   const [isSucceed, setIsSucceed] = useState("");
   const [imgFire,setImgFire] = useState(null)
   const [imageUrl, setImageUrl] = useState(item.Image);
-  const [tag, setTag] = useState("");
+  const [tag, setTag] = useState(item.tag);
   const { CKEditor, ClassicEditor } = editorRef.current || {};
   const [data, setData] = useState(item.Description);
   useEffect(() => {
@@ -138,7 +148,8 @@ function Form({ item }) {
             {
               Name: name,
               Description: description,
-              Price: price,
+              Price: discount > 0 ? price - (price * (discount /100)) :  price,
+              Discount:discount > 0 ? price : null,
               enteringQuantity,
               Sex: sex,
               enteringQuantity,
@@ -182,7 +193,10 @@ function Form({ item }) {
     } else if (name == "price") {
       let tmp = parseInt(value);
       setPrice(tmp);
-    } else if (name == "enteringQuantity") {
+    }else if (name == "discount") {
+      let tmp = Number(value);
+       setDiscount(tmp)
+    }else if (name == "enteringQuantity") {
       let tmp = parseInt(value);
       setEnteringQuantity(tmp);
     } else if (name == "age") {
@@ -194,14 +208,19 @@ function Form({ item }) {
   };
 
   const handleSubmit = async () => {    
-    if(imageUrl !== ""){
+    if (name === "" || sex === "" || price === "" || age === "" || selectedColors === "" || selectedSizes === "" || tag === "" || selectType === "") {
+      swal("Thông báo", "Thông tin cung cấp cho sản phẩm còn thiếu", "error")
+    }else if(Number(price) < 0){
+      swal("Thông báo", "Giá tiền phải lớn hơn 0", "error")
+    }else if(imageUrl !== ""){
       axios
       .put(
         "http://localhost:5035/courses/" + item._id,
         {
           Name: name,
           Description: description,
-          Price: price,
+          Price: discount > 0 ? price - (price * (discount /100)) :  price,
+          Discount:discount > 0 ? price : null,
           enteringQuantity,
           Sex: sex,
           enteringQuantity,
@@ -334,6 +353,19 @@ function Form({ item }) {
           />
         </div>
         <div className="form-group mb-2">
+        <label htmlFor="price">Giảm giá (%)</label>
+        <input
+          type="number"
+          className="form-control"
+          id="discount"
+          placeholder="Giảm giá"
+          required
+          name="discount"
+          value={discount}
+          onChange={handleChange()}
+        />
+      </div>
+        <div className="form-group mb-2">
           <label htmlFor="Curentcolors">Màu hiện tại</label>
           <input
             type="text"
@@ -464,6 +496,38 @@ function Form({ item }) {
               </div>
             ))}
           </div>
+          <div
+          className="form-group"
+          style={{ marginTop: "12px", marginLeft: "12px" }}
+        >
+          <label htmlFor="material">Trẻ con</label>
+          {clothes.map((short, index) => (
+            <div key={index}>
+              <input
+                name="type"
+                type="radio"
+                onClick={() => setSelectType(short)}
+              />
+              <label style={{ marginLeft: "8px" }}>{short}</label>
+            </div>
+          ))}
+        </div>
+        <div
+          className="form-group"
+          style={{ marginTop: "12px", marginLeft: "12px" }}
+        >
+          <label htmlFor="material">Giày</label>
+          {shoes.map((short, index) => (
+            <div key={index}>
+              <input
+                name="type"
+                type="radio"
+                onClick={() => setSelectType(short)}
+              />
+              <label style={{ marginLeft: "8px" }}>{short}</label>
+            </div>
+          ))}
+        </div>
         </div>
 
         <div className="form-group">

@@ -6,7 +6,7 @@ import cookieCutter from "cookie-cutter";
 import { useRouter } from "next/router";
 import { Register } from "./Register";
 import { SetPassword } from "./forgotPass";
-
+import cookies from 'js-cookie'
 export const Login = ({ show, setShow, getName }) => {
   const router = useRouter();
 
@@ -27,6 +27,7 @@ export const Login = ({ show, setShow, getName }) => {
   }, [show]);
 
   const handleSubmit = async () => {
+   
     if (email && password) {
       const response = await fetch("http://localhost:5035/users/login", {
         method: "POST",
@@ -39,16 +40,17 @@ export const Login = ({ show, setShow, getName }) => {
           "Content-Type": "application/json",
         },
       });
-      const data = await response.json();
-      if (data.user) {
-        cookieCutter.set("Acc", data.user._id);
 
+      const data = await response.json();
+      
+      if (data.user) {
+       
+       cookies.set("Acc",data.user._id,{expires : 1/24});
         hide();
         if (data.user.role === "Manager") router.push("/course");
         else if (data.user.role === "Shipper") router.push("/shipperAdmin");
         else{
-         /*  const current = router.pathname;
-          router.push(current) */
+       
           window.location.reload()
         } 
       } else {
@@ -117,6 +119,7 @@ export const Login = ({ show, setShow, getName }) => {
                           className="name_input"
                           placeholder=" ..."
                           id="thu"
+                         
                           onChange={(e) => setEmail(e.target.value)}
                         />
                       </div>
@@ -129,6 +132,7 @@ export const Login = ({ show, setShow, getName }) => {
                           type="password"
                           className="name_input"
                           placeholder=" ..."
+                         
                           onChange={(e) => setPassword(e.target.value)}
                         />
                       </div>

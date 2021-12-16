@@ -58,7 +58,7 @@ function Form({ item }) {
   const [name, setName] = useState(item.name);
   const [email, setEmail] = useState(item.email);
   const [sex, setSex] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(item.phoneNumber);
   const [birthday, setBirthday] = useState();
   const [role, setRole] = useState(item.role);
   const [avatar, setAvatar] = useState(item.avatar);
@@ -83,7 +83,14 @@ function Form({ item }) {
       setSex(value);
     }
   };
-
+//   useEffect(() =>{
+//     var date = new Date(item.createDate)
+    
+//     var dd = date.getDate();
+//     var mm = date.getMonth()+1; //January is 0!
+//     var yyyy = date.getFullYear();
+// console.log(date)
+//   })
   const handleSubmit = async () => {
     const res = await axios.put("http://localhost:5035/users/" + item._id, {
       name: name,
@@ -96,13 +103,13 @@ function Form({ item }) {
   const handleDetail = async () => {
     if (item.role === "Shipper") {
       const res = await axios.get(
-        "http://localhost:5035/users" + item._id + "/shipper/bills"
+        "http://localhost:5035/users/" + item._id + "/shipper/bills"
       );
       setDetailTable(res.data);
       console.log(res);
     } else {
       const res = await axios.get(
-        "http://localhost:5035/users" + item._id + "/customer/bills"
+        "http://localhost:5035/users/" + item._id + "/customer/bills"
       );
       setDetailTable(res.data);
       console.log(res);
@@ -207,7 +214,7 @@ function Form({ item }) {
             <option>Customer</option>
           </select>
         </div>
-        <div className="form-group mb-2">
+        {/* <div className="form-group mb-2">
           <label htmlFor="avatar">Ảnh đại diện</label>
           <input
             type="text"
@@ -219,7 +226,7 @@ function Form({ item }) {
             value={avatar}
             onChange={handleChange()}
           />
-        </div>
+        </div> */}
         <hr />
         <button type="submit" className="btn btn-primary">
           Cập nhật tài khoản
@@ -231,7 +238,7 @@ function Form({ item }) {
       {role === "Customer" && (
         <div>
           <Button onClick={handleDetail}>Lịch sử mua hàng</Button>
-          <div class="table-responsive">
+          <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -243,8 +250,8 @@ function Form({ item }) {
               </thead>
               <tbody>
                 {detailTable.length > 0 ? (
-                  detailTable.map((item) => (
-                    <tr>
+                  detailTable.map((item,index) => (
+                    <tr key={index}>
                       <td>{item.BillDate}</td>
                       <td>{item.TotalPrice}</td>
                       <td>{item.Status}</td>
@@ -265,16 +272,59 @@ function Form({ item }) {
                       </td>
                     </tr>
                   ))
-                ) : (
+                ) : 
                   <h4>Không có lịch sử giao dịch</h4>
-                )}
+                }
               </tbody>
             </table>
           </div>
         </div>
       )}
       {role === "Shipper" && (
+        <>
         <Button onClick={handleDetail}>Lịch sử giao hàng</Button>
+        <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Ngày hóa đơn</th>
+              <th>Trị giá</th>
+              <th>Trạng thái</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            {detailTable.length > 0 ? (
+              detailTable.map((item,index) => (
+                <tr key={index}>
+                  <td>{item.BillDate}</td>
+                  <td>{item.TotalPrice}</td>
+                  <td>{item.Status}</td>
+                  <td>
+                    <a
+                      onClick={() => {
+                        setShowModal(true), setItemId(item._id);
+                      }}
+                    >
+                      <Button>
+                        {" "}
+                        <FontAwesomeIcon icon={faTrash} />{" "}
+                      </Button>
+                    </a>
+                    <Link href={"/bill/" + item._id}>
+                      <Button> Chi tiết </Button>
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : 
+              <h4>Không có lịch sử giao dịch</h4>
+            }
+          </tbody>
+        </table>
+      </div>
+
+    </>
       )}
     </div>
   );

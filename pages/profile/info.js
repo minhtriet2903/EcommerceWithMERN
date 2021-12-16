@@ -40,16 +40,17 @@ const Info = ({ data }) => {
         <span>Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
       </div>
       <div className="info_detail_pro">
+      <div className="name_account_detail wk">
+          <label>Tên</label>
+
+          <span className="detail_info_content">{data.name}</span>
+        </div>
         <div className="email_account_detail wk">
           <label>Email</label>
 
           <span className="detail_info_content">{email}</span>
         </div>
-        <div className="name_account_detail wk">
-          <label>Tên</label>
-
-          <span className="detail_info_content">{data.name}</span>
-        </div>
+       
 
         <div className="phone_account_detail wk">
           <label>Số Điện Thoại</label>
@@ -91,7 +92,7 @@ const Info = ({ data }) => {
           <label>Địa Chỉ</label>
           <textarea
             className="detail_info_content"
-            value={data.address}
+            value={address}
             onChange={(e) => setAddress(e.target.value)}
           >
             {data.address}

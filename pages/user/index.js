@@ -66,15 +66,44 @@ export default function Home({ data }) {
   };
   const handleChangePageIndex = async (index) => {
     await handleChangePage(index);
+    if (role != "All") {
+      axios
+        .get("http://localhost:5035/users?size=10", {
+          params: {
+            page: index,
+            role: role,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setUserTable(res.data.tutorials);
+        });
+    } else {
+      axios
+        .get("http://localhost:5035/users?size=10", {
+          params: {
+            page: index,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setUserTable(res.data.tutorials);
+        });
+    }
+  };
+  const filterWithRole = async () => {
     axios
-      .get("http://localhost:5035/users?size=10", {
+      .get("http://localhost:5035/users?size=10&page=0", {
         params: {
-          page: index,
+          role: role,
         },
       })
-      .then((res) => { console.log(res); setUserTable(res.data.tutorials)});
+      .then((res) => {
+        console.log(res);
+        setUserTable(res.data.tutorials);
+        setPage(0);
+      });
   };
-
   return (
     <div>
       <DeleteNotificationModal
@@ -111,7 +140,7 @@ export default function Home({ data }) {
                 <option>Customer</option>
               </select>
             </div>
-            <Button style={{ marginLeft: "16px" }}>Lọc</Button>
+            <Button onClick={filterWithRole} style={{ marginLeft: "16px" }}>Lọc</Button>
           </div>
 
           <Link href="/user/addUser">

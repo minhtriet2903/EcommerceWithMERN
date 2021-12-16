@@ -25,6 +25,7 @@ export const VerifyCode = ({ show, setShow, code, setSussessState}) => {
   const handleSubmit = async () => {
     if (code == vcode) {
       setSussessState(true);
+      swal("Thông báo","Đăng ký thành công","success");
       hide();
     } else {
       setPassnoity("Mã xác nhận không chính xác");

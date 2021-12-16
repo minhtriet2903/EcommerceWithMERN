@@ -35,6 +35,7 @@ import NumberFormat from 'react-number-format';
 // }
 
 export default function OnsaleProduct({data}){
+ 
     const router = useRouter();
     const path = `/container/${router.query.catogrory}`;
 

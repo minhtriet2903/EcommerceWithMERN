@@ -12,31 +12,57 @@ const Option = (props) => {
   const { AmountColor } = props;
   const { AmountSize } = props;
   const path = router.asPath.split("?").filter(x => x);
-
   const newPath = path.slice(0, 1).toString();
-  
   const clickColor = useRef([])
-  const [pricerange, setPriceRange] = useState([0, 2000000]);
-  const [chooseSize, setChooseSize] = useState();
-  const [chooseColor, setChooseColor] = useState();
-  const [turnn, setTurn] = useState(false);
+  const [pricerange, setPriceRange] = useState([router.query.lowPrice ? router.query.lowPrice : 0, router.query.upPrice ? router.query.upPrice : 2000000]);
+  const [chooseSize, setChooseSize] = useState(router.query.size? router.query.size : "");
+  const [chooseColor, setChooseColor] = useState(router.query.color ? router.query.color : "");
+  
   const updateRange = (eve, value) => {
     setPriceRange(value);
   }
   const hanldeSize = (size, index) => {
     setChooseSize(size)
   }
-
+ 
   const hanldeColor = (color, index) => {
-    const choose = document.querySelectorAll('.showColor_body');
-    choose.forEach(l => l.classList.remove('activeColor'));
-    choose[index].classList.toggle('activeColor');
-    setChooseColor(color)
     clickColor.current[index].click();
+    const choose = document.querySelectorAll('.showColor_body');
+    // console.log(clickColor.current[index].value)
+    // choose[index].getAttribute("value") === 
+    choose.forEach(l => l.classList.remove('activeColor'));
+    if(clickColor.current[index].checked){
+      choose[index].classList.add('activeColor');
+      setChooseColor(color)
+    }else{
+      setChooseColor(null)
+      choose.forEach(l => l.classList.remove('activeColor'));
+    }
+    // choose.forEach(function(ch){
+    //   console.log(ch.getAttribute("value"))
+    // })
+    // choose.forEach(l => l.classList.remove('activeColor')); 
+    // choose[index].classList.toggle('activeColor');
   }
-
+  useEffect(() =>{
+    var check = document.querySelectorAll(".pro_size");
+    check.forEach(function (checkbox) {
+      // const i =(checkbox.target.attributes.size.value); 
+        if (checkbox.value === chooseSize) {
+          checkbox.checked = true; 
+        }           
+    });
+    var checkcolor = document.querySelectorAll(".sh");
+    checkcolor.forEach(function (checkbox) {
+      if (checkbox.value === chooseColor) {
+          checkbox.checked = true; 
+      }   
+    });
+   
+  })
   const Changesize = (ev) => {
     var k = 0;
+    
     var check = document.querySelectorAll(".pro_size");
     check.forEach(function (checkbox) {
       if (checkbox.checked && checkbox !== ev.target) {
@@ -52,24 +78,29 @@ const Option = (props) => {
   }
   const ChangeColor = (ev) => {
     var k = 0;
-    var check = document.querySelectorAll(".hidden_color_chec");
+    var check = document.querySelectorAll(".sh");
+   
     check.forEach(function (checkbox) {
-      if (checkbox.checked && checkbox !== ev.target) { checkbox.checked = false; }
+     
+      if (checkbox.checked && checkbox !== ev.target) 
+      { 
+      
+        checkbox.checked = false; 
+      }
       else if (checkbox.checked) {
-        setTurn(false)
         k = 1;
       }
     });
     if (k == 0) {
       setChooseColor(null);
-      setTurn(true)
-      const choose = document.querySelectorAll('.showColor_body');
-      choose.forEach(l => l.classList.remove('activeColor'));
+      
+      // const choose = document.querySelectorAll('.showColor_body');
+      // choose.forEach(l => l.classList.remove('activeColor'));
     }
   }
   var EleSize = AmountSize ? AmountSize.map((size, index) => {
     return <li key={index}>
-      <label> <input type="checkbox" name="size" className="pro_size" onChange={Changesize} onClick={() => { hanldeSize(size.size, index) }} />{size.size}</label>
+      <label> <input type="checkbox" value={size.size}  name="size" className="pro_size" onChange={Changesize} onClick={() => { hanldeSize(size.size, index) }} />{size.size}</label>
       <span className="option_color_name">({size.amountSize})</span>
     </li>
   }) : '';
@@ -88,8 +119,8 @@ const Option = (props) => {
   }
   var showColor = AmountColor ? AmountColor.map((color, index) => {
     return <div key={index} className="option_body_color">
-      <input type="checkbox" className="hidden_color_chec" onChange={ChangeColor} ref={el => clickColor.current[index] = el} />
-      <label value={color.colors} className="showColor_body color_item hove">
+      <input type="checkbox" value={color.colors} className="hidden_color_chec sh"  onChange={ChangeColor} ref={el => clickColor.current[index] = el} />
+      <label value={color.colors} color={color.colors}  className={router.query.color === color.colors ? "showColor_body color_item hove activeColor" : "showColor_body color_item hove"} >
         <span style={ShowColor(color.colors)}
           className="showColor"
           id="Color"
@@ -102,52 +133,63 @@ const Option = (props) => {
     </div>
   }) : '';
   const handlePostCM = (e) => {
-    if (chooseColor && chooseSize) {
-      Router.push({
-        pathname: newPath,
-        query: {
-          age:router.query.age,
-          result: router.query.result ? router.query.result : null,
-          color: chooseColor,
-          size: chooseSize,
-          lowPrice: pricerange[0],
-          upPrice: pricerange[1]
-        }
-      });
-    }
-    else if (chooseColor) {
-      Router.push({
-        pathname: newPath,
-        query: {
-          age:router.query.age,
-          result: router.query.result ? router.query.result : null,
-          color: chooseColor,
-          lowPrice: pricerange[0],
-          upPrice: pricerange[1]
-        }
-      });
-    } else if (chooseSize) {
-      Router.push({
-        pathname: newPath,
-        query: {
-          age:router.query.age,
-          result: router.query.result ? router.query.result : null,
-          size: chooseSize,
-          lowPrice: pricerange[0],
-          upPrice: pricerange[1]
-        }
-      });
-    } else {
-      Router.push({
-        pathname: newPath,
-        query: {
-          age:router.query.age,
-          result: router.query.result ? router.query.result : null,
-          lowPrice: pricerange[0],
-          upPrice: pricerange[1]
-        }
-      });
-    }
+    router.push({
+      pathname: newPath,
+      query: {
+        age:router.query.age,
+        result: router.query.result ? router.query.result : null,
+        color:  chooseColor ,
+        size: chooseSize ,
+        lowPrice: pricerange[0] ,
+        upPrice: pricerange[1] 
+      }
+    });
+    // if (chooseColor && chooseSize) {
+    //   Router.push({
+    //     pathname: newPath,
+    //     query: {
+    //       age:router.query.age,
+    //       result: router.query.result ? router.query.result : null,
+    //       color: chooseColor,
+    //       size: chooseSize,
+    //       lowPrice: pricerange[0],
+    //       upPrice: pricerange[1]
+    //     }
+    //   });
+    // }
+    // else if (chooseColor) {
+    //   Router.push({
+    //     pathname: newPath,
+    //     query: {
+    //       age:router.query.age,
+    //       result: router.query.result ? router.query.result : null,
+    //       color: chooseColor,
+    //       lowPrice: pricerange[0],
+    //       upPrice: pricerange[1]
+    //     }
+    //   });
+    // } else if (chooseSize) {
+    //   Router.push({
+    //     pathname: newPath,
+    //     query: {
+    //       age:router.query.age,
+    //       result: router.query.result ? router.query.result : null,
+    //       size: chooseSize,
+    //       lowPrice: pricerange[0],
+    //       upPrice: pricerange[1]
+    //     }
+    //   });
+    // } else {
+    //   Router.push({
+    //     pathname: newPath,
+    //     query: {
+    //       age:router.query.age,
+    //       result: router.query.result ? router.query.result : null,
+    //       lowPrice: pricerange[0],
+    //       upPrice: pricerange[1]
+    //     }
+    //   });
+    // }
   }
   const handleClear = () =>{
     const choose = document.querySelectorAll('.showColor_body');
@@ -191,7 +233,7 @@ const Option = (props) => {
                 <Slider
                   className="MenuItem"
                   value={pricerange}
-                  max={2000000}
+                  max={10000000}
                   min={0}
                   onChange={updateRange}
                 >

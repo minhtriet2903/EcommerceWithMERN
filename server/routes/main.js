@@ -26,7 +26,7 @@ router.get(
 );
 router.get(
   "/courses/topSalerForMale",
-  CourseController.getCourseTop3LatestOfMale
+  CourseController.getCourseTopSalerForMale
 );
 router.get(
   "/courses/topSalerForFemale",

@@ -201,7 +201,7 @@ export default function Home({ data }) {
                   onChange={handleChange()}
                 >
                   <option>All</option>
-                  <option>Đã đặt</option>
+                  <option>Đã đặt hàng</option>
                   <option>Đang giao hàng</option>
                   <option>Đã giao hàng</option>
                   <option>Khách trả hàng</option>

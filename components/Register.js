@@ -159,7 +159,7 @@ export const Register =({show,setShow,setLoginstate})=>{
           
           setvalidatemessage("Email đã được sử dụng");
         });
-        Router.push('/LandingPage');
+        Router.push('/');
     };
   return <>
     {show ? (

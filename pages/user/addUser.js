@@ -12,7 +12,7 @@ function Form() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("Customer");
   const [shipperArea, setShipperArea] = useState([]);
-  const [areas, setAreas] = useState(["Thuận An", "Bến Cát", "Tân Uyên"]);
+  const [areas, setAreas] = useState(["Bình Phước", "Bình Dương", "Tây Ninh", "Đồng Nai", "Vũng Tàu", "TP.Hồ Chí Minh", "Long An"]);
 
   const handleChange = () => (e) => {
     const name = e.target.name;

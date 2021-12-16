@@ -9,7 +9,7 @@ import Breadcrumb from "./breadcrumbs";
 import Nav from "react-bootstrap/Nav";
 import styled from "styled-components";
 import { Login } from "./Login";
-
+import Cookies from 'js-cookie'
 import cookieCutter from "cookie-cutter";
 import cookies from "next-cookies";
 
@@ -37,6 +37,7 @@ const Headerr = (props) => {
       "Quần jean",
       "Quần kaki",
       "Quần thể thao",
+      "Giày"
       
     ],
   });
@@ -52,20 +53,17 @@ const Headerr = (props) => {
       "Quần kaki",
       "Quần thể thao",
       "Đầm",
+      "Giày"
     ],
   });
   const [kid, setKid] = useState({
     type: "Kid",
     content: [
-      "Áo sơ mi",
-      "Áo thun",
-      "Áo khoác",
-      "Áo len",
-      "Suit",
-      "Quần jean", ,
-      "Quần kaki",
-      "Quần thể thao",
-      "Đầm",
+      "Quần áo",
+    "Phụ kiện",
+    "Quần thể thao",
+    "Đầm",
+    "Áo khoác"
     ],
   });
 
@@ -155,12 +153,14 @@ const Headerr = (props) => {
 
   const [ShowLogin, setShowLogin] = useState(false);
   const Logout = () => {
+    // cookieCutter.set('Acc', '', { expires: new Date(0) })
+    // cookieCutter.set('Acc', '', { expires: new Date(0) })
+    // const Acc= cookieCutter.get('Acc');
+   
+  
+     Cookies.remove("Acc");
     
-    document.cookie = "Acc=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    window.setTimeout(() =>{
-      router.replace("/");
-    },1000)
-    
+    router.push("/");
   };
 
   useEffect(() => {
@@ -180,6 +180,10 @@ const Headerr = (props) => {
       prevScrollpos = currentScrollPos;
     };
   }, []);
+
+  const handleBill = () =>{
+    router.push("/shipperAdmin")
+  }
   return (
     <>
       <header className="header" id="header">
@@ -204,7 +208,7 @@ const Headerr = (props) => {
                   <input
                     className="input_header"
                     type="text"
-
+                    autoComplete="off"
                     onChange={(e) => {
                       setValueFind(e.target.value);
                     }}
@@ -226,6 +230,14 @@ const Headerr = (props) => {
                               <i className="bx bxs-user"></i>
                               <span>Thông tin cá nhân</span>
                             </li>
+                            {
+                              user.role === "Shipper" ? 
+                              <li onClick={handleBill}>
+                                  <i className='bx bx-dock-right'></i>
+                              <span>Danh sách hoá đơn</span>
+                            </li>
+                            : ""
+                            }
                             <li onClick={Logout}>
                               <i className="bx bx-log-out"></i>
                               <span>Đăng xuất</span>
@@ -352,7 +364,7 @@ const Headerr = (props) => {
                                 <Link
                                   key={index}
                                   href={`/container/${kid.type
-                                    }/${item.toLowerCase()}`}
+                                    }/${item}`}
                                 >
                                   <a>{item}</a>
                                 </Link>

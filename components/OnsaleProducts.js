@@ -27,7 +27,7 @@ function mainn({data}){
                 <ul className={styles.tabmenu}>
                     <li><button className={tab[0]} tabIndex="1" onClick={()=>settab(k(1))}><h3>Quần áo Nam</h3></button></li>
                     <li><button className={tab[1]} tabIndex="2" onClick={()=>settab(k(2))}><h3>Quần áo Nữ</h3></button></li>
-                    <li><button className={tab[2]} tabIndex="3" onClick={()=>settab(k(3))}><h3>Quần áo trai</h3></button></li>
+                    <li><button className={tab[2]} tabIndex="3" onClick={()=>settab(k(3))}><h3>Quần áo trẻ em</h3></button></li>
                 </ul>
             </div>
             <OnsaleProduct data={data[tab[3]]}/>

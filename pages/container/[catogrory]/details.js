@@ -31,6 +31,7 @@ const DetailCon = (props) => {
         var request = {
             params: {
                sex:detail.Sex,
+               materials:detail.materials,
                 /* materials: detail.materials ? detail.materials[0] : null, */
               age:detail.age,
               id:detail._id

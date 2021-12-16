@@ -55,7 +55,7 @@ const DeleteNotificationModal = ({
             x
           </a>
         </StyledModalHeader>
-        {title && <StyledModalTitle>{title}</StyledModalTitle>}
+        {title}
         <StyledModalBody>
           <h2>Bạn có chắc muốn xóa bình luận id = {cmtId}</h2>
           <a href={"/bill/" + id}>
